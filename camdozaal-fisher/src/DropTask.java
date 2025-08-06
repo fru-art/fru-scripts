@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class DropTask extends Task {
   private static final Set<Integer> DROPPABLES = Set.copyOf(Set.of(
-//    ItemID.BARRONITE_HANDLE, // TODO: Remove once banking is implemented
+    ItemID.BARRONITE_HANDLE, // TODO: Remove once banking is implemented
     ItemID.FROG_SPAWN,
     ItemID.RUINED_CAVEFISH,
     ItemID.RUINED_GUPPY,
