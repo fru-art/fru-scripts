@@ -34,7 +34,7 @@ public class CamdozaalFisher extends Script {
   public int poll() {
     if (getWorldPosition().getRegionID() != CAMDOZAAL_REGION_ID) {
       log(getClass(), "Exiting script due to not near Camdozaal fishing area");
-      System.exit(1);
+      stop();
     }
 
     // On each poll, run the first executable task from the list
@@ -53,7 +53,7 @@ public class CamdozaalFisher extends Script {
     // Exit script if no successful task executions in the last minute
     if (lastExecutionEpoch != null && System.currentTimeMillis() - lastExecutionEpoch > 60_000) {
       log(getClass(), "Exiting script due to long period of inactivity");
-      System.exit(0);
+      stop();
     }
 
     log(getClass(), "No executable task found. Re-polling");
