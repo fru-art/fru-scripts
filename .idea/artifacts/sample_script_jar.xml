@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="sample-script:jar">
+    <output-path>$USER_HOME$/.osmb/Scripts</output-path>
+    <root id="archive" name="sample-script.jar">
+      <element id="module-output" name="sample-script" />
+    </root>
+  </artifact>
+</component>
