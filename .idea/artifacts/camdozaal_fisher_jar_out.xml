@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="camdozaal-fisher:jar-out">
-    <output-path>$PROJECT_DIR$/out/artifacts/camdozaal_fisher_jar</output-path>
-    <root id="archive" name="camdozaal-fisher.jar">
-      <element id="module-output" name="camdozaal-fisher" />
-    </root>
-  </artifact>
-</component>

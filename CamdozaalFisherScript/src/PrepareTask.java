@@ -26,15 +26,14 @@ public class PrepareTask extends Task {
 
   @Override
   public boolean canExecute() {
-    boolean canReachPreparationTable =
-      script.getObjectManager().getClosestObject("Preparation table").canReach();
     boolean hasKnife = script.getWidgetManager().getInventory().search(Set.of(ItemID.KNIFE)).contains(ItemID.KNIFE);
     boolean hasPreparables =
       script.getWidgetManager().getInventory().search(new HashSet<>(PREPARABLES)).containsAny(PREPARABLES);
     boolean inventoryIsFull = script.getWidgetManager().getInventory().search(Collections.emptySet()).isFull();
+    boolean isNextToPreparationTable =
+      script.getObjectManager().getClosestObject("Preparation table").distance() <= 2;
 
-
-    return (inventoryIsFull || canReachPreparationTable) && hasKnife && hasPreparables;
+    return (inventoryIsFull || isNextToPreparationTable) && hasKnife && hasPreparables;
   }
 
   @Override

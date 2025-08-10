@@ -8,7 +8,7 @@ import java.util.List;
   author = "fru",
   name = "Camdozaal Fisher",
   description = "Net fishing and offering in Ruins of Camdozaal",
-  skillCategory = SkillCategory.PRAYER, version = 0.1
+  skillCategory = SkillCategory.PRAYER, version = 1.1
 )
 
 // Please do not use the high-level design of this script as an example for your own code; it's bad. This is my first

@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/camdozaal-fisher/camdozaal-fisher.iml" filepath="$PROJECT_DIR$/camdozaal-fisher/camdozaal-fisher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CamdozaalFisherScript/CamdozaalFisherScript.iml" filepath="$PROJECT_DIR$/CamdozaalFisherScript/CamdozaalFisherScript.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PowerMinerScript/PowerMinerScript.iml" filepath="$PROJECT_DIR$/PowerMinerScript/PowerMinerScript.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TestScript/TestScript.iml" filepath="$PROJECT_DIR$/TestScript/TestScript.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Utils/Utils.iml" filepath="$PROJECT_DIR$/Utils/Utils.iml" />
       <module fileurl="file://$PROJECT_DIR$/fru-scripts.iml" filepath="$PROJECT_DIR$/fru-scripts.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sample-script/sample-script.iml" filepath="$PROJECT_DIR$/sample-script/sample-script.iml" />
     </modules>
   </component>
 </project>

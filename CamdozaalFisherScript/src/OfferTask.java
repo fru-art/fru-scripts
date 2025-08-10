@@ -26,13 +26,13 @@ public class OfferTask extends Task {
 
   @Override
   public boolean canExecute() {
-    boolean inventoryIsFull = script.getWidgetManager().getInventory().search(Collections.emptySet()).isFull();
     boolean hasOfferables =
       script.getWidgetManager().getInventory().search(new HashSet<>(OFFERABLES)).containsAny(OFFERABLES);
-    boolean canReachAltar =
-      script.getObjectManager().getClosestObject("Altar").canReach();
+    boolean inventoryIsFull = script.getWidgetManager().getInventory().search(Collections.emptySet()).isFull();
+    boolean isNextToAltar =
+      script.getObjectManager().getClosestObject("Altar").distance() <= 3;
 
-    return (inventoryIsFull || canReachAltar) && hasOfferables;
+    return (inventoryIsFull || isNextToAltar) && hasOfferables;
   }
 
 
