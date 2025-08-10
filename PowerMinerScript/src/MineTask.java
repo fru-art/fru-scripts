@@ -64,6 +64,7 @@ public class MineTask extends Task {
     if (consecutiveFailedAttempts >= FAILED_ATTEMPTS_HOP_THRESHOLD && script.canHopWorlds()) {
       script.log(getClass(), "Hopping worlds due to too many failed attempts");
       script.getProfileManager().forceHop();
+      consecutiveFailedAttempts = 0;
     }
 
     return executeResult;
