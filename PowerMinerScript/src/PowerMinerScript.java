@@ -112,9 +112,12 @@ public class PowerMinerScript extends Script {
   };
   protected List<Integer> getRequiredRegions() {
     return List.of(
-      12596, // Southwest Varrock Mine
-      12852, // Southeast Varrock Mine
-      13107 // North Al Kharid Mine
+      8747, // Isle of Souls
+      10804, 10803, // Legends' Guild
+      11826, // Rimmington
+      12183, 12184, 12185, // Mining Guild
+      13107, // Al Kharid
+      13108 // Southeast Varrock
     );
   }
 }
