@@ -88,12 +88,13 @@ public class KillGoblinTask extends Task {
 
     boolean killed = waitHelper.waitForNoChange(
       "Goblin health",
-      () -> ((HealthOverlay.HealthResult) healthOverlay.getValue(HealthOverlay.HEALTH)).getCurrentHitpoints(),
+      () -> getHealthOverlayHitpoints(healthOverlay),
       8_000, // Should not take more than 8s to damage goblin
       16_000, // Should not take more than 16s to kill goblin
       () -> {
-        int health = ((HealthOverlay.HealthResult) healthOverlay.getValue(HealthOverlay.HEALTH)).getCurrentHitpoints();
-        return !healthOverlay.isVisible() || health == 0;
+        if (!healthOverlay.isVisible()) return true;
+        Integer health = getHealthOverlayHitpoints(healthOverlay);
+        return health == null || health == 0;
       });
 
     if (!killed) {
@@ -102,5 +103,11 @@ public class KillGoblinTask extends Task {
     }
 
     return true;
+  }
+
+  private Integer getHealthOverlayHitpoints(HealthOverlay healthOverlay) {
+    HealthOverlay.HealthResult healthResult = (HealthOverlay.HealthResult) healthOverlay.getValue(HealthOverlay.HEALTH);
+    if (healthResult == null) return null;
+    return healthResult.getCurrentHitpoints();
   }
 }
