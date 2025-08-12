@@ -27,6 +27,6 @@ public class GoblinSlayerScript extends TaskLoopScript {
 
   @Override
   protected List<Integer> getRequiredRegions() {
-    return List.of(12850);
+    return List.of(12850, 13106);
   }
 }
