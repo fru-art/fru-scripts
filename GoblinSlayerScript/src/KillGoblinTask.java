@@ -110,6 +110,12 @@ public class KillGoblinTask extends Task {
       unoccupiedNpcs.add(npc);
     }
 
+    if (unoccupiedNpcs.isEmpty()) {
+      script.log(getClass(), "Failed to find any unoccupied NPCs. Hopping worlds");
+      script.getProfileManager().forceHop();
+      return false;
+    }
+
     unoccupiedNpcs = unoccupiedNpcs.stream()
       .sorted(Comparator.comparingInt(npc -> npc.distanceTo(position)))
       .limit(random.nextInt(3, 5))
