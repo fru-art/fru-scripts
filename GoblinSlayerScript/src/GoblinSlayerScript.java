@@ -20,7 +20,7 @@ public class GoblinSlayerScript extends TaskLoopScript {
   @Override
   protected List<Task> getTaskList() {
     return List.of(
-      new WalkTask(this, new WorldPosition(3252, 3234, 0), 4),
+      new WalkTask(this, new WorldPosition(3252, 3234, 0), 7),
       new KillGoblinTask(this)
     );
   }
