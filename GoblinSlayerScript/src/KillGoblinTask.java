@@ -128,7 +128,7 @@ public class KillGoblinTask extends Task {
 
     WorldPosition attackedNpc = null;
     for (WorldPosition unoccupiedNpc : unoccupiedNpcs) {
-      Shape tilePoly = script.getSceneProjector().getTilePoly(unoccupiedNpc);
+      Shape tilePoly = script.getSceneProjector().getTileCube(unoccupiedNpc, 50).getResized(0.7);
 
       // Use 'for' loop (performance) to double-check that NPC is still in the right location post-processing and
       // pre-tap
