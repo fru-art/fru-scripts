@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CamdozaalFisherScript/CamdozaalFisherScript.iml" filepath="$PROJECT_DIR$/CamdozaalFisherScript/CamdozaalFisherScript.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GoblinSlayerScript/GoblinSlayerScript.iml" filepath="$PROJECT_DIR$/GoblinSlayerScript/GoblinSlayerScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/OsmbUtils/OsmbUtils.iml" filepath="$PROJECT_DIR$/OsmbUtils/OsmbUtils.iml" />
       <module fileurl="file://$PROJECT_DIR$/PowerMinerScript/PowerMinerScript.iml" filepath="$PROJECT_DIR$/PowerMinerScript/PowerMinerScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/TestScript/TestScript.iml" filepath="$PROJECT_DIR$/TestScript/TestScript.iml" />

@@ -22,6 +22,8 @@ public class EntityHelper {
     this.script = script;
   }
 
+
+
   public List<RSObject> getNamedObjects(List<String> expectedNames) {
     return script.getObjectManager().getObjects((RSObject object) -> {
       String name = object.getName();
