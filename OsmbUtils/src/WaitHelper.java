@@ -12,13 +12,13 @@ public class WaitHelper {
     this.script = script;
   }
 
-  public <T> boolean waitForChange(String valueName, Supplier<T> valueSupplier, int timeoutMs) {
+  public <T extends Object> boolean waitForChange(String valueName, Supplier<T> valueSupplier, int timeoutMs) {
     AtomicReference<T> value = new AtomicReference<>(valueSupplier.get());
     script.log(getClass(), "Waiting for " +  valueName + " value " + value.get() + " to change");
 
     return script.submitHumanTask(() -> {
       T nextValue = valueSupplier.get();
-      if (nextValue != value) {
+      if (!nextValue.equals(value.get())) {
         script.log(getClass(), valueName + " value successfully changed to " + nextValue);
         return true;
       }
@@ -26,26 +26,31 @@ public class WaitHelper {
     }, timeoutMs);
   }
 
-  public <T> boolean waitForNoChange(
+  public <T extends Object> boolean waitForNoChange(
     String valueName,
     Supplier<T> valueSupplier,
     int intervalMs,
     int timeoutMs,
     BooleanSupplier earlyExitSupplier,
     boolean ignoreHumanTasks) {
-    AtomicReference<T> currentValue = new AtomicReference<>(valueSupplier.get());
+    AtomicReference<T> currentValueReference = new AtomicReference<>(valueSupplier.get());
     AtomicLong changeTime = new AtomicLong(System.currentTimeMillis());
-    script.log(getClass(), "Waiting for " +  valueName + " value " + currentValue.get() + " to stop changing");
+    script.log(
+      getClass(),
+      "Waiting for " +  valueName + " value " + currentValueReference.get() + " to stop changing");
 
     return script.submitHumanTask(() -> {
       if (earlyExitSupplier.getAsBoolean()) return true;
 
+      T currentValue = currentValueReference.get();
       T nextValue = valueSupplier.get();
-      if (currentValue.get() != nextValue) {
+      if (!currentValue.equals(nextValue)) {
         long nextChangeTime = System.currentTimeMillis();
         long timeDiff = nextChangeTime - changeTime.get();
-        script.log(getClass(), valueName + " value changed to " + nextValue + " after " + timeDiff  + " ms");
-        currentValue.set(nextValue);
+        script.log(
+          getClass(),
+          valueName + " value changed to " + nextValue + " from " + currentValue + " after " + timeDiff  + " ms");
+        currentValueReference.set(nextValue);
         changeTime.set(nextChangeTime);
         return false;
       }
