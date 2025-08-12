@@ -1,9 +1,7 @@
-import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.script.Script;
 import com.osmb.api.shape.Rectangle;
 import com.osmb.api.ui.component.ComponentSearchResult;
 import com.osmb.api.ui.component.minimap.xpcounter.XPDropsComponent;
-import com.osmb.api.visual.image.SearchableImage;
 import com.osmb.api.visual.ocr.fonts.Font;
 
 import java.awt.*;
@@ -11,43 +9,11 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ScriptHelpers {
-  private static final int TILE_HEIGHT = 15;
 
   private final Script script;
 
   public ScriptHelpers(Script script) {
     this.script = script;
-  }
-
-  public boolean checkForTileItem(WorldPosition tilePosition, SearchableImage itemImage) {
-    Point point = script.getSceneProjector().getTilePoint(tilePosition, /* Center point */ null, TILE_HEIGHT);
-    if (point == null) {
-      script.log(getClass(), "No tile point found for position: " + tilePosition);
-      return false;
-    }
-
-    Point tileItemPoint = new Point(point.x - (itemImage.width / 2), point.y - (itemImage.height / 2) - 20);
-    int radius = 6;
-
-    for (int x = tileItemPoint.x - radius; x <= tileItemPoint.x + radius; x++) {
-      for (int y = tileItemPoint.y - radius; y <= tileItemPoint.y + radius; y++) {
-          if (script.getImageAnalyzer().isSubImageAt(x, y, itemImage) != null) {
-            script.getScreen().queueCanvasDrawable("tile-" + tilePosition, canvas -> {
-              com.osmb.api.shape.Rectangle tileItemArea = new Rectangle(
-                tileItemPoint.x - radius,
-                tileItemPoint.y - radius,
-                itemImage.height + (radius * 2),
-                itemImage.height + (radius * 2));
-              canvas.fillRect(tileItemArea, Color.GREEN.getRGB(), 0.3);
-              canvas.drawRect(tileItemArea, Color.BLUE.getRGB(), 1);
-            });
-
-            return true;
-          }
-      }
-    }
-
-    return false;
   }
 
   /**

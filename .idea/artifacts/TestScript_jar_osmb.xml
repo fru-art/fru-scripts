@@ -3,6 +3,7 @@
     <output-path>$USER_HOME$/.osmb/Scripts</output-path>
     <root id="archive" name="TestScript.jar">
       <element id="module-output" name="TestScript" />
+      <element id="module-output" name="OsmbUtils" />
     </root>
   </artifact>
 </component>

@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts</output-path>
     <root id="archive" name="PowerMinerScript.jar">
       <element id="module-output" name="PowerMinerScript" />
+      <element id="module-output" name="OsmbUtils" />
     </root>
   </artifact>
 </component>

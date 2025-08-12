@@ -1,10 +1,11 @@
+import com.osmb.api.item.ItemGroupResult;
 import com.osmb.api.item.ItemID;
+import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.scene.RSObject;
 import com.osmb.api.script.Script;
 import com.osmb.api.ui.chatbox.dialogue.Dialogue;
 import com.osmb.api.ui.chatbox.dialogue.DialogueType;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,52 +17,52 @@ public class PrepareTask extends Task {
     ItemID.RAW_CAVEFISH,
     ItemID.RAW_TETRA,
     ItemID.RAW_CATFISH));
+  private static final Set<Integer> preparablesSet = new HashSet<>(PREPARABLES);
 
-  private final ScriptHelpers scriptHelpers;
+  private final InventoryHelper inventoryHelper;
+  private final WaitHelper waitHelper;
+  private final WalkHelper walkHelper;
 
   public PrepareTask(Script script) {
     super(script);
-    this.scriptHelpers = new ScriptHelpers(script);
+
+    Set<Integer> searchables = new HashSet<>(preparablesSet);
+    searchables.add(ItemID.KNIFE);
+    inventoryHelper = new InventoryHelper(script, searchables);
+    waitHelper = new WaitHelper(script);
+    walkHelper = new WalkHelper(script);
   }
 
   @Override
   public boolean canExecute() {
-    boolean hasKnife = script.getWidgetManager().getInventory().search(Set.of(ItemID.KNIFE)).contains(ItemID.KNIFE);
-    boolean hasPreparables =
-      script.getWidgetManager().getInventory().search(new HashSet<>(PREPARABLES)).containsAny(PREPARABLES);
-    boolean inventoryIsFull = script.getWidgetManager().getInventory().search(Collections.emptySet()).isFull();
-    boolean isNextToPreparationTable =
-      script.getObjectManager().getClosestObject("Preparation table").distance() <= 2;
+    ItemGroupResult inventorySnapshot = inventoryHelper.getSnapshot();
+
+    boolean hasKnife = inventorySnapshot.contains(ItemID.KNIFE);
+    boolean hasPreparables = inventorySnapshot.containsAny(preparablesSet);
+    boolean inventoryIsFull = inventorySnapshot.isFull();
+
+    RSObject preparationTable = script.getObjectManager().getClosestObject("Preparation table");
+    boolean isNextToPreparationTable = preparationTable != null && preparationTable.distance() <= 2;
 
     return (inventoryIsFull || isNextToPreparationTable) && hasKnife && hasPreparables;
   }
 
   @Override
   public boolean execute() {
-    RSObject preparationTable = script.getObjectManager().getClosestObject("Preparation table");
-    if (preparationTable == null) {
-      script.log(getClass(), "Failed to find preparation table");
-      return false;
-    }
-
-    // Walk to preparation table if not visible
-    if (!preparationTable.isInteractableOnScreen()) {
-      double distanceToPreparationTable = preparationTable.distance();
-      script.getWalker().walkTo(preparationTable);
-      if (!script.submitHumanTask(preparationTable::canReach, (int) (distanceToPreparationTable * 1_000))) {
-        script.log(getClass(), "Failed to reach preparation table");
-        return false;
-      }
-    }
-
     for (Integer itemToBePrepared : PREPARABLES) {
-      if (!script.getWidgetManager().getInventory().search(Set.of(itemToBePrepared)).contains(itemToBePrepared)) {
+      if (!inventoryHelper.getSnapshot().contains(itemToBePrepared)) {
         continue;
       }
 
       // Start preparing
       script.log(getClass(), "Starting preparing " + itemToBePrepared);
-      preparationTable.interact("Prepare-fish");
+      if (!walkHelper.walkToAndInteract(
+        "Preparation table",
+        "Prepare-fish",
+        new WorldPosition(2935, 5771, 0))) {
+        return false;
+      }
+
       if (!script.submitHumanTask(() -> {
         Dialogue dialogue = script.getWidgetManager().getDialogue();
         return dialogue != null && dialogue.getDialogueType() == DialogueType.ITEM_OPTION;
@@ -74,19 +75,13 @@ public class PrepareTask extends Task {
       assert dialogue != null;
       dialogue.selectItem(itemToBePrepared);
 
-
-      // Wait for preparing to stop
-      // - Preparing one item should take less than 5s
-      // - Preparing one inventory should take less than 40s
       script.log(getClass(), "Waiting for preparing " + itemToBePrepared + " to complete");
-      scriptHelpers.waitForNoXp(5_000, 40_000, () -> {
-        // Inventory no longer contains item
-        if (!script.getWidgetManager().getInventory().search(Set.of(itemToBePrepared)).contains(itemToBePrepared)) {
-          script.log(getClass(), "Preparing " + itemToBePrepared + " completed due no more items");
-          return true;
-        }
-        return false;
-      });
+      waitHelper.waitForNoChange(
+        "Prepare count " + itemToBePrepared,
+        () -> inventoryHelper.getSnapshot().getAmount(itemToBePrepared),
+        5_000, // Preparing one item should take less than 5s
+        40_000, // Preparing one inventory should take less than 40s
+        () -> inventoryHelper.getSnapshot().getAmount(itemToBePrepared) == 0);
     }
 
     return true;

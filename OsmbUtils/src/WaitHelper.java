@@ -26,7 +26,13 @@ public class WaitHelper {
     }, timeoutMs);
   }
 
-  public <T> boolean waitForNoChange(String valueName, Supplier<T> valueSupplier, int intervalMs, int timeoutMs, BooleanSupplier earlyExitSupplier) {
+  public <T> boolean waitForNoChange(
+    String valueName,
+    Supplier<T> valueSupplier,
+    int intervalMs,
+    int timeoutMs,
+    BooleanSupplier earlyExitSupplier,
+    boolean ignoreHumanTasks) {
     AtomicReference<T> currentValue = new AtomicReference<>(valueSupplier.get());
     AtomicLong changeTime = new AtomicLong(System.currentTimeMillis());
     script.log(getClass(), "Waiting for " +  valueName + " value " + currentValue.get() + " to stop changing");
@@ -52,9 +58,17 @@ public class WaitHelper {
       }
 
       return false;
-    }, timeoutMs);
+    }, timeoutMs, false, ignoreHumanTasks);
+  }
+  public <T> boolean waitForNoChange(
+    String valueName,
+    Supplier<T> valueSupplier,
+    int intervalMs,
+    int timeoutMs,
+    BooleanSupplier earlyExitSupplier) {
+    return waitForNoChange(valueName, valueSupplier, intervalMs, timeoutMs, earlyExitSupplier, false);
   }
   public <T> boolean waitForNoChange(String valueName, Supplier<T> valueSupplier, int intervalMs, int timeoutMs) {
-    return waitForNoChange(valueName, valueSupplier, intervalMs, timeoutMs, () -> false);
+    return waitForNoChange(valueName, valueSupplier, intervalMs, timeoutMs, () -> false, false);
   }
 }

@@ -1,15 +1,14 @@
-import com.osmb.api.item.ItemID;
 import com.osmb.api.script.Script;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.stream.Stream;
 
 public abstract class TaskLoopScript extends Script {
   private final List<Integer> requiredRegions;
   private final long scriptTimeoutMs;
-  private List<Task> taskList;
   private Long lastExecutionTime;
+  private List<Task> taskList;
 
   public TaskLoopScript(Object scriptCore) {
     super(scriptCore);
@@ -54,21 +53,28 @@ public abstract class TaskLoopScript extends Script {
 
   /**
    * Provide the script timeout duration for when a task hasn't successfully executed in a while. The default timeout is
-   * 60s if not overridden.
+   * 5m if not overridden.
    *
    * @return Timeout duration in milliseconds, can be null if script should run forever
    */
   protected Long getScriptTimeoutMs() {
-    return 60_000L;
+    return 300_000L;
   };
 
   protected abstract List<Task> getTaskList();
-  protected abstract List<Integer> getRequiredRegions();
+
+  protected List<Integer> getRequiredRegions() {
+    return Collections.emptyList();
+  };
+
+  protected List<Integer> getRegionsToPrioritize() {
+    return Collections.emptyList();
+  };
 
   @Override
   public int[] regionsToPrioritise() {
-    return requiredRegions.stream()
-      .filter(Objects::nonNull)
+    return Stream.concat(requiredRegions.stream(), getRegionsToPrioritize().stream())
+      .distinct()
       .mapToInt(Integer::intValue)
       .toArray();
   }

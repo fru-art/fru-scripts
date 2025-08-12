@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts</output-path>
     <root id="archive" name="CamdozaalFisher.jar">
       <element id="module-output" name="CamdozaalFisherScript" />
+      <element id="module-output" name="OsmbUtils" />
     </root>
   </artifact>
 </component>

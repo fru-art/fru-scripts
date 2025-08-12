@@ -95,7 +95,7 @@ public class MineTask extends Task {
     int initialMineablesCount = inventoryHelper.getSnapshot().getAmount(mineables);
     // Wait for player animation to complete
     boolean didMiningComplete = waitHelper.waitForNoChange(
-      "isPlayerIdling",
+      "Mining",
       entityHelper::isPlayerIdling,
       1_000,
       15_000, // Timeout after 15s; sometimes mining takes longer, but allow the script to retry
@@ -106,8 +106,6 @@ public class MineTask extends Task {
         return !isVisibleRockSpawned(rockToMine);
       });
     if (!didMiningComplete) return false;
-
-
 
     // 'didMiningComplete' only checks for if the mining action was finished; the item could have been received by
     // another player

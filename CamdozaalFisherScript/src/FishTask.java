@@ -3,6 +3,7 @@ import com.osmb.api.location.area.impl.RectangleArea;
 import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.script.Script;
 import com.osmb.api.shape.Polygon;
+import com.osmb.api.shape.Rectangle;
 import com.osmb.api.visual.color.ColorUtils;
 import com.osmb.api.visual.image.SearchableImage;
 import com.osmb.api.walker.pathing.CollisionManager;
@@ -11,18 +12,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class FishTask extends Task {
-  // Right bound: 2931, Top bound: 5783
-  private static final RectangleArea BRIDGE_AREA = new RectangleArea(2930, 5779, 1, 4, 0);
-  private static final List<WorldPosition> BRIDGE_POSITIONS = List.copyOf(BRIDGE_AREA.getAllWorldPositions());
-  // Right bound: 2928, Top bound: 5784
   private static final List<WorldPosition> FISHING_POSITIONS =
     List.copyOf(new RectangleArea(2926, 5776, 2, 8, 0).getAllWorldPositions());
-
-  private final Random random = new Random();
-  private final ScriptHelpers scriptHelpers;
+  private static final int TILE_HEIGHT = 15;
   /**
    * We have two detection images for the tetra tile, one for the top half and one for the bottom half. This is because
    * when zoomed out adjacent tile images can overlap.
@@ -30,9 +24,15 @@ public class FishTask extends Task {
   private final SearchableImage tetraTileImageTop;
   private final SearchableImage tetraTileImageBottom;
 
+  private final EntityHelper entityHelper;
+  private final InventoryHelper inventoryHelper;
+  private final WaitHelper waitHelper;
+
   public FishTask(Script script) {
     super(script);
-    this.scriptHelpers = new ScriptHelpers(script);
+    entityHelper = new EntityHelper(script);
+    inventoryHelper = new InventoryHelper(script, Collections.emptySet());
+    waitHelper = new WaitHelper(script);
 
     // Initialize tetra tile detection images
     SearchableImage[] itemImages = script.getItemManager().getItem(ItemID.RAW_TETRA, true);
@@ -44,36 +44,14 @@ public class FishTask extends Task {
 
   public boolean canExecute() {
     // TODO: Check for fishing net but inventory detection for that item doesn't work right now
-    return !script.getWidgetManager().getInventory().search(Collections.emptySet()).isFull();
+    return !inventoryHelper.getSnapshot().isFull();
   }
 
   public boolean execute() {
     List<WorldPosition> fishingSpots = getFishingSpots();
-
-    int distanceToBridge = BRIDGE_AREA.distanceTo(script.getWorldPosition());
     if (fishingSpots.isEmpty()) {
-      if (distanceToBridge < 1) {
-        script.log(getClass(), "Failed to find fishing spots");
-        return false;
-      } else {
-        // Walk to bridge if no visible fishing spots
-        script.log(getClass(), "Walking to fishing area");
-        WorldPosition bridgePosition = BRIDGE_POSITIONS.get(random.nextInt(BRIDGE_POSITIONS.size()));
-        int distanceToBridgePosition = bridgePosition.distanceTo(script.getWorldPosition());
-        script.getWalker().walkTo(bridgePosition);
-
-        if (!script.submitHumanTask(
-          () -> bridgePosition.distanceTo(script.getWorldPosition()) < 1,
-          distanceToBridgePosition * 1000)) {
-          script.log(getClass(), "Failed to walk to fishing area");
-        }
-
-        fishingSpots = getFishingSpots();
-        if (fishingSpots.isEmpty()) {
-          script.log(getClass(), "Failed to find fishing spots twice");
-          return false;
-        }
-      }
+      script.log(getClass(), "Failed to find fishing spots");
+      return false;
     }
 
     // Start fishing
@@ -81,11 +59,11 @@ public class FishTask extends Task {
     WorldPosition closestFishingSpot = script.getWorldPosition().getClosest(fishingSpots);
     int distanceToFishingSpot = script.getWorldPosition().distanceTo(closestFishingSpot);
     Polygon tilePoly = script.getSceneProjector().getTilePoly(closestFishingSpot);
-    script.getFinger().tap(tilePoly);
+    script.getFinger().tapGameScreen(tilePoly);
 
     if (!script.submitHumanTask(
       () -> CollisionManager.isCardinallyAdjacent(script.getWorldPosition(), closestFishingSpot),
-      distanceToFishingSpot * 1000)) {
+      distanceToFishingSpot * 1_000)) {
         script.log(getClass(), "Failed to reach fishing spot");
         return false;
     }
@@ -94,34 +72,40 @@ public class FishTask extends Task {
     // - Fishing one fish should take less than 20s
     // - Fishing spots last for a maximum of 5 minutes
     script.log(getClass(), "Waiting for fishing to complete");
-    return scriptHelpers.waitForNoXp(20_000, 5 * 60_000, () -> {
-      // Inventory full
-      if (script.getWidgetManager().getInventory().search(Collections.emptySet()).isFull()) {
-        script.log(getClass(), "Fishing completed due to inventory full");
-        return true;
+    return waitHelper.waitForNoChange(
+      "Fishing",
+      entityHelper::isPlayerIdling,
+      5_000, // Each iteration of fishing animation should not take more than 5s
+      5 * 60_000, // Fishing a full inventory should not take more than 5m
+      () -> {
+        // Inventory full
+        if (inventoryHelper.getSnapshot().isFull()) {
+          script.log(getClass(), "Fishing completed due to inventory full");
+          return true;
+        }
+        // Fishing spot disappeared
+        if (!CollisionManager.isCardinallyAdjacent(script.getWorldPosition(), closestFishingSpot)) {
+          script.log(getClass(), "Fishing completed due to fishing spot disappeared");
+          return true;
+        }
+        return false;
       }
-      // Fishing spot disappeared
-      if (!CollisionManager.isCardinallyAdjacent(script.getWorldPosition(), closestFishingSpot)) {
-        script.log(getClass(), "Fishing completed due to fishing spot disappeared");
-        return true;
-      }
-      return false;
-    });
+    );
   }
 
   private List<WorldPosition> getFishingSpots() {
     List<WorldPosition> fishingSpots = new ArrayList<>();
 
     for (WorldPosition fishingSpot : FISHING_POSITIONS) {
-      if (scriptHelpers.checkForTileItem(fishingSpot, tetraTileImageBottom) ||
-        scriptHelpers.checkForTileItem(fishingSpot, tetraTileImageTop)) {
+      if (checkForTileItem(fishingSpot, tetraTileImageBottom) ||
+        checkForTileItem(fishingSpot, tetraTileImageTop)) {
         fishingSpots.add(fishingSpot);
 
         // Draw fishing spot
         script.getScreen().queueCanvasDrawable("foundFishingSpot=" + fishingSpot, canvas -> {
           Polygon tilePoly = script.getSceneProjector().getTilePoly(fishingSpot);
           canvas.fillPolygon(tilePoly, Color.GREEN.getRGB(), 0.3);
-          canvas.drawPolygon(tilePoly, Color.BLUE.getRGB(), 1);
+          canvas.drawPolygon(tilePoly, Color.GREEN.getRGB(), 1);
         });
       }
     }
@@ -137,5 +121,36 @@ public class FishTask extends Task {
         image.setRGB(x, y, ColorUtils.TRANSPARENT_PIXEL);
       }
     }
+  }
+
+  private boolean checkForTileItem(WorldPosition tilePosition, SearchableImage itemImage) {
+    Point point = script.getSceneProjector().getTilePoint(tilePosition, /* Center point */ null, TILE_HEIGHT);
+    if (point == null) {
+      script.log(getClass(), "No tile point found for position: " + tilePosition);
+      return false;
+    }
+
+    Point tileItemPoint = new Point(point.x - (itemImage.width / 2), point.y - (itemImage.height / 2) - 20);
+    int radius = 6;
+
+    for (int x = tileItemPoint.x - radius; x <= tileItemPoint.x + radius; x++) {
+      for (int y = tileItemPoint.y - radius; y <= tileItemPoint.y + radius; y++) {
+        if (script.getImageAnalyzer().isSubImageAt(x, y, itemImage) != null) {
+          script.getScreen().queueCanvasDrawable("tilePosition=" + tilePosition, canvas -> {
+            com.osmb.api.shape.Rectangle tileItemArea = new Rectangle(
+              tileItemPoint.x - radius,
+              tileItemPoint.y - radius,
+              itemImage.height + (radius * 2),
+              itemImage.height + (radius * 2));
+            canvas.fillRect(tileItemArea, Color.BLUE.getRGB(), 0.3);
+            canvas.drawRect(tileItemArea, Color.BLUE.getRGB(), 1);
+          });
+
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 }

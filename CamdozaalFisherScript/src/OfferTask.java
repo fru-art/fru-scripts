@@ -1,10 +1,11 @@
+import com.osmb.api.item.ItemGroupResult;
 import com.osmb.api.item.ItemID;
+import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.scene.RSObject;
 import com.osmb.api.script.Script;
 import com.osmb.api.ui.chatbox.dialogue.Dialogue;
 import com.osmb.api.ui.chatbox.dialogue.DialogueType;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,21 +17,29 @@ public class OfferTask extends Task {
     ItemID.CAVEFISH,
     ItemID.TETRA,
     ItemID.CATFISH));
+  private static final Set<Integer> offerablesSet = new HashSet<>(OFFERABLES);
 
-  private final ScriptHelpers scriptHelpers;
+  private final InventoryHelper inventoryHelper;
+  private final WaitHelper waitHelper;
+  private final WalkHelper walkHelper;
 
   public OfferTask(Script script) {
     super(script);
-    this.scriptHelpers = new ScriptHelpers(script);
+
+    inventoryHelper = new InventoryHelper(script, offerablesSet);
+    waitHelper = new WaitHelper(script);
+    walkHelper = new WalkHelper(script);
   }
 
   @Override
   public boolean canExecute() {
-    boolean hasOfferables =
-      script.getWidgetManager().getInventory().search(new HashSet<>(OFFERABLES)).containsAny(OFFERABLES);
-    boolean inventoryIsFull = script.getWidgetManager().getInventory().search(Collections.emptySet()).isFull();
-    boolean isNextToAltar =
-      script.getObjectManager().getClosestObject("Altar").distance() <= 3;
+    ItemGroupResult inventorySnapshot = inventoryHelper.getSnapshot();
+
+    boolean hasOfferables = inventorySnapshot.containsAny(offerablesSet);
+    boolean inventoryIsFull = inventorySnapshot.isFull();
+
+    RSObject altar = script.getObjectManager().getClosestObject("Altar");
+    boolean isNextToAltar = altar != null && altar.distance() <= 2;
 
     return (inventoryIsFull || isNextToAltar) && hasOfferables;
   }
@@ -38,30 +47,20 @@ public class OfferTask extends Task {
 
   @Override
   public boolean execute() {
-    RSObject altar = script.getObjectManager().getClosestObject("Altar");
-    if (altar == null) {
-      script.log(getClass(), "Failed to find altar");
-      return false;
-    }
-
-    // Walk to altar if not visible
-    if (!altar.isInteractableOnScreen()) {
-      double distanceToAltar = altar.distance();
-      script.getWalker().walkTo(altar);
-      if (!script.submitHumanTask(altar::canReach, (int) (distanceToAltar * 1_000))) {
-        script.log(getClass(), "Failed to reach altar");
-        return false;
-      }
-    }
-
     for (Integer itemToBeOffered : OFFERABLES) {
-      if (!script.getWidgetManager().getInventory().search(Set.of(itemToBeOffered)).contains(itemToBeOffered)) {
+      if (!inventoryHelper.getSnapshot().contains(itemToBeOffered)) {
         continue;
       }
 
       // Start offering
       script.log(getClass(), "Starting offering " + itemToBeOffered);
-      altar.interact("Offer-fish");
+      if (!walkHelper.walkToAndInteract(
+        "Altar",
+        "Offer-fish",
+        new WorldPosition(2936, 5771, 0))) {
+        return false;
+      }
+
       if (!script.submitHumanTask(() -> {
         Dialogue dialogue = script.getWidgetManager().getDialogue();
         return dialogue != null && dialogue.getDialogueType() == DialogueType.ITEM_OPTION;
@@ -74,18 +73,13 @@ public class OfferTask extends Task {
       assert dialogue != null;
       dialogue.selectItem(itemToBeOffered);
 
-      // Wait for offering to stop
-      // - Offering one item should take less than 5s
-      // - Offering one inventory should take less than 40s
       script.log(getClass(), "Waiting for offering " + itemToBeOffered + " to complete");
-      scriptHelpers.waitForNoXp(5_000, 40_000, () -> {
-        // Inventory no longer contains item
-        if (!script.getWidgetManager().getInventory().search(Set.of(itemToBeOffered)).contains(itemToBeOffered)) {
-          script.log(getClass(), "Offering " + itemToBeOffered + " completed due no more items");
-          return true;
-        }
-        return false;
-      });
+      waitHelper.waitForNoChange(
+        "Offer count " + itemToBeOffered,
+        () -> inventoryHelper.getSnapshot().getAmount(itemToBeOffered),
+        5_000, // Offering one item should take less than 5s
+        40_000, // Offering one inventory should take less than 40s
+        () -> inventoryHelper.getSnapshot().getAmount(itemToBeOffered) == 0);
     }
 
     return true;
