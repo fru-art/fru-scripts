@@ -9,7 +9,7 @@ import java.util.List;
   name = "Goblin Slayer",
   description = "Kills goblins and picks up some things",
   skillCategory = SkillCategory.COMBAT,
-  version = 1.0
+  version = 1.1
 )
 
 public class GoblinSlayerScript extends TaskLoopScript {

@@ -1,3 +1,4 @@
+import com.osmb.api.location.area.impl.RectangleArea;
 import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.script.Script;
 import com.osmb.api.shape.Shape;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.Random;
 
 public class KillGoblinTask extends Task {
+  private static final RectangleArea BUILDING = new RectangleArea(3243, 3244, 5, 4, 0);
+
   private final DrawHelper drawHelper;
   private final WaitHelper waitHelper;
 
@@ -91,6 +94,7 @@ public class KillGoblinTask extends Task {
     List<WorldPosition> unoccupiedNpcs = new ArrayList<>();
 
     for (WorldPosition npc : npcs) {
+      if (BUILDING.contains(npc)) continue;
       // Heuristic for ignoring recently killed NPC
       if (healthOverlay.isVisible() && CollisionManager.isCardinallyAdjacent(npc, position)) {
         continue;
