@@ -23,7 +23,6 @@ public class WalkTask extends Task {
     this(script, destinationPosition, 0);
   }
 
-
   @Override
   public boolean canExecute() {
     return script.getWorldPosition().distanceTo(destinationPosition) > acceptableInitialDistance;

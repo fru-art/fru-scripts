@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * Executes tasks based on order in task list, highest priority tasks can loop until their pre-reqs are not met.
+ */
 public abstract class TaskLoopScript extends Script {
   private final List<Integer> requiredRegions;
   private final long scriptTimeoutMs;
@@ -22,8 +25,8 @@ public abstract class TaskLoopScript extends Script {
     if (taskList == null) taskList = getTaskList();
 
     int currentRegion = getWorldPosition().getRegionID();
-    if (!requiredRegions.contains(currentRegion)) {
-      log(getClass(), "Exiting script due to player not required region. Current region: " + currentRegion);
+    if (!requiredRegions.isEmpty() && !requiredRegions.contains(currentRegion)) {
+      log(getClass(), "Exiting script due to player not in required region. Current region: " + currentRegion);
       stop();
       return 1000;
     }
@@ -34,17 +37,23 @@ public abstract class TaskLoopScript extends Script {
       return 1000;
     }
 
-    for (Task task : taskList) {
-      if (task.canExecute()) {
-        log(getClass(), "Executing " + task.getClass());
-        if (!task.execute()) {
-          log(getClass(), "Failed to execute " + task.getClass());
-          return 1000;
-        }
+    return executeTasks();
+  }
 
-        lastExecutionTime = System.currentTimeMillis();
-        return 0;
-      }
+  protected int executeTasks() {
+    for (Task task : taskList) {
+      do {
+        if (task.canExecute()) {
+          log(getClass(), "Executing " + task.getClass());
+          if (!task.execute()) {
+            log(getClass(), "Failed to execute " + task.getClass());
+            return 1000;
+          }
+
+          lastExecutionTime = System.currentTimeMillis();
+          return 0;
+        }
+      } while (task.canLoop && task.canExecute());
     }
 
     log(getClass(), "Could not find executable task, polling again");

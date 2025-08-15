@@ -37,7 +37,6 @@ public class CamdozaalFisherScript extends TaskLoopScript {
       new OfferTask(this),
       new DropTask(this, DROPPABLES),
       new BankDepositTask(this, bankLocations, BANKABLES, 5),
-      new DropTask(this, Set.of(ItemID.BARRONITE_HANDLE), 5), // Backup, in case bank task is failing
       new WalkTask(this, new WorldPosition(2931, 5773, 0), 10),
       new FishTask(this)
     );

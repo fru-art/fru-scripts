@@ -1,5 +1,6 @@
 import com.osmb.api.item.ItemGroupResult;
 import com.osmb.api.script.Script;
+import com.osmb.api.ui.tabs.Inventory;
 
 import java.util.Set;
 
@@ -17,6 +18,11 @@ public class InventoryHelper {
    *         object's methods (such as containment checkers) also depend on the original recognized item ids.
    */
   public ItemGroupResult getSnapshot() {
-    return script.getWidgetManager().getInventory().search(recognizedInventoryItemIds);
+    Inventory inventory = script.getWidgetManager().getInventory();
+    if (!inventory.isOpen()) inventory.open();
+
+    script.submitHumanTask(() -> inventory.isVisible() && inventory.isOpen(), 3_000);
+
+    return inventory.search(recognizedInventoryItemIds);
   }
 }

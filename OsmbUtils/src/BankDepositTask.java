@@ -49,6 +49,10 @@ public class BankDepositTask extends Task {
     ItemGroupResult inventorySnapshot = inventoryHelper.getSnapshot();
     if (!inventorySnapshot.containsAny(bankables)) return false;
 
+    Bank bank = script.getWidgetManager().getBank();
+    DepositBox depositBox = script.getWidgetManager().getDepositBox();
+    if (bank.isVisible() || depositBox.isVisible()) return true;
+
     if (bankablesThreshold != null) {
       return inventorySnapshot.getAmount(bankables) >= bankablesThreshold;
     }
