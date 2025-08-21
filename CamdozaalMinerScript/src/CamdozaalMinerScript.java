@@ -15,7 +15,7 @@ import java.util.Set;
   skillCategory = SkillCategory.MINING, version = 1.0
 )
 
-public class CamdozaalMinerScript extends TaskLoopScript{
+public class CamdozaalMinerScript extends FirstMatchTaskScript {
   private static final Set<Integer> BANKABLES = Set.of(
     ItemID.ANCIENT_ASTROSCOPE,
     ItemID.ANCIENT_CARCANET,
@@ -72,7 +72,7 @@ public class CamdozaalMinerScript extends TaskLoopScript{
         MINEABLES,
         true,
         260,
-        7)
+        7).setCanLoop(true)
       );
   }
 

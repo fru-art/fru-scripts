@@ -13,6 +13,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Use 'ObjectHelper' nad 'PlayerHelper'
+ */
+@Deprecated
 public class EntityHelper {
   private final DrawHelper drawHelper;
   private final Script script;
@@ -21,8 +25,6 @@ public class EntityHelper {
     this.drawHelper = new DrawHelper(script);
     this.script = script;
   }
-
-
 
   public List<RSObject> getNamedObjects(List<String> expectedNames) {
     return script.getObjectManager().getObjects((RSObject object) -> {

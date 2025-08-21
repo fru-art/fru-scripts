@@ -25,7 +25,11 @@ public class WalkTask extends Task {
 
   @Override
   public boolean canExecute() {
-    return script.getWorldPosition().distanceTo(destinationPosition) > acceptableInitialDistance;
+    if (script.getWorldPosition().distanceTo(destinationPosition) <= acceptableInitialDistance) {
+      script.log(getClass(), "Skipping walk due to distance being less than " + acceptableInitialDistance);
+      return false;
+    }
+    return true;
   }
 
   @Override

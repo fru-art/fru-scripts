@@ -17,12 +17,22 @@ public class InventoryHelper {
    * @return Item group result for the recognized item ids provided during instantiation. Don't forget that this
    *         object's methods (such as containment checkers) also depend on the original recognized item ids.
    */
-  public ItemGroupResult getSnapshot() {
+  public ItemGroupResult getSnapshot(boolean skipHumanDelay) {
     Inventory inventory = script.getWidgetManager().getInventory();
-    if (!inventory.isOpen()) inventory.open();
+    if (!inventory.isOpen()) {
+      inventory.open();
 
-    script.submitHumanTask(() -> inventory.isVisible() && inventory.isOpen(), 3_000);
+      if (skipHumanDelay) {
+        script.submitTask(() -> inventory.isVisible() && inventory.isOpen(), 3_000);
+      } else {
+        script.submitHumanTask(() -> inventory.isVisible() && inventory.isOpen(), 3_000);
+      }
+    }
 
     return inventory.search(recognizedInventoryItemIds);
+  }
+
+  public ItemGroupResult getSnapshot() {
+    return getSnapshot(false);
   }
 }

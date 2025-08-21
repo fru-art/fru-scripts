@@ -26,6 +26,10 @@ public class WaitHelper {
     }, timeoutMs);
   }
 
+  /**
+   * 'timeoutMs' is inconsistent due to pauses and AFKs. Just use a 'for' or 'while' loop with human tasks for interval.
+   */
+  @Deprecated
   public <T extends Object> boolean waitForNoChange(
     String valueName,
     Supplier<T> valueSupplier,

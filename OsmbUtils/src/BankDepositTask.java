@@ -1,21 +1,25 @@
 import com.osmb.api.item.ItemGroupResult;
 import com.osmb.api.location.position.types.WorldPosition;
+import com.osmb.api.scene.RSObject;
 import com.osmb.api.script.Script;
 import com.osmb.api.ui.WidgetManager;
 import com.osmb.api.ui.bank.Bank;
 import com.osmb.api.ui.depositbox.DepositBox;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class BankDepositTask extends Task {
   // Sorted based on prevalence; insertion order matters
-  private static final Map<String, String> BANK_DEPOSIT_TO_MENU_ITEM_MAP = Map.of(
-    "Bank booth", "Bank",
-    "Bank chest", "Use",
-    "Bank Deposit Box", "Deposit",
-    "Bank Deposit Chest", "Deposit");
+  private static final Map<String, String> BANK_DEPOSIT_TO_MENU_ITEM_MAP =
+    Collections.unmodifiableMap(new LinkedHashMap<>(Map.ofEntries(
+      Map.entry("Bank booth", "Bank"),
+      Map.entry("Bank chest", "Use"),
+      Map.entry("Bank Deposit Box", "Deposit"),
+      Map.entry("Bank Deposit Chest", "Deposit")
+    )));
   private final Set<Integer> bankables;
   private final Integer bankablesThreshold;
   private final Map<Integer, BankLocation> regionToBankMap;
@@ -35,7 +39,7 @@ public class BankDepositTask extends Task {
 
     this.bankables = bankables;
     this.bankablesThreshold = bankablesThreshold;
-    regionToBankMap = getRegionToBankMap(bankLocations);
+    regionToBankMap = BankLocation.getRegionToBankMap(bankLocations);
 
     inventoryHelper = new InventoryHelper(script, bankables);
     walkHelper = new WalkHelper(script);
@@ -52,6 +56,15 @@ public class BankDepositTask extends Task {
     Bank bank = script.getWidgetManager().getBank();
     DepositBox depositBox = script.getWidgetManager().getDepositBox();
     if (bank.isVisible() || depositBox.isVisible()) return true;
+
+    for (String bankDepositName : BANK_DEPOSIT_TO_MENU_ITEM_MAP.keySet()) {
+      RSObject bankDepositObject = script.getObjectManager().getClosestObject(bankDepositName);
+      if (bankDepositObject != null &&
+        bankDepositObject.isInteractableOnScreen() &&
+        bankDepositObject.getTileDistance() < 5) {
+        return true;
+      }
+    }
 
     if (bankablesThreshold != null) {
       return inventorySnapshot.getAmount(bankables) >= bankablesThreshold;
@@ -111,16 +124,5 @@ public class BankDepositTask extends Task {
 
     script.log(getClass(), "Unexpected failure when depositing items");
     return false;
-  }
-
-  private Map<Integer, BankLocation> getRegionToBankMap(Set<BankLocation> bankLocations) {
-    return bankLocations.stream()
-      .flatMap(bankLocation -> bankLocation.supportedRegions.stream()
-        .map(regionId -> Map.entry(regionId, bankLocation)))
-      .collect(Collectors.toMap(
-        Map.Entry::getKey,
-        Map.Entry::getValue,
-        (prevValue, value) -> value
-      ));
   }
 }

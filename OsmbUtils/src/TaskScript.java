@@ -4,16 +4,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-/**
- * Executes tasks based on order in task list, highest priority tasks can loop until their pre-reqs are not met.
- */
-public abstract class TaskLoopScript extends Script {
+public abstract class TaskScript extends Script {
+  protected Long lastExecutionTime;
+  protected List<Task> taskList;
   private final List<Integer> requiredRegions;
   private final long scriptTimeoutMs;
-  private Long lastExecutionTime;
-  private List<Task> taskList;
 
-  public TaskLoopScript(Object scriptCore) {
+  public TaskScript(Object scriptCore) {
     super(scriptCore);
     requiredRegions = getRequiredRegions();
     scriptTimeoutMs = getScriptTimeoutMs();
@@ -21,7 +18,7 @@ public abstract class TaskLoopScript extends Script {
 
   @Override
   public int poll() {
-    // Do this here to ensure tasks have access to accurate script options during instantiation
+    // Do not do this during construction in case script needs to query options from the user first
     if (taskList == null) taskList = getTaskList();
 
     int currentRegion = getWorldPosition().getRegionID();
@@ -40,25 +37,7 @@ public abstract class TaskLoopScript extends Script {
     return executeTasks();
   }
 
-  protected int executeTasks() {
-    for (Task task : taskList) {
-      do {
-        if (task.canExecute()) {
-          log(getClass(), "Executing " + task.getClass());
-          if (!task.execute()) {
-            log(getClass(), "Failed to execute " + task.getClass());
-            return 1000;
-          }
-
-          lastExecutionTime = System.currentTimeMillis();
-          return 0;
-        }
-      } while (task.canLoop && task.canExecute());
-    }
-
-    log(getClass(), "Could not find executable task, polling again");
-    return 0;
-  }
+  protected abstract int executeTasks();
 
   /**
    * Provide the script timeout duration for when a task hasn't successfully executed in a while. The default timeout is

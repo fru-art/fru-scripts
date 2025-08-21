@@ -13,7 +13,7 @@ import java.util.Set;
   skillCategory = SkillCategory.PRAYER, version = 1.2
 )
 
-public class CamdozaalFisherScript extends TaskLoopScript {
+public class CamdozaalFisherScript extends FirstMatchTaskScript {
   private static final Set<Integer> BANKABLES = Set.of(
     ItemID.BARRONITE_HANDLE);
   private static final Set<Integer> DROPPABLES = Set.of(

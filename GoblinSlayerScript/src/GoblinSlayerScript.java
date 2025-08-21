@@ -12,7 +12,7 @@ import java.util.List;
   version = 1.1
 )
 
-public class GoblinSlayerScript extends TaskLoopScript {
+public class GoblinSlayerScript extends FirstMatchTaskScript {
   public GoblinSlayerScript(Object scriptCore) {
     super(scriptCore);
   }

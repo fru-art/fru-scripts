@@ -4,12 +4,9 @@ import com.osmb.api.scene.RSObject;
 import com.osmb.api.script.Script;
 import com.osmb.api.ui.chatbox.dialogue.Dialogue;
 import com.osmb.api.ui.chatbox.dialogue.DialogueType;
-import com.osmb.api.ui.tabs.Inventory;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.function.BooleanSupplier;
 
 public class ProcessAtObjectTask extends Task {
   private final WorldPosition approximatePosition;
