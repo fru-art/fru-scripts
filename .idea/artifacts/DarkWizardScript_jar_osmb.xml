@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="DarkWizardScript:jar-osmb">
+    <output-path>$PROJECT_DIR$/out/artifacts/DarkWizardScript_jar_osmb</output-path>
+    <root id="archive" name="DarkWizardScript.jar">
+      <element id="module-output" name="DarkWizardScript" />
+      <element id="module-output" name="OsmbUtils" />
+    </root>
+  </artifact>
+</component>
