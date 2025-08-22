@@ -10,7 +10,7 @@ import java.util.Set;
   author = "fru",
   name = "Camdozaal Fisher",
   description = "Net fishing and offering in Ruins of Camdozaal",
-  skillCategory = SkillCategory.PRAYER, version = 1.2
+  skillCategory = SkillCategory.PRAYER, version = 1.3
 )
 
 public class CamdozaalFisherScript extends FirstMatchTaskScript {

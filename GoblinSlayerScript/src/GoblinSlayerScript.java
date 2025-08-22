@@ -9,10 +9,10 @@ import java.util.List;
   name = "Goblin Slayer",
   description = "Kills goblins and picks up some things",
   skillCategory = SkillCategory.COMBAT,
-  version = 1.1
+  version = 1.2
 )
 
-public class GoblinSlayerScript extends FirstMatchTaskScript {
+public class GoblinSlayerScript extends SequenceTaskScript {
   public GoblinSlayerScript(Object scriptCore) {
     super(scriptCore);
   }

@@ -9,7 +9,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ScriptHelpers {
-
   private final Script script;
 
   public ScriptHelpers(Script script) {

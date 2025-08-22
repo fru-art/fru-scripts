@@ -39,7 +39,7 @@ public class OfferTask extends Task {
     boolean inventoryIsFull = inventorySnapshot.isFull();
 
     RSObject altar = script.getObjectManager().getClosestObject("Altar");
-    boolean isNextToAltar = altar != null && altar.distance() <= 2;
+    boolean isNextToAltar = altar != null && altar.distance(script.getWorldPosition()) <= 2;
 
     return (inventoryIsFull || isNextToAltar) && hasOfferables;
   }

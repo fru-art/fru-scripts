@@ -12,7 +12,7 @@ import java.util.Set;
   author = "fru",
   name = "Camdozaal Miner",
   description = "Mines barronite deposits and opens them and banks loots",
-  skillCategory = SkillCategory.MINING, version = 1.0
+  skillCategory = SkillCategory.MINING, version = 1.1
 )
 
 public class CamdozaalMinerScript extends FirstMatchTaskScript {

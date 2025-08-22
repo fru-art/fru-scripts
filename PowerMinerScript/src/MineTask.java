@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class MineTask extends Task {
   private static final int FAILED_ATTEMPTS_HOP_THRESHOLD = 6;
 
@@ -84,11 +85,12 @@ public class MineTask extends Task {
       "Walking to closest mineable rock: " + rockToMinePosition.getX() + " " + rockToMinePosition.getY());
 
     rockToMine.interact("Mine");
-    int initialTileDistance = rockToMine.getTileDistance();
+    double initialTileDistance = rockToMine.getTileDistance(script.getWorldPosition());
     // Wait for player to move
     if (!script.submitHumanTask(() -> !entityHelper.isPlayerIdling(), 3_000)) return false;
     // Wait for player to reach rock
-    if (!script.submitHumanTask(() -> rockToMine.getTileDistance() == 1, initialTileDistance * 500))
+    if (!script.submitHumanTask(() -> rockToMine.getTileDistance(script.getWorldPosition()) == 1,
+      (int) initialTileDistance * 500))
       return false;
 
     script.log(getClass(), "Waiting for mining to complete");
@@ -145,9 +147,10 @@ public class MineTask extends Task {
       ((PowerMinerScript) script).scriptCore, spawnedRocks, true);
 
     // Filter reachable rocks and sort by distance
+    WorldPosition position = script.getWorldPosition();
     Map<RSObject, Integer> vacantRockTileDistances = vacantRocks.stream().collect(Collectors.toMap(
       Function.identity(),
-      RSObject::getTileDistance
+      rock -> rock.getTileDistance(position)
     ));
 
     return vacantRocks.stream()

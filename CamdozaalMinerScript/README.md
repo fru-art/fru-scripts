@@ -26,4 +26,5 @@ See below for release notes!
     - I reached approximately level 40-50 Mining and Smithing in one day on a fresh account
 
 ## Release notes
+- 1.1 (August 21, 2025) - Migrate to updated OSMB distance methods
 - 1.0 (August 14, 2025) - Initial release

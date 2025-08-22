@@ -11,7 +11,7 @@ import java.util.Set;
   name = "Dark Wizards",
   description = "for mid-level combat XP and gathering runes incl. Nature and Chaos runes.",
   skillCategory = SkillCategory.COMBAT,
-  version = 0.1
+  version = 0.2
 )
 
 public class DarkWizardScript extends SequenceTaskScript {

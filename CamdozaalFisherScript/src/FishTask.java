@@ -57,13 +57,13 @@ public class FishTask extends Task {
     // Start fishing
     script.log(getClass(), "Starting fishing");
     WorldPosition closestFishingSpot = script.getWorldPosition().getClosest(fishingSpots);
-    int distanceToFishingSpot = script.getWorldPosition().distanceTo(closestFishingSpot);
+    double distanceToFishingSpot = script.getWorldPosition().distanceTo(closestFishingSpot);
     Polygon tilePoly = script.getSceneProjector().getTilePoly(closestFishingSpot);
     script.getFinger().tapGameScreen(tilePoly);
 
     if (!script.submitHumanTask(
       () -> CollisionManager.isCardinallyAdjacent(script.getWorldPosition(), closestFishingSpot),
-      distanceToFishingSpot * 1_000)) {
+      (int) (distanceToFishingSpot * 1_000))) {
         script.log(getClass(), "Failed to reach fishing spot");
         return false;
     }

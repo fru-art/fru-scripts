@@ -121,7 +121,7 @@ public class KillGoblinTask extends Task {
     }
 
     unoccupiedNpcs = unoccupiedNpcs.stream()
-      .sorted(Comparator.comparingInt(npc -> npc.distanceTo(position)))
+      .sorted(Comparator.comparingDouble(npc -> npc.distanceTo(position)))
       .limit(random.nextInt(3, 5))
       .toList();
 
@@ -148,7 +148,7 @@ public class KillGoblinTask extends Task {
         script.getScreen().removeCanvasDrawable("npc=" + unoccupiedNpc);
         drawHelper.drawPosition("npc=" + unoccupiedNpc, unoccupiedNpc, Color.RED);
         continue;
-      };
+      }
 
       if (script.getFinger().tapGameScreen(tilePoly, menuEntries -> menuEntries.stream()
         .filter(item ->
@@ -170,7 +170,7 @@ public class KillGoblinTask extends Task {
       "Position",
       script::getWorldPosition,
       1_000,
-      position.distanceTo(attackedNpc) * 1_000)) {
+      (int) position.distanceTo(attackedNpc) * 1_000)) {
       script.log(getClass(), "Failed to reach goblin");
       return false;
     }

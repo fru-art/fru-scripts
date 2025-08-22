@@ -29,5 +29,6 @@ See below for release notes!
     - I got about 40 in all combat skills within a couple days.
 
 ## Release notes
+- 1.2 (August 21, 2025) - Migrate to updated OSMB distance methods
 - 1.1 (August 12, 2025) - Ignore goblins in the building. You don't wanna go in there. Trust me.
 - 1.0 (August 12, 2025) - Initial release

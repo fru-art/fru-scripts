@@ -42,7 +42,7 @@ public class PrepareTask extends Task {
     boolean inventoryIsFull = inventorySnapshot.isFull();
 
     RSObject preparationTable = script.getObjectManager().getClosestObject("Preparation table");
-    boolean isNextToPreparationTable = preparationTable != null && preparationTable.distance() <= 2;
+    boolean isNextToPreparationTable = preparationTable != null && preparationTable.distance(script.getWorldPosition()) <= 2;
 
     return (inventoryIsFull || isNextToPreparationTable) && hasKnife && hasPreparables;
   }

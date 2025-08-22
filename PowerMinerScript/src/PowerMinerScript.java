@@ -1,5 +1,6 @@
 import com.osmb.api.ScriptCore;
 import com.osmb.api.item.ItemID;
+import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.script.SkillCategory;
 
@@ -11,16 +12,17 @@ import java.util.Set;
   name = "Power Miner",
   description = "Mines and drops up to iron",
   skillCategory = SkillCategory.MINING,
-  version = 1.0
+  version = 1.1
 )
 
-public class PowerMinerScript extends TaskLoopScript {
+public class PowerMinerScript extends FirstMatchTaskScript {
   public static final Set<Integer> GEMS = Set.of(
     ItemID.UNCUT_SAPPHIRE,
     ItemID.UNCUT_RUBY,
     ItemID.UNCUT_EMERALD,
     ItemID.UNCUT_DIAMOND
   );
+  public static final Set<Integer> VARROCK_EAST_REGIONS = Set.of(12853, 13109, 13108);
 
   // Needed to convert between position types
   public final ScriptCore scriptCore;
@@ -41,8 +43,16 @@ public class PowerMinerScript extends TaskLoopScript {
 
   @Override
   protected List<Task> getTaskList() {
+    Set<BankLocation> bankLocations = Set.of(
+      new BankLocation(
+        VARROCK_EAST_REGIONS,
+        new WorldPosition(3254, 3421, 0)));
+
     assert scriptOptions != null;
     return List.of(
+      // TODO: Remove
+//      new BankDepositTask(this, bankLocations, scriptOptions.mineables),
+      new WalkTask(this, new WorldPosition(3282, 3366, 0), 1),
       new DropTask(this, scriptOptions.mineables),
       new MineTask(this, scriptOptions)
     );

@@ -6,7 +6,10 @@
       <w>droppables</w>
       <w>hitpoints</w>
       <w>hitsplat</w>
+      <w>lootables</w>
+      <w>npcs</w>
       <w>offerables</w>
+      <w>pickpocketed</w>
       <w>preparables</w>
     </words>
   </dictionary>
