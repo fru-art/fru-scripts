@@ -31,5 +31,6 @@ See below for release notes!
 - Banking
 
 ## Release notes
+- 1.2 (August 22, 2025) - Fix movement bug
 - 1.1 (August 21, 2025) - Migrate to updated OSMB distance methods
 - 1.0 (August 9, 2025) - Initial release
