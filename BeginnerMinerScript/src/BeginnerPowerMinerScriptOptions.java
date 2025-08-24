@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PowerMinerScriptOptions extends ScriptOptions {
+public class BeginnerPowerMinerScriptOptions extends ScriptOptions {
   private static final String COPPER_ORE_KEY = "COPPER_ORE";
   private static final String TIN_ORE_KEY = "TIN_ORE";
   private static final String IRON_ORE_KEY = "IRON_ORE";
@@ -25,7 +25,7 @@ public class PowerMinerScriptOptions extends ScriptOptions {
   public Set<Integer> mineables;
 
 
-  public PowerMinerScriptOptions(Script script) {
+  public BeginnerPowerMinerScriptOptions(Script script) {
     super(script);
 
     this.copperOreCheckBox = getCheckBox("Copper Ore", COPPER_ORE_KEY, false);
@@ -60,7 +60,7 @@ public class PowerMinerScriptOptions extends ScriptOptions {
       .collect(Collectors.toUnmodifiableSet());
 
     return Stream
-      .concat(PowerMinerScript.GEMS.stream(), mineableOres.stream())
+      .concat(BeginnerPowerMinerScript.GEMS.stream(), mineableOres.stream())
       .collect(Collectors.toUnmodifiableSet());
   }
 

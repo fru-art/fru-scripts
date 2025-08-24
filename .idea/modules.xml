@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/BeginnerMinerScript/BeginnerMinerScript.iml" filepath="$PROJECT_DIR$/BeginnerMinerScript/BeginnerMinerScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/CamdozaalFisherScript/CamdozaalFisherScript.iml" filepath="$PROJECT_DIR$/CamdozaalFisherScript/CamdozaalFisherScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/CamdozaalMinerScript/CamdozaalMinerScript.iml" filepath="$PROJECT_DIR$/CamdozaalMinerScript/CamdozaalMinerScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/DarkWizardScript/DarkWizardScript.iml" filepath="$PROJECT_DIR$/DarkWizardScript/DarkWizardScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/GoblinSlayerScript/GoblinSlayerScript.iml" filepath="$PROJECT_DIR$/GoblinSlayerScript/GoblinSlayerScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/OsmbUtils/OsmbUtils.iml" filepath="$PROJECT_DIR$/OsmbUtils/OsmbUtils.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PowerMinerScript/PowerMinerScript.iml" filepath="$PROJECT_DIR$/PowerMinerScript/PowerMinerScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/TestScript/TestScript.iml" filepath="$PROJECT_DIR$/TestScript/TestScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/fru-scripts.iml" filepath="$PROJECT_DIR$/fru-scripts.iml" />
     </modules>

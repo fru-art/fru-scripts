@@ -9,13 +9,13 @@ import java.util.Set;
 
 @ScriptDefinition(
   author = "fru",
-  name = "Power Miner",
+  name = "Beginner Power Miner",
   description = "Mines and drops up to iron",
   skillCategory = SkillCategory.MINING,
   version = 1.4
 )
 
-public class PowerMinerScript extends FirstMatchTaskScript {
+public class BeginnerPowerMinerScript extends FirstMatchTaskScript {
   public static final Set<Integer> GEMS = Set.of(
     ItemID.UNCUT_SAPPHIRE,
     ItemID.UNCUT_RUBY,
@@ -27,13 +27,13 @@ public class PowerMinerScript extends FirstMatchTaskScript {
   // Needed to convert between position types
   public final ScriptCore scriptCore;
 
-  private final PowerMinerScriptOptions scriptOptions;
+  private final BeginnerPowerMinerScriptOptions scriptOptions;
 
-  public PowerMinerScript(Object scriptCore){
+  public BeginnerPowerMinerScript(Object scriptCore){
     super(scriptCore);
 
     this.scriptCore = (ScriptCore) scriptCore;
-    scriptOptions = new PowerMinerScriptOptions(this);
+    scriptOptions = new BeginnerPowerMinerScriptOptions(this);
   }
 
   @Override

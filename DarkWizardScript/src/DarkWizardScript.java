@@ -11,7 +11,7 @@ import java.util.Set;
   name = "Dark Wizards",
   description = "for mid-level combat XP and gathering runes incl. Nature and Chaos runes.",
   skillCategory = SkillCategory.COMBAT,
-  version = 0.3
+  version = 1.0
 )
 
 public class DarkWizardScript extends SequenceTaskScript {
@@ -31,9 +31,9 @@ public class DarkWizardScript extends SequenceTaskScript {
     return List.of(
       new BankWithdrawTask(this, bankLocations, KillTask.food).setIsCritical(true),
       new WalkTask(this, new WorldPosition(3226, 3369, 0), 12),
-      new DropTask(this, Set.of(ItemID.BONES)),
+      new DropTask(this, Set.of(ItemID.BONES)), // Sometimes accidentally pick up bones
       new KillTask(this,
-        new NpcType("Dark wizard", 0, 190, 0.75, 35),
+        new NpcType("Dark wizard", 0, 190, 0.75, 25),
         Set.of(
           ItemID.AIR_RUNE,
           ItemID.BLOOD_RUNE,

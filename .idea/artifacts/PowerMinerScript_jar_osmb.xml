@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="PowerMinerScript:jar-osmb">
-    <output-path>$USER_HOME$/.osmb/Scripts</output-path>
-    <root id="archive" name="PowerMinerScript.jar">
-      <element id="module-output" name="PowerMinerScript" />
-      <element id="module-output" name="OsmbUtils" />
-    </root>
-  </artifact>
-</component>

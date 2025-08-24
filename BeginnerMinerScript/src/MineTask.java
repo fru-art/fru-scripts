@@ -26,7 +26,7 @@ public class MineTask extends Task {
 
   private int consecutiveFailedAttempts = 0;
 
-  public MineTask(Script script, PowerMinerScriptOptions scriptOptions) {
+  public MineTask(Script script, BeginnerPowerMinerScriptOptions scriptOptions) {
     super(script);
 
     mineableRockNames = scriptOptions.mineableRockNames;
@@ -145,7 +145,7 @@ public class MineTask extends Task {
     List<RSObject> spawnedRocks = entityHelper.filterUnspawnedObjects(
       visibleSpawnedRocks, PixelAnalyzer.RespawnCircleDrawType.CENTER, 25, 7);
     List<RSObject> vacantRocks = entityHelper.filterOccupiedObjects(
-      ((PowerMinerScript) script).scriptCore, spawnedRocks, true);
+      ((BeginnerPowerMinerScript) script).scriptCore, spawnedRocks, true);
 
     // Filter reachable rocks and sort by distance
     WorldPosition position = script.getWorldPosition();

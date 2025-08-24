@@ -1,8 +1,8 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="PowerMinerScript:jar-out">
+  <artifact type="jar" name="DarkWizardScript:jar-out">
     <output-path>$PROJECT_DIR$/out/artifacts</output-path>
-    <root id="archive" name="PowerMinerScript.jar">
-      <element id="module-output" name="PowerMinerScript" />
+    <root id="archive" name="DarkWizardScript.jar">
+      <element id="module-output" name="DarkWizardScript" />
       <element id="module-output" name="OsmbUtils" />
     </root>
   </artifact>
