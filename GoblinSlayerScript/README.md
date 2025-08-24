@@ -23,10 +23,13 @@ See below for release notes!
 - Pick up items
 
 ## FAQ
-- _Why am I not attacking?_
-    - The script won't initiate a fight unless you have 8 HP or more. Just wait for regen, train some HP and Def, eat manually, etc.
-- _What are XP rates?_
-    - I got about 40 in all combat skills within a couple of days.
+> Why am I not attacking?
+
+The script won't initiate a fight unless you have 8 HP or more. Just wait for regen, train some HP and Def, eat manually, etc.
+
+> What are XP rates?
+
+I got about 40 in all combat skills within a couple of days.
 
 ## Release notes
 - 1.3 (August 22, 2025) - Added auto-update, ignore null polys

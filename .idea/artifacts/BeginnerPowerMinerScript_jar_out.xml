@@ -2,7 +2,7 @@
   <artifact type="jar" name="BeginnerPowerMinerScript:jar-out">
     <output-path>$PROJECT_DIR$/out/artifacts</output-path>
     <root id="archive" name="BeginnerPowerMinerScript.jar">
-      <element id="module-output" name="BeginnerMinerScript" />
+      <element id="module-output" name="BeginnerPowerMinerScript" />
       <element id="module-output" name="OsmbUtils" />
     </root>
   </artifact>

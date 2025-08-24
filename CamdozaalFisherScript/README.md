@@ -21,12 +21,17 @@ See below for release notes!
     - Workaround: Level up both your Fishing and Cooking past 33 (46 on members' world) with other methods first
 
 ## FAQ
-- *Why won't it fish?*
-    - Make sure you have fishing indicators on i.e. the teal tile with the little fish icons above them. If you do, try playing around with zoom and not zooming out too far.
-- *What are XP rates like?*
-    - Honestly, not amazing. Probably around 2k-5k Prayer XP per hour depending on fishing levels. The upsides are that this is non-combat, requires no money, and trains three skills at once.
-- *What are barronite shards and handles?*
-    - They are used to make the [barronite mace](https://oldschool.runescape.wiki/w/Barronite_mace) which is one of the best F2P weapons. You can also high alch the handles for an upwards of ~20k gp per hour.
+> Why won't it fish?
+
+Make sure you have fishing indicators on i.e. the teal tile with the little fish icons above them. If you do, try playing around with zoom and not zooming out too far.
+
+> What are XP rates like?
+
+Honestly, not amazing. Probably around 2k-5k Prayer XP per hour depending on fishing levels. The upsides are that this is non-combat, requires no money, and trains three skills at once.
+
+> What are barronite shards and handles?
+
+They are used to make the [barronite mace](https://oldschool.runescape.wiki/w/Barronite_mace) which is one of the best F2P weapons. You can also high alch the handles for an upwards of ~20k gp per hour.
 
 ## Release notes
 - 1.4 (August 24, 2025) - Added auto-update

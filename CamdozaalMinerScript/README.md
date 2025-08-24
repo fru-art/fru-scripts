@@ -22,8 +22,9 @@ See below for release notes!
 - Script may get stuck trying to mine already mined rocks. This is an error that happens depending on the setup. If you see it, please screenshot and share.
 
 ## FAQ
-- *What are XP rates like?*
-    - I reached approximately level 40-50 Mining and Smithing in one day on a fresh account
+> What are XP rates like?
+
+I reached approximately level 40-50 Mining and Smithing in one day on a fresh account
 
 ## Release notes
 - 1.2 (August 24, 2025) - Added auto-update

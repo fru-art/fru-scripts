@@ -32,10 +32,13 @@ See below for release notes!
 - Script does not track ammo or runes
 
 ## FAQ
-- _Why am I not attacking?_
-  - Make sure you meet the 25 HP requirement
-- _What are rune rates?_
-  - Check [here](https://oldschool.runescape.wiki/w/Dark_wizard#Elemental_runes) on the wiki. You can get between 100-300+ kills per hour depending on your gear.
+> Why am I not attacking?
+
+Make sure you meet the 25 HP requirement
+
+> What are rune rates?
+
+Check [here](https://oldschool.runescape.wiki/w/Dark_wizard#Elemental_runes) on the wiki. You can get between 100-300+ kills per hour depending on your gear.
 
 ## Release notes
 - 1.0 (August 24, 2025) - Initial release
