@@ -12,7 +12,7 @@ import java.util.Set;
   author = "fru",
   name = "Camdozaal Miner",
   description = "Mines barronite deposits and opens them and banks loots",
-  skillCategory = SkillCategory.MINING, version = 1.1
+  skillCategory = SkillCategory.MINING, version = 1.2
 )
 
 public class CamdozaalMinerScript extends FirstMatchTaskScript {
@@ -22,7 +22,8 @@ public class CamdozaalMinerScript extends FirstMatchTaskScript {
     ItemID.ANCIENT_GLOBE,
     ItemID.ANCIENT_LEDGER,
     ItemID.ANCIENT_TREATISE,
-    ItemID.BARRONITE_HEAD);
+    ItemID.BARRONITE_HEAD,
+    ItemID.IMCANDO_HAMMER_BROKEN);
   private static final Set<Integer> GEMS = Set.of(
     ItemID.UNCUT_DIAMOND,
     ItemID.UNCUT_EMERALD,

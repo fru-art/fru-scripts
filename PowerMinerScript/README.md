@@ -31,6 +31,8 @@ See below for release notes!
 - Banking
 
 ## Release notes
-- 1.2 (August 22, 2025) - Fix movement bug
-- 1.1 (August 21, 2025) - Migrate to updated OSMB distance methods
+- 1.4 (August 24, 2025) - Added auto-update
+- 1.3 (August 23, 2025) - Improved mining and drop behavior
+- 1.2 (August 22, 2025) - Fixed movement bug
+- 1.1 (August 21, 2025) - Migrated to updated OSMB distance methods
 - 1.0 (August 9, 2025) - Initial release

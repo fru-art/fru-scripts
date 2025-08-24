@@ -29,7 +29,8 @@ See below for release notes!
     - They are used to make the [barronite mace](https://oldschool.runescape.wiki/w/Barronite_mace) which is one of the best F2P weapons. You can also high alch the handles for an upwards of ~20k gp per hour.
 
 ## Release notes
-- 1.3 (August 21, 2025) - Migrate to updated OSMB distance methods
-- 1.2 (August 11, 2025) - Banking support for barronite handles + migration to animation/inventory tracking instead of XP tracking
+- 1.4 (August 24, 2025) - Added auto-update
+- 1.3 (August 21, 2025) - Migrated to updated OSMB distance methods
+- 1.2 (August 11, 2025) - Added banking support for barronite handles, migrated to animation/inventory tracking
 - 1.1 (August 9, 2025) - Fixed issue with script not fully filling inventory with fish
 - 1.0 (August 4, 2025) - Initial release

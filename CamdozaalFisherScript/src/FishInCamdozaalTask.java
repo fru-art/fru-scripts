@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class FishTask extends Task {
+public class FishInCamdozaalTask extends Task {
   private static final List<WorldPosition> FISHING_POSITIONS =
     List.copyOf(new RectangleArea(2926, 5776, 2, 8, 0).getAllWorldPositions());
   private static final int TILE_HEIGHT = 15;
@@ -28,7 +28,7 @@ public class FishTask extends Task {
   private final InventoryHelper inventoryHelper;
   private final WaitHelper waitHelper;
 
-  public FishTask(Script script) {
+  public FishInCamdozaalTask(Script script) {
     super(script);
     entityHelper = new EntityHelper(script);
     inventoryHelper = new InventoryHelper(script, Collections.emptySet());

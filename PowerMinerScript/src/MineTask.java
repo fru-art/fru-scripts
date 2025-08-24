@@ -84,7 +84,8 @@ public class MineTask extends Task {
     script.log(getClass(),
       "Walking to closest mineable rock: " + rockToMinePosition.getX() + " " + rockToMinePosition.getY());
 
-    rockToMine.interact("Mine");
+    script.getFinger().tapGameScreen(rockToMine.getConvexHull());
+
     double initialTileDistance = rockToMine.getTileDistance(script.getWorldPosition());
     // Wait for player to move
     if (!script.submitHumanTask(() -> !entityHelper.isPlayerIdling(), 3_000)) return false;

@@ -12,7 +12,7 @@ import java.util.Set;
   name = "Power Miner",
   description = "Mines and drops up to iron",
   skillCategory = SkillCategory.MINING,
-  version = 1.2
+  version = 1.4
 )
 
 public class PowerMinerScript extends FirstMatchTaskScript {
@@ -53,7 +53,7 @@ public class PowerMinerScript extends FirstMatchTaskScript {
       // TODO: Remove
 //      new BankDepositTask(this, bankLocations, scriptOptions.mineables),
 //      new WalkTask(this, new WorldPosition(3282, 3366, 0), 1),
-      new DropTask(this, scriptOptions.mineables),
+      new DropTask(this, scriptOptions.mineables, 28),
       new MineTask(this, scriptOptions)
     );
   }
