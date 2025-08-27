@@ -4,6 +4,8 @@ import com.osmb.api.script.Script;
 import com.osmb.api.shape.Shape;
 import com.osmb.api.ui.overlay.HealthOverlay;
 import com.osmb.api.walker.pathing.CollisionManager;
+import helper.DrawHelper;
+import helper.WaitHelper;
 
 import java.awt.*;
 import java.util.ArrayList;

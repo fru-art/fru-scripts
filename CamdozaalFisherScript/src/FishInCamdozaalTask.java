@@ -7,6 +7,9 @@ import com.osmb.api.shape.Rectangle;
 import com.osmb.api.visual.color.ColorUtils;
 import com.osmb.api.visual.image.SearchableImage;
 import com.osmb.api.walker.pathing.CollisionManager;
+import helper.EntityHelper;
+import helper.InventoryHelper;
+import helper.WaitHelper;
 
 import java.awt.*;
 import java.util.ArrayList;

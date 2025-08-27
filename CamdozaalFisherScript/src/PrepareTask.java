@@ -5,6 +5,9 @@ import com.osmb.api.scene.RSObject;
 import com.osmb.api.script.Script;
 import com.osmb.api.ui.chatbox.dialogue.Dialogue;
 import com.osmb.api.ui.chatbox.dialogue.DialogueType;
+import helper.InventoryHelper;
+import helper.WaitHelper;
+import helper.WalkHelper;
 
 import java.util.HashSet;
 import java.util.List;

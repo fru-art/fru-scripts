@@ -2,16 +2,17 @@ import com.osmb.api.item.ItemID;
 import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.script.SkillCategory;
+import helper.NpcType;
 
 import java.util.List;
 import java.util.Set;
 
 @ScriptDefinition(
   author = "fru",
-  name = "Dark Wizards",
+  name = "Dark Wizard",
   description = "for mid-level combat XP and gathering runes incl. Nature and Chaos runes.",
   skillCategory = SkillCategory.COMBAT,
-  version = 1.0
+  version = 1.1
 )
 
 public class DarkWizardScript extends SequenceTaskScript {

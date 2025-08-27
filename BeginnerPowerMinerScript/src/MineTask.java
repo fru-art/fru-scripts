@@ -4,6 +4,10 @@ import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.scene.RSObject;
 import com.osmb.api.script.Script;
 import com.osmb.api.visual.PixelAnalyzer;
+import helper.DrawHelper;
+import helper.EntityHelper;
+import helper.InventoryHelper;
+import helper.WaitHelper;
 
 import java.awt.*;
 import java.util.Comparator;

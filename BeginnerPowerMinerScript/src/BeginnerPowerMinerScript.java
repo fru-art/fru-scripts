@@ -38,6 +38,7 @@ public class BeginnerPowerMinerScript extends FirstMatchTaskScript {
 
   @Override
   public void onStart() {
+    super.onStart();
     scriptOptions.show();
   }
 

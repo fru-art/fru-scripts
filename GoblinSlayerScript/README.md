@@ -32,6 +32,7 @@ The script won't initiate a fight unless you have 8 HP or more. Just wait for re
 I got about 40 in all combat skills within a couple of days.
 
 ## Release notes
+- 1.4 (August 26, 2025) - Improved walk and interact logic
 - 1.3 (August 22, 2025) - Added auto-update, ignore null polys
 - 1.2 (August 21, 2025) - Migrated to updated OSMB distance methods
 - 1.1 (August 12, 2025) - Ignored goblins in the building. You don't wanna go in there. Trust me.

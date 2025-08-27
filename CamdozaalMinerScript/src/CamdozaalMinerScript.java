@@ -4,6 +4,7 @@ import com.osmb.api.item.ItemID;
 import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.script.SkillCategory;
+import helper.InventoryHelper;
 
 import java.util.List;
 import java.util.Set;
@@ -12,7 +13,7 @@ import java.util.Set;
   author = "fru",
   name = "Camdozaal Miner",
   description = "Mines barronite deposits and opens them and banks loots",
-  skillCategory = SkillCategory.MINING, version = 1.2
+  skillCategory = SkillCategory.MINING, version = 1.3
 )
 
 public class CamdozaalMinerScript extends FirstMatchTaskScript {
