@@ -1,6 +1,6 @@
 # Beginner Woodcutter
 
-![img.png](img.png)
+![img.png](src/img.png)
 
 Cuts and banks logs from normal trees and oak trees near the west Varrock bank. Use the logs for firemaking, planks, or whatever!
 
