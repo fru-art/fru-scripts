@@ -32,7 +32,7 @@ public class KillGoblinTask extends Task {
 
   @Override
   public boolean canExecute() {
-    return script.getWidgetManager().getMinimapOrbs().getHitpoints().get() >= 6;
+    return script.getWidgetManager().getMinimapOrbs().getHitpoints() >= 6;
   }
 
   @Override

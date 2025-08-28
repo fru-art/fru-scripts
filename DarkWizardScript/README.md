@@ -41,6 +41,7 @@ Make sure you meet the 25 HP requirement
 Check [here](https://oldschool.runescape.wiki/w/Dark_wizard#Elemental_runes) on the wiki. You can get between 100-300+ kills per hour depending on your gear.
 
 ## Release notes
+- 1.3 (August 27, 2025) - API update
 - 1.2 (August 27, 2025) - Fix banking
 - 1.1 (August 26, 2025) - Fix auto-update and improved walk/interact logic
 - 1.0 (August 24, 2025) - Initial release
