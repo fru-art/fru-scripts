@@ -27,6 +27,7 @@ See below for release notes!
 I reached approximately level 40-50 Mining and Smithing in one day on a fresh account
 
 ## Release notes
+- 1.4 (August 27, 2025) - Fix banking and mining timeout
 - 1.3 (August 26, 2025) - Improved walk and interact logic
 - 1.2 (August 24, 2025) - Added auto-update
 - 1.1 (August 21, 2025) - Migrated to updated OSMB distance methods

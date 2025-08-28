@@ -17,4 +17,5 @@ See below for release notes!
     - Recommended to select both trees even if you desire oak logs; Oak trees will be prioritized
 
 ## Release notes
+- 1.1 (August 27, 2025) - Improve banking
 - 1.0 (August 26, 2025) - Initial release

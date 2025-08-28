@@ -6,8 +6,8 @@ import com.osmb.api.script.Script;
 import com.osmb.api.ui.chatbox.dialogue.Dialogue;
 import com.osmb.api.ui.chatbox.dialogue.DialogueType;
 import helper.InventoryHelper;
+import helper.ObjectHelper;
 import helper.WaitHelper;
-import helper.WalkHelper;
 
 import java.util.HashSet;
 import java.util.List;
@@ -23,8 +23,8 @@ public class PrepareTask extends Task {
   private static final Set<Integer> preparablesSet = new HashSet<>(PREPARABLES);
 
   private final InventoryHelper inventoryHelper;
+  private final ObjectHelper objectHelper;
   private final WaitHelper waitHelper;
-  private final WalkHelper walkHelper;
 
   public PrepareTask(Script script) {
     super(script);
@@ -32,8 +32,8 @@ public class PrepareTask extends Task {
     Set<Integer> searchables = new HashSet<>(preparablesSet);
     searchables.add(ItemID.KNIFE);
     inventoryHelper = new InventoryHelper(script, searchables);
+    objectHelper = new ObjectHelper(script);
     waitHelper = new WaitHelper(script);
-    walkHelper = new WalkHelper(script);
   }
 
   @Override
@@ -59,10 +59,10 @@ public class PrepareTask extends Task {
 
       // Start preparing
       script.log(getClass(), "Starting preparing " + itemToBePrepared);
-      if (!walkHelper.walkToAndInteract(
+      if (!objectHelper.walkToAndTap(
         "Preparation table",
-        "Prepare-fish",
-        new WorldPosition(2935, 5771, 0))) {
+        new WorldPosition(2935, 5771, 0),
+        "Prepare-fish")) {
         return false;
       }
 

@@ -6,8 +6,8 @@ import com.osmb.api.script.Script;
 import com.osmb.api.ui.chatbox.dialogue.Dialogue;
 import com.osmb.api.ui.chatbox.dialogue.DialogueType;
 import helper.InventoryHelper;
+import helper.ObjectHelper;
 import helper.WaitHelper;
-import helper.WalkHelper;
 
 import java.util.HashSet;
 import java.util.List;
@@ -23,15 +23,15 @@ public class OfferTask extends Task {
   private static final Set<Integer> offerablesSet = new HashSet<>(OFFERABLES);
 
   private final InventoryHelper inventoryHelper;
+  private final ObjectHelper objectHelper;
   private final WaitHelper waitHelper;
-  private final WalkHelper walkHelper;
 
   public OfferTask(Script script) {
     super(script);
 
     inventoryHelper = new InventoryHelper(script, offerablesSet);
+    objectHelper = new ObjectHelper(script);
     waitHelper = new WaitHelper(script);
-    walkHelper = new WalkHelper(script);
   }
 
   @Override
@@ -57,10 +57,11 @@ public class OfferTask extends Task {
 
       // Start offering
       script.log(getClass(), "Starting offering " + itemToBeOffered);
-      if (!walkHelper.walkToAndInteract(
+      if (!objectHelper.walkToAndTap(
         "Altar",
-        "Offer-fish",
-        new WorldPosition(2936, 5771, 0))) {
+        new WorldPosition(2936, 5771, 0),
+        "Offer-fish"
+        )) {
         return false;
       }
 
