@@ -26,14 +26,14 @@ public class LoadHarpoonfishTask extends Task {
     Island.SOUTH, new WorldPosition(3057, 2976, 0)
   );
 
-  private final TemporossScript script;
+  private final DumbTemporossScript script;
 
   private final DrawHelper drawHelper;
   private final InventoryHelper inventoryHelper;
   private final WaitHelper waitHelper;
 
 
-  public LoadHarpoonfishTask(TemporossScript script) {
+  public LoadHarpoonfishTask(DumbTemporossScript script) {
     super(script);
     this.script = script;
 

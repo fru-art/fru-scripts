@@ -1,11 +1,13 @@
 import com.osmb.api.item.ItemGroupResult;
 import com.osmb.api.item.ItemID;
 import com.osmb.api.location.position.types.WorldPosition;
+import com.osmb.api.scene.RSObject;
 import helper.InventoryHelper;
 import helper.ObjectHelper;
 import task.Task;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,12 +27,12 @@ public class RetrieveItemsTask extends Task {
     ItemID.ROPE
   );
 
-  private final TemporossScript script;
+  private final DumbTemporossScript script;
 
   private final InventoryHelper inventoryHelper;
   private final ObjectHelper objectHelper;
 
-  public RetrieveItemsTask(TemporossScript script) {
+  public RetrieveItemsTask(DumbTemporossScript script) {
     super(script);
     isCritical = true;
     retryLimit = 3;
@@ -70,8 +72,14 @@ public class RetrieveItemsTask extends Task {
     ItemGroupResult snapshot = inventoryHelper.getSnapshot();
 
     if (!snapshot.contains(ItemID.ROPE)) {
-      objectHelper.walkToAndTap("Ropes", nearTools);
-      if (!script.submitTask(() -> inventoryHelper.getSnapshot().contains(ItemID.ROPE), 600)) {
+      RSObject ropes = script.getObjectManager().getRSObject(
+        object -> Objects.equals(object.getName(), "Ropes") &&
+          script.getIsland(object.getWorldPosition()) == island);
+      double distance = ropes.distance(script.getWorldPosition());
+      ropes.interact("Take");
+
+      if (!script.submitTask(() -> inventoryHelper.getSnapshot().contains(ItemID.ROPE),
+        (int) (distance * 1_200 + 600))) {
         script.log(getClass(), "Failed to retrieve rope");
         return false;
       }
@@ -79,8 +87,14 @@ public class RetrieveItemsTask extends Task {
 
     if (script.canExecuteInterruptTask()) return true;
     if (!snapshot.contains(ItemID.HAMMER)) {
-      objectHelper.walkToAndTap("Hammers", nearTools);
-      if (!script.submitTask(() -> inventoryHelper.getSnapshot().contains(ItemID.HAMMER), 600)) {
+      RSObject hammers = script.getObjectManager().getRSObject(
+        object -> Objects.equals(object.getName(), "Hammers") &&
+          script.getIsland(object.getWorldPosition()) == island);
+      double distance = hammers.distance(script.getWorldPosition());
+      hammers.interact("Take");
+
+      if (!script.submitTask(() -> inventoryHelper.getSnapshot().contains(ItemID.HAMMER),
+        (int) (distance * 1_200 + 600))) {
         script.log(getClass(), "Failed to retrieve hammer");
         return false;
       }
@@ -88,8 +102,14 @@ public class RetrieveItemsTask extends Task {
 
     if (script.canExecuteInterruptTask()) return true;
     if (!snapshot.contains(ItemID.HARPOON)) {
-      objectHelper.walkToAndTap("Harpoons", nearTools);
-      if (!script.submitTask(() -> inventoryHelper.getSnapshot().contains(ItemID.HARPOON), 600)) {
+      RSObject harpoons = script.getObjectManager().getRSObject(
+        object -> Objects.equals(object.getName(), "Harpoons") &&
+          script.getIsland(object.getWorldPosition()) == island);
+      double distance = harpoons.distance(script.getWorldPosition());
+      harpoons.interact("Take");
+
+      if (!script.submitTask(() -> inventoryHelper.getSnapshot().contains(ItemID.HARPOON),
+        (int) (distance * 1_200 + 600))) {
         script.log(getClass(), "Failed to retrieve harpoon");
         return false;
       }

@@ -14,13 +14,13 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TetherTask extends Task {
-  private final TemporossScript script;
+  private final DumbTemporossScript script;
 
   private final DetectionHelper detectionHelper;
   private final InventoryHelper inventoryHelper;
   private final ObjectHelper objectHelper;
 
-  public TetherTask(TemporossScript script) {
+  public TetherTask(DumbTemporossScript script) {
     super(script);
     this.script = script;
 

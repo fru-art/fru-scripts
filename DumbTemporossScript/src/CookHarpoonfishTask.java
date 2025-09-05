@@ -15,12 +15,12 @@ public class CookHarpoonfishTask extends Task {
     Island.NORTH, new WorldPosition(3041, 3001, 0),
     Island.SOUTH, new WorldPosition(3037, 2956, 0)
   );
-  private final TemporossScript script;
+  private final DumbTemporossScript script;
 
   private final InventoryHelper inventoryHelper;
   private final ObjectHelper objectHelper;
 
-  public CookHarpoonfishTask(TemporossScript script) {
+  public CookHarpoonfishTask(DumbTemporossScript script) {
     super(script);
     this.script = script;
 

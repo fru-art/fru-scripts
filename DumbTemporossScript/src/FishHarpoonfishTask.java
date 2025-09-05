@@ -42,7 +42,7 @@ public class FishHarpoonfishTask extends Task {
     Island.SOUTH, new WorldPosition(3047, 2962, 0)
   );
 
-  private final TemporossScript script;
+  private final DumbTemporossScript script;
 
   private final DetectionHelper detectionHelper;
   private final DrawHelper drawHelper;
@@ -55,7 +55,7 @@ public class FishHarpoonfishTask extends Task {
 
   private Integer fishThreshold;
 
-  public FishHarpoonfishTask(TemporossScript script) {
+  public FishHarpoonfishTask(DumbTemporossScript script) {
     super(script);
     this.script = script;
 
@@ -88,11 +88,11 @@ public class FishHarpoonfishTask extends Task {
      */
     boolean canTurnInEarly = (snapshot.contains(ItemID.HARPOONFISH) && !snapshot.contains(ItemID.ROPE)) ||
       (snapshot.contains(ItemID.HARPOONFISH) &&
-        snapshot.getAmount(ItemID.RAW_HARPOONFISH, ItemID.HARPOONFISH) >= TemporossScript.MIN_FISH) ||
+        snapshot.getAmount(ItemID.RAW_HARPOONFISH, ItemID.HARPOONFISH) >= DumbTemporossScript.MIN_FISH) ||
       (snapshot.contains(ItemID.HARPOONFISH) && script.isNearBoat());
     if (canTurnInEarly) return false;
 
-    if (fishThreshold == null) fishThreshold = random.nextInt(TemporossScript.MIN_FISH, TemporossScript.MAX_FISH);
+    if (fishThreshold == null) fishThreshold = random.nextInt(DumbTemporossScript.MIN_FISH, DumbTemporossScript.MAX_FISH);
     return !snapshot.isFull() && snapshot.contains(ItemID.HARPOON) &&
       snapshot.getAmount(ItemID.RAW_HARPOONFISH) < fishThreshold;
   }

@@ -25,9 +25,9 @@ import java.util.stream.Stream;
   name = "Dumb Tempoross",
   description = "for completing the Tempoross minigame with help on dedicated worlds",
   skillCategory = SkillCategory.FISHING,
-  version = 1.0
+  version = 1.1
 )
-public class TemporossScript extends FirstMatchTaskScript {
+public class DumbTemporossScript extends FirstMatchTaskScript {
   private static final SearchablePixel[] ESSENCE_PIXELS = {
     new SearchablePixel(-10888359, ToleranceComparator.ZERO_TOLERANCE, ColorModel.RGB),
     new SearchablePixel(-16724992, ToleranceComparator.ZERO_TOLERANCE, ColorModel.RGB),
@@ -54,7 +54,7 @@ public class TemporossScript extends FirstMatchTaskScript {
   private final DetectionHelper detectionHelper;
   private final DrawHelper drawHelper;
 
-  public TemporossScript(Object scriptCore) {
+  public DumbTemporossScript(Object scriptCore) {
     super(scriptCore);
     interruptTasks = List.of(
       new StartMinigameTask(this),

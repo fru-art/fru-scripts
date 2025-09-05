@@ -12,7 +12,7 @@ import java.util.Set;
 @ScriptDefinition(
   author = "fru",
   name = "Herb Cleaner",
-  description = "for Herblore XP and profit.",
+  description = "for cleaning herbs for XP and profit",
   skillCategory = SkillCategory.HERBLORE,
   version = 1.0
 )

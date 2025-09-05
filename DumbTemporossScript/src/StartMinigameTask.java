@@ -9,13 +9,13 @@ public class StartMinigameTask extends Task {
   private static final int RUINS_REGION = 12588;
   private static final int MINIGAME_REGION = 12078;
 
-  private final TemporossScript script;
+  private final DumbTemporossScript script;
 
   private final DetectionHelper detectionHelper;
   private final ObjectHelper objectHelper;
   private final WaitHelper waitHelper;
 
-  public StartMinigameTask(TemporossScript script) {
+  public StartMinigameTask(DumbTemporossScript script) {
     super(script);
     this.script = script;
 

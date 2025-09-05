@@ -40,11 +40,11 @@ public class FishSpiritPoolTask extends Task {
   // Only use this query within the bounds of the energy bar
   private static final ClusterQuery energyQuery = new ClusterQuery(1, 0, ENERGY_PIXELS);
 
-  private final TemporossScript script;
+  private final DumbTemporossScript script;
 
   private final DetectionHelper detectionHelper;
 
-  public FishSpiritPoolTask(TemporossScript script) {
+  public FishSpiritPoolTask(DumbTemporossScript script) {
     super(script);
     this.script = script;
 

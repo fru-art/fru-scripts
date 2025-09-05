@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UntetherTask extends Task {
-  private final TemporossScript script;
+  private final DumbTemporossScript script;
 
   private final DetectionHelper detectionHelper;
   private final ObjectHelper objectHelper;
 
   private boolean recentlyUntethered = false;
 
-  public UntetherTask(TemporossScript script) {
+  public UntetherTask(DumbTemporossScript script) {
     super(script);
     isCritical = true;
     retryLimit = 3;

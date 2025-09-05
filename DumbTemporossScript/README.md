@@ -28,7 +28,7 @@ See below for release notes!
 ## FAQ
 > What are the permit rates?
 
-You can expect 2000-3500 points in a 6-7 minute game, which should equate to about 20-30 permits per hour.
+You can expect 2000-4000 points in a 5-7 minute game, which should equate to about 25-35 permits per hour.
 
 > What are XP rates?
 
@@ -48,4 +48,5 @@ I may update this script to fix bugs or small issues, but don't expect large ove
 
 
 ## Release notes
+- 1.1 (September 5, 2025) - Fix auto-update (needs manual re-download) and fix some tool retrieval paths 
 - 1.0 (September 4, 2025) - Initial release
