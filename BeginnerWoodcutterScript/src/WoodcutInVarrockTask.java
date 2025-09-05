@@ -7,6 +7,7 @@ import com.osmb.api.visual.PixelAnalyzer;
 import helper.DrawHelper;
 import helper.InventoryHelper;
 import helper.ObjectHelper;
+import task.Task;
 
 import java.awt.*;
 import java.util.Comparator;

@@ -10,6 +10,7 @@ import com.osmb.api.walker.pathing.CollisionManager;
 import helper.EntityHelper;
 import helper.InventoryHelper;
 import helper.WaitHelper;
+import task.Task;
 
 import java.awt.*;
 import java.util.ArrayList;

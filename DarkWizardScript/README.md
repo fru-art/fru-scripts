@@ -16,9 +16,8 @@ See below for release notes!
 ## Start
 - Download and install the JAR from [here](https://github.com/fru-art/fru-scripts/blob/master/out/artifacts/DarkWizardScript.jar).  See [Community Script Guidelines](https://discord.com/channels/736938454478356570/1364978724105355324)
 - Set up your bank
-  - Your food must be visible immediately upon opening your bank
+  - Your food must be visible immediately upon opening your bank (use the main tab i.e. infinity symbol tab)
     - See requirements for note on supported food
-    - Recommended to have a separate tab for foods to use or else the script will use any visible supported foods
 - Set up your inventory and gear
   - Turn on auto-retaliate
   - Even if you don't need food, bring one piece of supported food or else the script will go and withdraw food

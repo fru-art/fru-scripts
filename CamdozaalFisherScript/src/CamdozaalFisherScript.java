@@ -2,6 +2,7 @@ import com.osmb.api.item.ItemID;
 import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.script.SkillCategory;
+import task.*;
 
 import java.util.List;
 import java.util.Set;

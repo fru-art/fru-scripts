@@ -8,6 +8,7 @@ import com.osmb.api.ui.chatbox.dialogue.DialogueType;
 import helper.InventoryHelper;
 import helper.ObjectHelper;
 import helper.WaitHelper;
+import task.Task;
 
 import java.util.HashSet;
 import java.util.List;

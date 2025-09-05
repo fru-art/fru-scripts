@@ -17,8 +17,10 @@ See below for release notes!
     - Recommend world hopping instead of breaks. See [Profile Management Guidelines](https://discord.com/channels/736938454478356570/1393939764092207134/1393939764092207134)
 
 ## Known issues
+- Script only finds fishing spots if the icon displayed is a Tetra
+  - Workaround: Use a small fishing net, and level up your Fishing past 33 manually
 - Script may not work correctly if you are able to catch fish that you can't prepare i.e. mismatched Fishing and Cooking levels
-    - Workaround: Level up both your Fishing and Cooking past 33 (46 on members' world) with other methods first
+  - Workaround: Level up your Cooking past 33 manually
 
 ## FAQ
 > Why won't it fish?

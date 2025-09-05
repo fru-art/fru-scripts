@@ -8,6 +8,7 @@ import helper.DrawHelper;
 import helper.EntityHelper;
 import helper.InventoryHelper;
 import helper.WaitHelper;
+import task.Task;
 
 import java.awt.*;
 import java.util.Comparator;

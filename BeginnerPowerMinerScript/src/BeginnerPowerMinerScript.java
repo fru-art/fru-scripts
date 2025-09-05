@@ -3,6 +3,10 @@ import com.osmb.api.item.ItemID;
 import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.script.SkillCategory;
+import task.BankLocation;
+import task.DropTask;
+import task.FirstMatchTaskScript;
+import task.Task;
 
 import java.util.List;
 import java.util.Set;
@@ -52,8 +56,8 @@ public class BeginnerPowerMinerScript extends FirstMatchTaskScript {
     assert scriptOptions != null;
     return List.of(
       // TODO: Remove
-//      new BankDepositTask(this, bankLocations, scriptOptions.mineables),
-//      new WalkTask(this, new WorldPosition(3282, 3366, 0), 1),
+//      new task.BankDepositTask(this, bankLocations, scriptOptions.mineables),
+//      new task.WalkTask(this, new WorldPosition(3282, 3366, 0), 1),
       new DropTask(this, scriptOptions.mineables, 28),
       new MineTask(this, scriptOptions)
     );

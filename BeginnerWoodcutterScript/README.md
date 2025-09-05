@@ -16,6 +16,9 @@ See below for release notes!
     - Recommended to have a world hopping profile.  See [Profile Management Guidelines](https://discord.com/channels/736938454478356570/1393939764092207134/1393939764092207134)
     - Recommended to select both trees even if you desire oak logs; Oak trees will be prioritized
 
+## Known issues
+- Doesn't account for Forestry events
+
 ## Release notes
 - 1.1 (August 27, 2025) - Improve banking
 - 1.0 (August 26, 2025) - Initial release

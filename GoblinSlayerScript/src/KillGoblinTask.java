@@ -6,6 +6,7 @@ import com.osmb.api.ui.overlay.HealthOverlay;
 import com.osmb.api.walker.pathing.CollisionManager;
 import helper.DrawHelper;
 import helper.WaitHelper;
+import task.Task;
 
 import java.awt.*;
 import java.util.ArrayList;

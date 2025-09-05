@@ -3,6 +3,7 @@ import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.script.SkillCategory;
 import helper.NpcType;
+import task.*;
 
 import java.util.List;
 import java.util.Set;
@@ -14,7 +15,6 @@ import java.util.Set;
   skillCategory = SkillCategory.COMBAT,
   version = 1.3
 )
-
 public class DarkWizardScript extends SequenceTaskScript {
   private static final Set<Integer> PARTIAL_VARROCK = Set.of(12597, 12853, 12852);
 

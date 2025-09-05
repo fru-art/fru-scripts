@@ -1,6 +1,9 @@
 import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.script.SkillCategory;
+import task.SequenceTaskScript;
+import task.Task;
+import task.WalkTask;
 
 import java.util.List;
 
