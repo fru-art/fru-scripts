@@ -36,7 +36,8 @@ public class UntetherTask extends Task {
     UIResultList<String> chatboxText = detectionHelper.getChatboxText();
     if (chatboxText == null) return false;
 
-    if (chatboxText.get(0).contains("untether yourself") && !recentlyUntethered) {
+    if ((chatboxText.get(0).contains("untether yourself") || chatboxText.get(0).contains("reach that"))
+      && !recentlyUntethered) {
       return true;
     }
 

@@ -1,4 +1,6 @@
 import com.osmb.api.location.position.types.WorldPosition;
+import com.osmb.api.ui.chatbox.Chatbox;
+import com.osmb.api.ui.chatbox.ChatboxFilterTab;
 import helper.DetectionHelper;
 import helper.ObjectHelper;
 import helper.WaitHelper;
@@ -45,6 +47,14 @@ public class StartMinigameTask extends Task {
       script.log(getClass(), "Waiting for ferry back");
       script.submitHumanTask(
         () -> script.getWorldPosition().getRegionID() == RUINS_REGION || !script.isMinigameOver(), 20_000);
+    }
+
+    // Reset chatbox scroll position
+    Chatbox chatbox = script.getWidgetManager().getChatbox();
+    if (chatbox != null) {
+      chatbox.openFilterTab(ChatboxFilterTab.PUBLIC);
+      script.submitTask(() -> false, 1_000);
+      chatbox.openFilterTab(ChatboxFilterTab.GAME);
     }
 
     // Check if script needs to hop worlds or break, otherwise override for the duration of the minigame
