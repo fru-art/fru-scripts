@@ -24,6 +24,9 @@ See below for release notes!
 ## Known issues
 - Doesn't account for clouds or fires (but will replace lost equipment)
 - Doesn't support gear such as better harpoons or Spirit angler outfit
+- Occasionally the script will try to click through the chatbox, causing the scroll position to be wonky which will break certain actions because the script can't read the most recent chat
+  - Workaround: You may have to manually pause and scroll to the bottom of the chatbox yourself
+  - This has happened to me a couple times over the course of a few days
 
 ## FAQ
 > What are the permit rates?
