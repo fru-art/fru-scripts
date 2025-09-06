@@ -1,6 +1,7 @@
 import com.osmb.api.input.MenuEntry;
 import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.scene.RSObject;
+import com.osmb.api.ui.chatbox.Chatbox;
 import com.osmb.api.utils.UIResultList;
 import helper.DetectionHelper;
 import helper.ObjectHelper;
@@ -45,6 +46,14 @@ public class UntetherTask extends Task {
 
   @Override
   public boolean execute() {
+    // Reset chatbox scroll position because that's the most likely cause of tethering at the wrong time
+    Chatbox chatbox = script.getWidgetManager().getChatbox();
+    if (chatbox != null) {
+      chatbox.close();
+      script.submitTask(() -> false, 0);
+      chatbox.open();
+    }
+
     if (script.getIsland() == null) return false;
 
     WorldPosition position = script.getWorldPosition();
