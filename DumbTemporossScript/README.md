@@ -16,7 +16,7 @@ See below for release notes!
   - Therefore, recommended to use a break profile over a world hop profile. See [Profile Management Guidelines](https://discord.com/channels/736938454478356570/1393939764092207134/1393939764092207134)
   - As of September 4, 2025, the best world is _422 United States (west)_
 - Set up your interfaces
-  - Zoom the camera out all the way for the most consistent behavior
+  - Set your camera zoom to between the first two breakpoints for the most consistent behavior ![img_1.png](img_1.png)
   - Set _Game_ messages to _Filtered_ in your chatbox
 - Go to the Sea Spirit Dock
 - Start the script
