@@ -50,8 +50,11 @@ public class UntetherTask extends Task {
     // Reset chatbox scroll position because that's the most likely cause of tethering at the wrong time
     Chatbox chatbox = script.getWidgetManager().getChatbox();
     if (chatbox != null) {
-      chatbox.close();
-      script.submitTask(() -> false, 0);
+      if (chatbox.isOpen()) {
+        chatbox.close();
+        script.submitHumanTask(() -> !chatbox.isOpen(), 0);
+      }
+
       chatbox.open();
     }
 

@@ -48,6 +48,7 @@ I may update this script to fix bugs or small issues, but don't expect large ove
 
 
 ## Release notes
+- 1.5 (September 6, 2025) - MOOORE chatbox scroll position fixes
 - 1.4 (September 6, 2025) - MORE chatbox scroll position fixes
 - 1.3 (September 6, 2025) - More chatbox scroll position fixes and better untethering logic
 - 1.2 (September 6, 2025) - Fix chatbox scroll position becoming out of sync
