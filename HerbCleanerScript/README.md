@@ -12,7 +12,7 @@ See below for release notes!
 - Download and install the JAR from [here](https://github.com/fru-art/fru-scripts/blob/master/out/artifacts/HerbCleanerScript.jar).  See [Community Script Guidelines](https://discord.com/channels/736938454478356570/1364978724105355324)
 - Go to a bank (GE bankers not supported currently)
 - Set up your bank and inventory
-  - Dirty herbs that need cleaning should be in your main tab i.e. the infinity symbol tab
+  - Dirty herbs that need cleaning should be near the top of your main tab i.e. the infinity symbol tab
   - Deposit unrelated items
 - Start the script
     - Recommended to have a world hopping profile.  See [Profile Management Guidelines](https://discord.com/channels/736938454478356570/1393939764092207134/1393939764092207134)

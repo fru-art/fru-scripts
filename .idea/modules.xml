@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/GoblinSlayerScript/GoblinSlayerScript.iml" filepath="$PROJECT_DIR$/GoblinSlayerScript/GoblinSlayerScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/HerbCleanerScript/HerbCleanerScript.iml" filepath="$PROJECT_DIR$/HerbCleanerScript/HerbCleanerScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/OsmbUtils/OsmbUtils.iml" filepath="$PROJECT_DIR$/OsmbUtils/OsmbUtils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PestControlScript/PestControlScript.iml" filepath="$PROJECT_DIR$/PestControlScript/PestControlScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/TestScript/TestScript.iml" filepath="$PROJECT_DIR$/TestScript/TestScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/fru-scripts.iml" filepath="$PROJECT_DIR$/fru-scripts.iml" />
     </modules>
