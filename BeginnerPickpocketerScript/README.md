@@ -22,7 +22,7 @@ If you like the script, consider donating to me on [Ko-fi](https://ko-fi.com/fru
 - Tag all NPCs that you are pickpocketing and untag other nearby NPCs
   - You can do this using the yellow gnome button in the _Hotkeys_ menu
   - You should see the cyan highlight along with the cyan label above the NPCs' heads
-- Download and install the JAR from [here](https://github.com/fru-art/fru-scripts/blob/master/out/artifacts/BeginnerPickpocketer.jar).  See [Community Script Guidelines](https://discord.com/channels/736938454478356570/1364978724105355324)
+- Download and install the JAR from [here](https://github.com/fru-art/fru-scripts/blob/master/out/artifacts/BeginnerPickpocketerScript.jar).  See [Community Script Guidelines](https://discord.com/channels/736938454478356570/1364978724105355324)
 - Go to the appropriate region and start the script
 
 ## FAQ
