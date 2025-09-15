@@ -136,11 +136,13 @@ public class DumbTemporossScript extends FirstMatchTaskScript {
       screenBounds.getWidth() / 2,
       screenBounds.getHeight() / 2);
 
-    Rectangle barBounds = detectionHelper.getFirstClusterBounds(searchBounds, barQuery);
-    if (barBounds == null) return null;
+    PixelCluster barCluster = detectionHelper.getLargestCluster(searchBounds, barQuery);
+    if (barCluster == null) return null;
+    Rectangle barBounds = barCluster.getBounds();
 
-    Rectangle resourceBounds = detectionHelper.getFirstClusterBounds(barBounds, resourceQuery);
-    if (resourceBounds == null) return (double) 0;
+    PixelCluster resourceCluster = detectionHelper.getLargestCluster(searchBounds, resourceQuery);
+    if (resourceCluster == null) return (double) 0;
+    Rectangle resourceBounds = resourceCluster.getBounds();
 
     drawHelper.drawRectangle(barQuery.toString(), resourceBounds, color);
 

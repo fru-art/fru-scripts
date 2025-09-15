@@ -10,9 +10,9 @@ import java.util.Set;
 @ScriptDefinition(
   author = "fru",
   name = "Camdozaal Fisher",
-  description = "Net fishing and offering in Ruins of Camdozaal",
+  description = "for non-combat prayer XP and barronite handles",
   skillCategory = SkillCategory.PRAYER,
-  version = 1.6
+  version = 1.7
 )
 
 public class CamdozaalFisherScript extends FirstMatchTaskScript {

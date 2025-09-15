@@ -67,7 +67,9 @@ public class FishInCamdozaalTask extends Task {
 
     if (!script.submitHumanTask(
       () -> CollisionManager.isCardinallyAdjacent(script.getWorldPosition(), closestFishingSpot),
-      (int) (distanceToFishingSpot * 1_000))) {
+      (int) (distanceToFishingSpot * 1_000),
+      false,
+      true)) {
         script.log(getClass(), "Failed to reach fishing spot");
         return false;
     }

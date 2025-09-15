@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ArtefactCleanerScript/ArtefactCleanerScript.iml" filepath="$PROJECT_DIR$/ArtefactCleanerScript/ArtefactCleanerScript.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BeginnerPickpocketerScript/BeginnerPickpocketerScript.iml" filepath="$PROJECT_DIR$/BeginnerPickpocketerScript/BeginnerPickpocketerScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/BeginnerPowerMinerScript/BeginnerPowerMinerScript.iml" filepath="$PROJECT_DIR$/BeginnerPowerMinerScript/BeginnerPowerMinerScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/BeginnerWoodcutterScript/BeginnerWoodcutterScript.iml" filepath="$PROJECT_DIR$/BeginnerWoodcutterScript/BeginnerWoodcutterScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/CamdozaalFisherScript/CamdozaalFisherScript.iml" filepath="$PROJECT_DIR$/CamdozaalFisherScript/CamdozaalFisherScript.iml" />

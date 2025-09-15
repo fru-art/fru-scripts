@@ -18,9 +18,10 @@ See below for release notes!
 
 ## Start
 - Download and install the JAR from [here](https://github.com/fru-art/fru-scripts/blob/master/out/artifacts/BeginnerPowerMinerScript.jar). See [Community Script Guidelines](https://discord.com/channels/736938454478356570/1364978724105355324)
+- Highly recommended to have a world hopping profile since the script will use it to avoid crowded worlds. See [Profile Management Guidelines](https://discord.com/channels/736938454478356570/1393939764092207134/1393939764092207134)
+- Highly recommended to set NPC attack options to "hidden"
 - Go to your preferred location and make sure you have a pickaxe and some inventory free
 - Start the script
-    - Highly recommended to have a world hopping profile since the script will use it to avoid crowded worlds. See [Profile Management Guidelines](https://discord.com/channels/736938454478356570/1393939764092207134/1393939764092207134)
 
 ## Known issues
 - Script may not pick optimal spots to mine

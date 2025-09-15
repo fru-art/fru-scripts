@@ -70,7 +70,7 @@ public class PrepareTask extends Task {
       if (!script.submitHumanTask(() -> {
         Dialogue dialogue = script.getWidgetManager().getDialogue();
         return dialogue != null && dialogue.getDialogueType() == DialogueType.ITEM_OPTION;
-      }, 3_000)) {
+      }, 3_000, false, true)) {
         script.log(getClass(), "Failed to open dialogue for Preparation table");
         return false;
       }
