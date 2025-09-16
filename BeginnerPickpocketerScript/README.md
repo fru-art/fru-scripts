@@ -47,6 +47,7 @@ Thieving isn't one of my priorities right now, but I guess this script would be 
 Davyy currently has a private elf script if you are looking for that.
 
 # Release notes
+- 0.13 (September 16, 2025) - Fix script options
 - 0.12 (September 16, 2025) - Fix regions and save preferences
 - 0.11 (September 16, 2025) - Fix auto-update issue
 - 0.10 (September 15, 2025) - Avoid clicking on Wilderness border and add Varrock guards

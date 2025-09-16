@@ -34,7 +34,8 @@ public class BeginnerPickpocketerScriptOptions extends ScriptOptions {
   }
 
   @Override
-  public void onConfirm(ActionEvent actionEvent, Scene scene) {}
+  public void onConfirm(ActionEvent actionEvent, Scene scene) {
+  }
 
   @Override
   public List<Node> getRootChildren() {
@@ -55,10 +56,8 @@ public class BeginnerPickpocketerScriptOptions extends ScriptOptions {
     radioButton.setStyle("-fx-text-fill: white;");
     radioButton.setToggleGroup(radioButtonGroup);
 
-    scene.windowProperty().addListener((observable, prevWindow, window) -> {
-      window.setOnCloseRequest(event -> {
-        preferences.putBoolean(label, radioButton.isSelected());
-      });
+    radioButton.setOnAction(event -> {
+      preferences.putBoolean(label, radioButton.isSelected());
     });
     return radioButton;
   }
@@ -68,10 +67,8 @@ public class BeginnerPickpocketerScriptOptions extends ScriptOptions {
     checkBox.setSelected(preferences.getBoolean(label, defaultValue));
     checkBox.setStyle("-fx-text-fill: white;");
 
-    scene.windowProperty().addListener((observable, prevWindow, window) -> {
-      window.setOnCloseRequest(event -> {
-        preferences.putBoolean(label, checkBox.isSelected());
-      });
+    checkBox.setOnAction(event -> {
+      preferences.putBoolean(label, checkBox.isSelected());
     });
     return checkBox;
   }
