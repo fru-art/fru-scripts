@@ -15,11 +15,11 @@ import java.util.stream.Stream;
   name = "Beginner Pickpocketer",
   description = "for low-level thieving XP in Edgeville and Al Kharid",
   skillCategory = SkillCategory.THIEVING,
-  version = 0.11
+  version = 0.12
 )
 public class BeginnerPickpocketerScript extends FirstMatchTaskScript {
   private static final Set<BankLocation> BANKS = Set.of(
-//    new BankLocation(Set.of(12597, 12854, 12598), new WorldPosition(3185, 3436, 0)), // West Varrock Bank
+    new BankLocation(Set.of(12597, 12854, 12598), new WorldPosition(3185, 3436, 0)), // West Varrock Bank
     new BankLocation(Set.of(12853, 12852), new WorldPosition(3253, 3420, 0)), // East Varrock Bank
     new BankLocation(Set.of(12342, 12343), new WorldPosition(3096,3494, 0)) // Edgeville
   );
@@ -63,8 +63,11 @@ public class BeginnerPickpocketerScript extends FirstMatchTaskScript {
             new RectangleArea(3091, 3507, 9, 6, 0),
             new RectangleArea(3103, 3519, 22, 2, 0))) :
         null,
-      scriptOptions.guardVarrockRadioButton.isSelected() ?
+      scriptOptions.guardVarrockCastleRadioButton.isSelected() ?
         new PickpocketTask(this, GUARD, new WorldPosition(3212, 3463, 0)) :
+        null,
+      scriptOptions.guardVarrockWestBankRadioButton.isSelected() ?
+        new PickpocketTask(this, GUARD, new WorldPosition(3172, 3427, 0)) :
         null,
       scriptOptions.manRadioButton.isSelected() ?
         new PickpocketTask(this, MAN, new WorldPosition(3103, 3510, 0),
@@ -84,7 +87,8 @@ public class BeginnerPickpocketerScript extends FirstMatchTaskScript {
     return List.of(
       13105, // Al-Kharid
       12342, 12343, // Edgeville
-      12853, 12852 // East Varrock
+      12853, 12854, 13109, // East Varrock
+      12597, 12598 // West Varrock
     );
   }
 }
