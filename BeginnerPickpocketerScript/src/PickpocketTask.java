@@ -185,7 +185,12 @@ public class PickpocketTask extends Task {
         WalkConfig walkConfig = new WalkConfig.Builder()
           .breakCondition(() -> !inIgnoreArea(script.getWorldPosition()))
           .build();
-        script.getWalker().walkTo(nearPosition, walkConfig);
+        // Stuck in building
+        if (!script.getWalker().walkTo(nearPosition, walkConfig)) {
+          script.stop();
+          script.log(getClass(), "Failed to leave restricted area");
+          return false;
+        }
       }
     }
 

@@ -11,7 +11,8 @@ import java.util.List;
 
 public class BeginnerPickpocketerScriptOptions extends ScriptOptions {
   public final CheckBox eatCheckBox;
-  public final RadioButton guardRadioButton;
+  public final RadioButton guardEdgevilleRadioButton;
+  public final RadioButton guardVarrockRadioButton;
   public final RadioButton manRadioButton;
   public final RadioButton warriorRadioButton;
 
@@ -23,7 +24,8 @@ public class BeginnerPickpocketerScriptOptions extends ScriptOptions {
     radioButtonGroup = new ToggleGroup();
 
     eatCheckBox = getCheckBox("Withdraw and eat", true);
-    guardRadioButton = getRadioButton("Guard, Edgeville", false);
+    guardEdgevilleRadioButton = getRadioButton("Guard, Edgeville", false);
+    guardVarrockRadioButton = getRadioButton("Guard, Varrock", false);
     manRadioButton = getRadioButton("Man, Edgeville", true);
     warriorRadioButton = getRadioButton("Warrior, Al-Kharid (not working)", false);
     warriorRadioButton.setDisable(true); // TODO: Update when fixed
@@ -39,7 +41,8 @@ public class BeginnerPickpocketerScriptOptions extends ScriptOptions {
     return List.of(
       manRadioButton,
       warriorRadioButton,
-      guardRadioButton,
+      guardEdgevilleRadioButton,
+      guardVarrockRadioButton,
       new Separator(),
       eatCheckBox
     );

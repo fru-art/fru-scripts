@@ -4,6 +4,7 @@ import com.osmb.api.scene.RSObject;
 import com.osmb.api.script.Script;
 import com.osmb.api.shape.Polygon;
 import com.osmb.api.visual.PixelAnalyzer;
+import com.osmb.api.walker.WalkConfig;
 import helper.DrawHelper;
 import helper.InventoryHelper;
 import helper.ObjectHelper;
@@ -14,6 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class WoodcutInVarrockTask extends Task {
   private static final RectangleArea VARROCK_TREES = new RectangleArea(3158, 3406, 12, 17, 0);
@@ -35,18 +37,26 @@ public class WoodcutInVarrockTask extends Task {
 
   @Override
   public boolean canExecute() {
-    List<RSObject> trees = getUncutTrees();
-    if (trees.isEmpty()) {
-      script.log(getClass(), "Failed to find trees");
-      return false;
-    }
-
     return true;
   }
 
   @Override
   public boolean execute() {
-    List<RSObject> trees = getUncutTrees();
+    AtomicReference<List<RSObject>> atomicTrees = new AtomicReference<>(getUncutTrees());
+    if (atomicTrees.get().isEmpty()) {
+      WalkConfig walkConfig = new WalkConfig.Builder()
+        .breakCondition(() -> {
+          List<RSObject> trees = getUncutTrees();
+          atomicTrees.set(trees);
+          return !trees.isEmpty();
+        })
+        .breakDistance(1)
+        .build();
+
+      script.getWalker().walkTo(new WorldPosition(3170, 3415, 0), walkConfig);
+    }
+
+    List<RSObject> trees = atomicTrees.get();
     if (trees.isEmpty()) {
       script.log(getClass(), "Failed to find trees");
       return false;
@@ -103,6 +113,7 @@ public class WoodcutInVarrockTask extends Task {
     WorldPosition position = script.getWorldPosition();
     List<RSObject> uncutTrees = trees.stream()
       .filter(tree -> !cutTrees.contains(tree))
+      .filter(RSObject::isInteractableOnScreen)
       .sorted(Comparator.comparing(RSObject::getName) // Heuristic to prioritize oak trees
         .thenComparingDouble(tree -> tree.distance(position))) // Much faster heuristic for tile distance
       .toList();
