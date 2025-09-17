@@ -1,6 +1,8 @@
 # Beginner Pickpocketer
 for low-level thieving XP in Edgeville and Al Kharid.
 
+**THIS IS EXPERIMENTAL. There are failsafes in place for script to stop if it gets stuck performing an action, but remember to run at your own risk.**
+
 ![img.png](img.png)
 
 If you like the script, consider donating to me on [Ko-fi](https://ko-fi.com/fruart) ☕. I'll be looking into updates and other scripts in the future.
