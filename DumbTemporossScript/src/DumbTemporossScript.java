@@ -25,7 +25,7 @@ import java.util.stream.Stream;
   name = "Dumb Tempoross",
   description = "for completing the Tempoross minigame with help on dedicated worlds",
   skillCategory = SkillCategory.FISHING,
-  version = 1.5
+  version = 1.6
 )
 public class DumbTemporossScript extends FirstMatchTaskScript {
   private static final SearchablePixel[] ESSENCE_PIXELS = {

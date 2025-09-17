@@ -50,6 +50,7 @@ I may update this script to fix bugs or small issues, but don't expect large ove
 
 
 ## Release notes
+- 1.6 (September 17, 2025) - Improvements to fishing tile detection
 - 1.5 (September 6, 2025) - MOOORE chatbox scroll position fixes
 - 1.4 (September 6, 2025) - MORE chatbox scroll position fixes
 - 1.3 (September 6, 2025) - More chatbox scroll position fixes and better untethering logic

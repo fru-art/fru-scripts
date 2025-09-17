@@ -218,22 +218,41 @@ public class FishHarpoonfishTask extends Task {
     drawHelper.drawRectangles("item-search-bounds", itemSearchBoundss, Color.WHITE);
 
     List<WorldPosition> activeFishingPositions = new ArrayList<>();
+    List<Rectangle> activeFishingResultBoundss = new ArrayList<>();
     for (int i = 0; i < fishingPositions.size(); i++) {
       WorldPosition fishingPosition = fishingPositions.get(i);
       Rectangle itemSearchBounds = itemSearchBoundss.get(i);
       assert fishingPosition != null;
       assert itemSearchBounds != null;
 
-      ImageSearchResult result = script.getImageAnalyzer().findLocation(
+      List<ImageSearchResult> results = script.getImageAnalyzer().findLocations(
         itemSearchBounds, harpoonfishQuarters.toArray(new SearchableImage[0]));
-      if (result != null) activeFishingPositions.add(fishingPosition);
+      if (results == null || results.isEmpty()) continue;
+
+      for (ImageSearchResult result : results) {
+        boolean isContained = new Rectangle(
+          itemSearchBounds.x - 1,
+          itemSearchBounds.y - 1,
+          itemSearchBounds.width + 2,
+          itemSearchBounds.height + 2
+        ).contains(result.getBounds());
+        if (isContained) {
+          activeFishingResultBoundss.add(result.getBounds());
+          activeFishingPositions.add(fishingPosition);
+          break;
+        }
+      }
     }
 
     activeFishingPositions = activeFishingPositions.stream()
       .sorted(Comparator.comparingDouble(fishingPosition -> fishingPosition.distanceTo(playerPosition)))
       .toList();
 
-    drawHelper.drawPositions("active-fishing-positions", activeFishingPositions, Color.GREEN);
+    drawHelper.drawRectangles(
+      getClass().getSimpleName() + "-active-fishing-result-boundss",
+      activeFishingResultBoundss,
+      Color.MAGENTA);
+    drawHelper.drawPositions(getClass().getSimpleName() + "-active-fishing-positions", activeFishingPositions, Color.GREEN);
     return activeFishingPositions;
   }
 }
