@@ -44,7 +44,7 @@ public class KillGoblinTask extends Task {
       attackGoblin(healthOverlay);
     }
 
-    if (!script.submitHumanTask(healthOverlay::isVisible, 400)) {
+    if (!script.submitHumanTask(healthOverlay::isVisible, 400, false, true)) {
       script.log(getClass(), "Failed to instantiate health overlay");
       return false;
     }
@@ -69,7 +69,8 @@ public class KillGoblinTask extends Task {
           return true;
         }
         return false;
-      });
+      },
+      true);
 
     if (!killed) {
       script.log(getClass(), "Failed to kill goblin");

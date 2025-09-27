@@ -1,6 +1,8 @@
 import com.osmb.api.item.ItemID;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.script.SkillCategory;
+import com.osmb.api.ui.component.tabs.skill.SkillType;
+import com.osmb.api.ui.tabs.Skill;
 import task.BankDepositTask;
 import task.BankWithdrawTask;
 import task.SequenceTaskScript;
@@ -14,7 +16,7 @@ import java.util.Set;
   name = "Herb Cleaner",
   description = "for cleaning herbs for XP and profit",
   skillCategory = SkillCategory.HERBLORE,
-  version = 1.0
+  version = 1.1
 )
 public class HerbCleanerScript extends SequenceTaskScript {
   public static final Set<Integer> CLEAN_HERBS = Set.of(

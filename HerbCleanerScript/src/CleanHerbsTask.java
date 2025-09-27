@@ -48,23 +48,23 @@ public class CleanHerbsTask extends Task {
       Point point = getGaussianPoint(slotBounds);
       script.getFinger().tap(false, point.x, point.y);
 
-      // Random AFK for up to 30s
-      if (random.nextInt(1000) == 0) {
-        script.submitHumanTask(() -> !this.inventoryHelper.getSnapshot().containsAny(HerbCleanerScript.GRIMY_HERBS),
-          Integer.MAX_VALUE);
-        script.submitHumanTask(() -> false, random.nextInt(30_000));
-        break;
-      }
+//      // Random AFK for up to 30s
+//      if (random.nextInt(1000) == 0) {
+//        script.submitHumanTask(() -> !this.inventoryHelper.getSnapshot().containsAny(HerbCleanerScript.GRIMY_HERBS),
+//          Integer.MAX_VALUE);
+//        script.submitHumanTask(() -> false, random.nextInt(30_000));
+//        break;
+//      }
+//
+//      // Random AFK for up to 10s
+//      if (random.nextInt(1000) < 5) {
+//        script.submitHumanTask(() -> !this.inventoryHelper.getSnapshot().containsAny(HerbCleanerScript.GRIMY_HERBS),
+//          Integer.MAX_VALUE);
+//        script.submitHumanTask(() -> false, random.nextInt(10_000));
+//        break;
+//      }
 
-      // Random AFK for up to 10s
-      if (random.nextInt(1000) < 5) {
-        script.submitHumanTask(() -> !this.inventoryHelper.getSnapshot().containsAny(HerbCleanerScript.GRIMY_HERBS),
-          Integer.MAX_VALUE);
-        script.submitHumanTask(() -> false, random.nextInt(10_000));
-        break;
-      }
-
-      script.submitTask(() -> false, random.nextInt(50, 100));
+      script.submitTask(() -> false, random.nextInt(100, 200));
     }
 
     script.submitHumanTask(() -> false, 0);
@@ -77,7 +77,7 @@ public class CleanHerbsTask extends Task {
     double meanY = rect.getY() + rect.getHeight() / 2.0;
 
     // Standard deviation ~ fraction of rect size (tweakable)
-    double stdDev = Math.min(rect.getWidth(), rect.getHeight()) / 6.0;
+    double stdDev = Math.min(rect.getWidth(), rect.getHeight()) / 5.0;
 
     // Generate circular Gaussian (Box-Muller transform)
     double u = random.nextDouble();

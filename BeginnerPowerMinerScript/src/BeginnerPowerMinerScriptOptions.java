@@ -35,9 +35,9 @@ public class BeginnerPowerMinerScriptOptions extends ScriptOptions {
 
   @Override
   public void onConfirm(ActionEvent actionEvent, Scene scene) {
-    preferences.putBoolean(COPPER_ORE_KEY, copperOreCheckBox.isSelected());
-    preferences.putBoolean(TIN_ORE_KEY, tinOreCheckBox.isSelected());
-    preferences.putBoolean(IRON_ORE_KEY, ironOreCheckBox.isSelected());
+    PREFERENCES.putBoolean(COPPER_ORE_KEY, copperOreCheckBox.isSelected());
+    PREFERENCES.putBoolean(TIN_ORE_KEY, tinOreCheckBox.isSelected());
+    PREFERENCES.putBoolean(IRON_ORE_KEY, ironOreCheckBox.isSelected());
 
     mineableRockNames = getMineableRockNames();
     mineables = getMineables();
@@ -75,7 +75,7 @@ public class BeginnerPowerMinerScriptOptions extends ScriptOptions {
 
   private CheckBox getCheckBox(String label, String preferenceKey, boolean defaultValue) {
     CheckBox checkBox = new CheckBox(label);
-    checkBox.setSelected(preferences.getBoolean(preferenceKey, defaultValue));
+    checkBox.setSelected(PREFERENCES.getBoolean(preferenceKey, defaultValue));
     checkBox.setStyle("-fx-text-fill: white;");
     return checkBox;
   }

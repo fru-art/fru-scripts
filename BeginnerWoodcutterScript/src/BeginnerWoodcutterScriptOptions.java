@@ -31,8 +31,8 @@ public class BeginnerWoodcutterScriptOptions extends ScriptOptions {
 
   @Override
   public void onConfirm(ActionEvent actionEvent, Scene scene) {
-    preferences.putBoolean(NORMAL_TREE_KEY, normalTreeCheckBox.isSelected());
-    preferences.putBoolean(OAK_TREE_KEY, oakTreeCheckBox.isSelected());
+    PREFERENCES.putBoolean(NORMAL_TREE_KEY, normalTreeCheckBox.isSelected());
+    PREFERENCES.putBoolean(OAK_TREE_KEY, oakTreeCheckBox.isSelected());
 
     cuttableItems = Stream.of(
         normalTreeCheckBox.isSelected() ? ItemID.LOGS : null,
@@ -57,7 +57,7 @@ public class BeginnerWoodcutterScriptOptions extends ScriptOptions {
 
   private CheckBox getCheckBox(String label, String preferenceKey, boolean defaultValue) {
     CheckBox checkBox = new CheckBox(label);
-    checkBox.setSelected(preferences.getBoolean(preferenceKey, defaultValue));
+    checkBox.setSelected(PREFERENCES.getBoolean(preferenceKey, defaultValue));
     checkBox.setStyle("-fx-text-fill: white;");
     return checkBox;
   }

@@ -52,24 +52,13 @@ public class BeginnerPickpocketerScriptOptions extends ScriptOptions {
 
   private RadioButton getRadioButton(String label, boolean defaultValue) {
     RadioButton radioButton = new RadioButton(label);
-    radioButton.setSelected(preferences.getBoolean(label, defaultValue));
+    radioButton.setSelected(PREFERENCES.getBoolean(label, defaultValue));
     radioButton.setStyle("-fx-text-fill: white;");
     radioButton.setToggleGroup(radioButtonGroup);
 
     radioButton.setOnAction(event -> {
-      preferences.putBoolean(label, radioButton.isSelected());
+      PREFERENCES.putBoolean(label, radioButton.isSelected());
     });
     return radioButton;
-  }
-
-  private CheckBox getCheckBox(String label, boolean defaultValue) {
-    CheckBox checkBox = new CheckBox(label);
-    checkBox.setSelected(preferences.getBoolean(label, defaultValue));
-    checkBox.setStyle("-fx-text-fill: white;");
-
-    checkBox.setOnAction(event -> {
-      preferences.putBoolean(label, checkBox.isSelected());
-    });
-    return checkBox;
   }
 }

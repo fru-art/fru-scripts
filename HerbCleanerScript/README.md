@@ -8,6 +8,8 @@ If you like the script, consider donating to me on [Ko-fi](https://ko-fi.com/fru
 
 See below for release notes!
 
+**WARNING** Jagex likely auto-flags accounts that do lots of fast clicking. Your account could be manually reviewed for playtime or other factors.
+
 ## Start
 - Download and install the JAR from [here](https://github.com/fru-art/fru-scripts/blob/master/out/artifacts/HerbCleanerScript.jar).  See [Community Script Guidelines](https://discord.com/channels/736938454478356570/1364978724105355324)
 - Go to a bank (GE bankers not supported currently)
@@ -16,6 +18,7 @@ See below for release notes!
   - Deposit unrelated items
 - Start the script
     - Recommended to have a world hopping profile.  See [Profile Management Guidelines](https://discord.com/channels/736938454478356570/1393939764092207134/1393939764092207134)
+    - Recommended to use Humanised AFKs or limit script runtime
 
 ## Known issues
 - GE bankers not supported
@@ -33,4 +36,5 @@ I've found that you can make a bit of money with cheaper herbs that have high ma
 See the [wiki calculator](https://oldschool.runescape.wiki/w/Calculator:Herblore/Herbs) and remember to account for GE taxes.
 
 ## Release notes
+- 1.1 (September 5, 2025) - Update guidelines and clicking humanization
 - 1.0 (September 4, 2025) - Initial release
