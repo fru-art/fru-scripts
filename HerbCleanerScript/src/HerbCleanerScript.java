@@ -16,7 +16,7 @@ import java.util.Set;
   name = "Herb Cleaner",
   description = "for cleaning herbs for XP and profit",
   skillCategory = SkillCategory.HERBLORE,
-  version = 1.1
+  version = 1.2
 )
 public class HerbCleanerScript extends SequenceTaskScript {
   public static final Set<Integer> CLEAN_HERBS = Set.of(
