@@ -1,8 +1,11 @@
 ### Private
 ArtefactCleanerScript
+.idea/artifacts/ArtefactCleanerScript_jar_osmb.xml
 MiningGuildScript
+.idea/artifacts/MiningGuildScript_jar_osmb.xml
 OsmbUtils
 TestScript
+.idea/artifacts/TestScript_jar_osmb.xml
 
 ### IntelliJ IDEA ###
 out/production
