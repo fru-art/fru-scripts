@@ -18,11 +18,15 @@ public class CleanHerbsTask extends Task {
     23, 22, 21, 20,
     24, 25, 26, 27,
   };
+
+  private final HerbCleanerScript script;
+
   private final InventoryHelper inventoryHelper;
   private final Random random;
 
-  public CleanHerbsTask(Script script) {
+  public CleanHerbsTask(HerbCleanerScript script) {
     super(script);
+    this.script = script;
 
     inventoryHelper = new InventoryHelper(script, HerbCleanerScript.GRIMY_HERBS);
     random = new Random();
@@ -48,26 +52,23 @@ public class CleanHerbsTask extends Task {
       Point point = getGaussianPoint(slotBounds);
       script.getFinger().tap(false, point.x, point.y);
 
-//      // Random AFK for up to 30s
-//      if (random.nextInt(1000) == 0) {
-//        script.submitHumanTask(() -> !this.inventoryHelper.getSnapshot().containsAny(HerbCleanerScript.GRIMY_HERBS),
-//          Integer.MAX_VALUE);
-//        script.submitHumanTask(() -> false, random.nextInt(30_000));
-//        break;
-//      }
-//
-//      // Random AFK for up to 10s
-//      if (random.nextInt(1000) < 5) {
-//        script.submitHumanTask(() -> !this.inventoryHelper.getSnapshot().containsAny(HerbCleanerScript.GRIMY_HERBS),
-//          Integer.MAX_VALUE);
-//        script.submitHumanTask(() -> false, random.nextInt(10_000));
-//        break;
-//      }
-
-      script.submitTask(() -> false, random.nextInt(100, 200));
+      if (!script.scriptOptions.fastCleanCheckBox.isSelected()) break;
+      script.pollFramesUntil(() -> false, random.nextInt(150, 250), true);
     }
 
-    script.submitHumanTask(() -> false, 0);
+    if (!script.scriptOptions.fastCleanCheckBox.isSelected()) {
+      int initialCount = inventoryHelper.getSnapshot().getAmount(HerbCleanerScript.GRIMY_HERBS);
+      boolean herbsChanged = script.pollFramesUntil(
+        () -> inventoryHelper.getSnapshot().getAmount(HerbCleanerScript.GRIMY_HERBS) < initialCount,
+        1_200);
+      if (!herbsChanged) return false;
+
+      boolean herbsCleaned = script.pollFramesUntil(
+        () -> !inventoryHelper.getSnapshot().containsAny(HerbCleanerScript.GRIMY_HERBS),
+        initialCount * 1_200);
+      if (!herbsCleaned) return false;
+    }
+
     return true;
   }
 
@@ -77,7 +78,7 @@ public class CleanHerbsTask extends Task {
     double meanY = rect.getY() + rect.getHeight() / 2.0;
 
     // Standard deviation ~ fraction of rect size (tweakable)
-    double stdDev = Math.min(rect.getWidth(), rect.getHeight()) / 5.0;
+    double stdDev = Math.min(rect.getWidth(), rect.getHeight()) / 3.0;
 
     // Generate circular Gaussian (Box-Muller transform)
     double u = random.nextDouble();
@@ -91,6 +92,9 @@ public class CleanHerbsTask extends Task {
     int clickX = (int) Math.round(meanX + offsetX);
     int clickY = (int) Math.round(meanY + offsetY);
 
-    return new Point(clickX, clickY);
+    return new Point(
+      Math.min(Math.max(clickX, rect.x + rect.width), rect.x),
+      Math.min(Math.max(clickY, rect.y + rect.height), rect.y)
+    );
   }
 }

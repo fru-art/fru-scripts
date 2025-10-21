@@ -54,8 +54,17 @@ public class HerbCleanerScript extends SequenceTaskScript {
     ItemID.GRIMY_TORSTOL
   );
 
+  public HerbCleanerScriptOptions scriptOptions;
+
   public HerbCleanerScript(Object scriptCore) {
     super(scriptCore);
+    scriptOptions = new HerbCleanerScriptOptions(this);
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    scriptOptions.show();
   }
 
   @Override
@@ -75,5 +84,10 @@ public class HerbCleanerScript extends SequenceTaskScript {
       12597, // West Varrock
       12598 // Grand Exchange
     );
+  }
+
+  @Override
+  public boolean promptBankTabDialogue() {
+    return true;
   }
 }
