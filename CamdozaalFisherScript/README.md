@@ -36,6 +36,7 @@ Honestly, not amazing. Probably around 2k-5k Prayer XP per hour depending on fis
 They are used to make the [barronite mace](https://oldschool.runescape.wiki/w/Barronite_mace) which is one of the best F2P weapons. You can also high alch the handles for an upwards of ~20k gp per hour.
 
 ## Release notes
+- 1.8 (October 22, 2025) - API update
 - 1.7 (September 14, 2025) - Better integration with human AFKs
 - 1.6 (August 27, 2025) - Fix banking
 - 1.5 (August 26, 2025) - Improved walk and interact logic

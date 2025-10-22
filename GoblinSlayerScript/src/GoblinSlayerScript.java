@@ -12,7 +12,7 @@ import java.util.List;
   name = "Goblin Slayer",
   description = "Kills goblins and picks up some things",
   skillCategory = SkillCategory.COMBAT,
-  version = 1.6
+  version = 1.7
 )
 
 public class GoblinSlayerScript extends SequenceTaskScript {

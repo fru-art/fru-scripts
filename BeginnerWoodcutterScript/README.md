@@ -20,6 +20,7 @@ See below for release notes!
 - Doesn't account for Forestry events
 
 ## Release notes
+- 1.3 (October 22, 2025) - API update
 - 1.2 (September 15, 2025) - Better pathing behavior
 - 1.1 (August 27, 2025) - Better banking behavior
 - 1.0 (August 26, 2025) - Initial release

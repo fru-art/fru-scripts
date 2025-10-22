@@ -12,7 +12,7 @@ import java.util.Set;
   name = "Camdozaal Fisher",
   description = "for non-combat prayer XP and barronite handles",
   skillCategory = SkillCategory.PRAYER,
-  version = 1.7
+  version = 1.8
 )
 
 public class CamdozaalFisherScript extends FirstMatchTaskScript {

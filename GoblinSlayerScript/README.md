@@ -32,6 +32,7 @@ The script won't initiate a fight unless you have 8 HP or more. Just wait for re
 I got about 40 in all combat skills within a couple of days.
 
 ## Release notes
+- 1.7 (October 22, 2025) - API update
 - 1.6 (September 26, 2025) - Better integration with hops and breaks
 - 1.5 (August 27, 2025) - API update
 - 1.4 (August 26, 2025) - Improved walk and interact logic

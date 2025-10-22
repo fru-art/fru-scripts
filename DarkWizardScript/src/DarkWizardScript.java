@@ -13,7 +13,7 @@ import java.util.Set;
   name = "Dark Wizard",
   description = "for mid-level combat XP and gathering runes incl. Nature and Chaos runes.",
   skillCategory = SkillCategory.COMBAT,
-  version = 1.3
+  version = 1.4
 )
 public class DarkWizardScript extends SequenceTaskScript {
   private static final Set<Integer> PARTIAL_VARROCK = Set.of(12597, 12853, 12852);

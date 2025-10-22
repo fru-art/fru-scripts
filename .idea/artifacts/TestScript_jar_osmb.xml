@@ -1,8 +1,8 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="PestControlScript:jar-osmb">
+  <artifact type="jar" name="TestScript:jar-osmb">
     <output-path>$USER_HOME$/.osmb/Scripts</output-path>
-    <root id="archive" name="PestControlScript.jar">
-      <element id="module-output" name="PestControlScript" />
+    <root id="archive" name="TestScript.jar">
+      <element id="module-output" name="TestScript" />
       <element id="module-output" name="OsmbUtils" />
     </root>
   </artifact>

@@ -32,6 +32,7 @@ See below for release notes!
 - Banking
 
 ## Release notes
+- 1.5 (October 22, 2025) - API update
 - 1.4 (August 24, 2025) - Added auto-update
 - 1.3 (August 23, 2025) - Improved mining and drop behavior
 - 1.2 (August 22, 2025) - Fixed movement bug

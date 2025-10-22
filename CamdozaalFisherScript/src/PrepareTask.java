@@ -45,7 +45,7 @@ public class PrepareTask extends Task {
     boolean hasPreparables = inventorySnapshot.containsAny(preparablesSet);
     boolean inventoryIsFull = inventorySnapshot.isFull();
 
-    RSObject preparationTable = script.getObjectManager().getClosestObject("Preparation table");
+    RSObject preparationTable = script.getObjectManager().getClosestObject(script.getWorldPosition(), "Preparation table");
     boolean isNextToPreparationTable = preparationTable != null && preparationTable.distance(script.getWorldPosition()) <= 2;
 
     return (inventoryIsFull || isNextToPreparationTable) && hasKnife && hasPreparables;

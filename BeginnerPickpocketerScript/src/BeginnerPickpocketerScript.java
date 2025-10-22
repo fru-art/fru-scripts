@@ -15,7 +15,7 @@ import java.util.stream.Stream;
   name = "Beginner Pickpocketer",
   description = "for low-level thieving XP in Edgeville and Al Kharid",
   skillCategory = SkillCategory.THIEVING,
-  version = 0.13
+  version = 0.14
 )
 public class BeginnerPickpocketerScript extends FirstMatchTaskScript {
   private static final Set<BankLocation> BANKS = Set.of(

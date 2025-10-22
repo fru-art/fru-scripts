@@ -11,7 +11,7 @@ import java.util.Set;
   name = "Beginner Woodcutter",
   description = "for chopping and banking up to oak logs in Varrock",
   skillCategory = SkillCategory.WOODCUTTING,
-  version = 1.2
+  version = 1.3
 )
 public class BeginnerWoodcutterScript extends SequenceTaskScript {
   private static final BankLocation VARROCK_WEST_BANK = new BankLocation(
