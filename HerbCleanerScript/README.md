@@ -30,6 +30,7 @@ I've found that you can make a bit of money with cheaper herbs that have high ma
 See the [wiki calculator](https://oldschool.runescape.wiki/w/Calculator:Herblore/Herbs) and remember to account for GE taxes.
 
 ## Release notes
+- 1.3 (October 21, 2025) - Fix for mis-clicking
 - 1.2 (October 20, 2025) - GE banker support, slow cleaning support, and choose-bank-tab support
 - 1.1 (September 5, 2025) - Update guidelines and clicking humanization
 - 1.0 (September 4, 2025) - Initial release

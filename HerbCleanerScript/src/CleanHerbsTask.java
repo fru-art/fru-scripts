@@ -78,7 +78,7 @@ public class CleanHerbsTask extends Task {
     double meanY = rect.getY() + rect.getHeight() / 2.0;
 
     // Standard deviation ~ fraction of rect size (tweakable)
-    double stdDev = Math.min(rect.getWidth(), rect.getHeight()) / 3.0;
+    double stdDev = Math.min(rect.getWidth(), rect.getHeight()) / 4.0;
 
     // Generate circular Gaussian (Box-Muller transform)
     double u = random.nextDouble();
@@ -93,8 +93,8 @@ public class CleanHerbsTask extends Task {
     int clickY = (int) Math.round(meanY + offsetY);
 
     return new Point(
-      Math.min(Math.max(clickX, rect.x + rect.width), rect.x),
-      Math.min(Math.max(clickY, rect.y + rect.height), rect.y)
+      Math.min(Math.max(clickX, rect.x + 2), rect.x + rect.width - 2),
+      Math.min(Math.max(clickY, rect.y + 22), rect.y + rect.height - 2)
     );
   }
 }
