@@ -16,7 +16,7 @@ import java.util.Set;
   skillCategory = SkillCategory.THIEVING,
   version = 1.0
 )
-public class BeginnerStallThiever extends FirstMatchTaskScript {
+public class BeginnerStallThieverScript extends FirstMatchTaskScript {
   public static final Set<Integer> BAKED_GOODS = Set.of(
     ItemID.BREAD,
     ItemID.CAKE,
@@ -38,7 +38,7 @@ public class BeginnerStallThiever extends FirstMatchTaskScript {
 
   public final BeginnerStallThieverScriptOptions scriptOptions;
 
-  public BeginnerStallThiever(Object scriptCore) {
+  public BeginnerStallThieverScript(Object scriptCore) {
     super(scriptCore);
 
     this.scriptOptions = new BeginnerStallThieverScriptOptions(this);

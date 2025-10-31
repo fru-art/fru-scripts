@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ArtefactCleanerScript/ArtefactCleanerScript.iml" filepath="$PROJECT_DIR$/ArtefactCleanerScript/ArtefactCleanerScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/BeginnerPowerMinerScript/BeginnerPowerMinerScript.iml" filepath="$PROJECT_DIR$/BeginnerPowerMinerScript/BeginnerPowerMinerScript.iml" />
-      <module fileurl="file://$PROJECT_DIR$/BeginnerStallThiever/BeginnerStallThiever.iml" filepath="$PROJECT_DIR$/BeginnerStallThiever/BeginnerStallThiever.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BeginnerStallThieverScript/BeginnerStallThieverScript.iml" filepath="$PROJECT_DIR$/BeginnerStallThieverScript/BeginnerStallThieverScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/BeginnerWoodcutterScript/BeginnerWoodcutterScript.iml" filepath="$PROJECT_DIR$/BeginnerWoodcutterScript/BeginnerWoodcutterScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/CamdozaalFisherScript/CamdozaalFisherScript.iml" filepath="$PROJECT_DIR$/CamdozaalFisherScript/CamdozaalFisherScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/CamdozaalMinerScript/CamdozaalMinerScript.iml" filepath="$PROJECT_DIR$/CamdozaalMinerScript/CamdozaalMinerScript.iml" />

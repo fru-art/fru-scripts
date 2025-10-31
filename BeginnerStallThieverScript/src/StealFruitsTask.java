@@ -16,7 +16,7 @@ public class StealFruitsTask extends StealFromStallTask {
       new WorldPosition(1796, 3608, 0),
       new RectangleArea(1796, 3606, 4, 4, 0),
       new RectangleArea(1791, 3604, 14, 12, 0),
-      BeginnerStallThiever.FRUITS,
+      BeginnerStallThieverScript.FRUITS,
       new PixelCluster.ClusterQuery(
         10,
         5,
