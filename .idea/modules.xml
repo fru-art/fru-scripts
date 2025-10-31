@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ArtefactCleanerScript/ArtefactCleanerScript.iml" filepath="$PROJECT_DIR$/ArtefactCleanerScript/ArtefactCleanerScript.iml" />
-      <module fileurl="file://$PROJECT_DIR$/BeginnerPickpocketerScript/BeginnerPickpocketerScript.iml" filepath="$PROJECT_DIR$/BeginnerPickpocketerScript/BeginnerPickpocketerScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/BeginnerPowerMinerScript/BeginnerPowerMinerScript.iml" filepath="$PROJECT_DIR$/BeginnerPowerMinerScript/BeginnerPowerMinerScript.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BeginnerStallThiever/BeginnerStallThiever.iml" filepath="$PROJECT_DIR$/BeginnerStallThiever/BeginnerStallThiever.iml" />
       <module fileurl="file://$PROJECT_DIR$/BeginnerWoodcutterScript/BeginnerWoodcutterScript.iml" filepath="$PROJECT_DIR$/BeginnerWoodcutterScript/BeginnerWoodcutterScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/CamdozaalFisherScript/CamdozaalFisherScript.iml" filepath="$PROJECT_DIR$/CamdozaalFisherScript/CamdozaalFisherScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/CamdozaalMinerScript/CamdozaalMinerScript.iml" filepath="$PROJECT_DIR$/CamdozaalMinerScript/CamdozaalMinerScript.iml" />
@@ -15,6 +15,7 @@
       <module fileurl="file://$PROJECT_DIR$/MiningGuildScript/MiningGuildScript.iml" filepath="$PROJECT_DIR$/MiningGuildScript/MiningGuildScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/OsmbUtils/OsmbUtils.iml" filepath="$PROJECT_DIR$/OsmbUtils/OsmbUtils.iml" />
       <module fileurl="file://$PROJECT_DIR$/PestControlScript/PestControlScript.iml" filepath="$PROJECT_DIR$/PestControlScript/PestControlScript.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RunecrafterScript/RunecrafterScript.iml" filepath="$PROJECT_DIR$/RunecrafterScript/RunecrafterScript.iml" />
       <module fileurl="file://$PROJECT_DIR$/TestScript/TestScript.iml" filepath="$PROJECT_DIR$/TestScript/TestScript.iml" />
     </modules>
   </component>

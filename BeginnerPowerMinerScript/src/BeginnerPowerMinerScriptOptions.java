@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +50,20 @@ public class BeginnerPowerMinerScriptOptions extends ScriptOptions {
 
   @Override
   public List<Node> getRootChildren() {
-    return new ArrayList<>(List.of(this.copperOreCheckBox, this.tinOreCheckBox, this.ironOreCheckBox));
+    Label promotionalLabel = new Label("(for banking and other ores, check out\nthe premium Mining Guild script)");
+    promotionalLabel.setStyle("-fx-text-fill: white;");
+    CheckBox promotionalCheckBox = new CheckBox("Bank");
+    promotionalCheckBox.setDisable(true);
+    promotionalCheckBox.setStyle("-fx-text-fill: white;");
+
+    return new ArrayList<>(List.of(
+      this.copperOreCheckBox,
+      this.tinOreCheckBox,
+      this.ironOreCheckBox,
+      new Separator(),
+      promotionalLabel,
+      promotionalCheckBox
+    ));
   }
 
   private Set<Integer> getMineables() {
