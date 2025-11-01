@@ -50,6 +50,7 @@ I may update this script to fix bugs or small issues, but don't expect large ove
 
 
 ## Release notes
+- 1.8 (November 1, 2025) - Fix region detection
 - 1.7 (October 22, 2025) - API update
 - 1.6 (September 17, 2025) - Improvements to fishing tile detection
 - 1.5 (September 6, 2025) - MOOORE chatbox scroll position fixes

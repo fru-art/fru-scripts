@@ -13,7 +13,6 @@ public class StartMinigameTask extends Task {
 
   private final DumbTemporossScript script;
 
-  private final DetectionHelper detectionHelper;
   private final ObjectHelper objectHelper;
   private final WaitHelper waitHelper;
 
@@ -24,14 +23,13 @@ public class StartMinigameTask extends Task {
     isCritical = true;
     retryLimit = 3;
 
-    detectionHelper = new DetectionHelper(script);
     objectHelper = new ObjectHelper(script);
     waitHelper = new WaitHelper(script);
   }
 
   @Override
   public boolean canExecute() {
-    int region = script.getWorldPosition().getRegionID();
+    int region = getRegionId();
 
     if (region == MINIGAME_REGION && script.isMinigameOver()) {
       return true;
@@ -42,11 +40,11 @@ public class StartMinigameTask extends Task {
 
   @Override
   public boolean execute() {
-    int region = script.getWorldPosition().getRegionID();
+    int region = getRegionId();
     if (region == MINIGAME_REGION && script.isMinigameOver()) {
       script.log(getClass(), "Waiting for ferry back");
       script.submitHumanTask(
-        () -> script.getWorldPosition().getRegionID() == RUINS_REGION || !script.isMinigameOver(), 20_000);
+        () -> getRegionId() == RUINS_REGION || !script.isMinigameOver(), 20_000);
     }
 
     // Reset chatbox scroll position
@@ -64,7 +62,7 @@ public class StartMinigameTask extends Task {
     script.overrideCanBreak(false);
     script.overrideCanHopWorlds(false);
 
-    region = script.getWorldPosition().getRegionID();
+    region = getRegionId();
     if (region == RUINS_REGION) {
       script.log(getClass(), "Boarding boat");
 
@@ -74,10 +72,15 @@ public class StartMinigameTask extends Task {
       }
 
       waitHelper.waitForNoChange("position", script::getWorldPosition, 600, Integer.MAX_VALUE,
-        () -> script.getWorldPosition().getRegionID() == BOAT_REGION);
-      if (script.getWorldPosition().getRegionID() != BOAT_REGION) return false;
+        () -> getRegionId() == BOAT_REGION);
+      if (getRegionId() != BOAT_REGION) return false;
     }
 
-    return script.submitHumanTask(() -> script.getWorldPosition().getRegionID() == MINIGAME_REGION, 60_000);
+    return script.submitHumanTask(() -> getRegionId() == MINIGAME_REGION, 60_000);
+  }
+
+  private int getRegionId() {
+    WorldPosition position = script.getWorldPosition();
+    return position == null ? -1 : position.getRegionID();
   }
 }

@@ -25,7 +25,7 @@ import java.util.stream.Stream;
   name = "Dumb Tempoross",
   description = "for completing the Tempoross minigame with help on dedicated worlds",
   skillCategory = SkillCategory.FISHING,
-  version = 1.7
+  version = 1.8
 )
 public class DumbTemporossScript extends FirstMatchTaskScript {
   private static final SearchablePixel[] ESSENCE_PIXELS = {
@@ -101,6 +101,7 @@ public class DumbTemporossScript extends FirstMatchTaskScript {
   }
 
   public Island getIsland(WorldPosition position) {
+    if (position == null) return null;
     if (position.getRegionID() != TEMPOROSS_COVE_REGION) return null;
 
     return new RectangleArea(3004, 2983, 47, 24, 0).contains(position) ||
