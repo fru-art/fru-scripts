@@ -92,6 +92,9 @@ public class StealFromStallTask extends Task {
       return false;
     }
 
+    // Sometimes the walk function exits a bit early
+    script.pollFramesUntil(() -> script.getWorldPosition().distanceTo(safespot) < 0.1, 1_800);
+
     RSObject stall = script.getObjectManager().getRSObject(
       object -> object.getObjectArea().contains(stallPosition) && object.getName().contains("tall"));
     if (stall == null) {

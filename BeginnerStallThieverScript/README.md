@@ -8,6 +8,7 @@ If you like the script, consider donating to me on [Ko-fi](https://ko-fi.com/fru
 ## Start
 - Required setup
     - Create a world hop profile
+    - Tip: This script has white-dop hop built in. You might choose to have longer hop breaks at crowded stalls
 - Optional setup (but recommended)
     - Turn on _Disable examine_
     - Set _NPC Attack options_ to _Hidden_ or _Always long-tap_
@@ -21,4 +22,5 @@ If you like the script, consider donating to me on [Ko-fi](https://ko-fi.com/fru
 Depends on hops, but baker's stall is upwards of 15k per hour and fruit stall is upwards of 30k per hour.
 
 # Release notes
+- 1.1 (October 31, 2025) - Add some banking support, better misclick prevention, and tea stall support
 - 1.0 (October 31, 2025) - Initial release

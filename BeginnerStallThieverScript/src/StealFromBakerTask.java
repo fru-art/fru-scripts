@@ -23,7 +23,7 @@ public class StealFromBakerTask extends StealFromStallTask {
       2_400,
       0.65,
       SAFESPOT,
-      new RectangleArea(2652, 3295, 20, 23, 0),
+      new RectangleArea(2642, 3277, 34, 42, 0),
       new RectangleArea(2664, 3307, 7, 6, 0),
       BeginnerStallThieverScript.BAKED_GOODS,
       CAKE_QUERY,
