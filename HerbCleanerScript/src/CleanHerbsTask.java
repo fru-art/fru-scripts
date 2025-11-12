@@ -60,12 +60,12 @@ public class CleanHerbsTask extends Task {
       int initialCount = inventoryHelper.getSnapshot().getAmount(HerbCleanerScript.GRIMY_HERBS);
       boolean herbsChanged = script.pollFramesUntil(
         () -> inventoryHelper.getSnapshot().getAmount(HerbCleanerScript.GRIMY_HERBS) < initialCount,
-        1_200);
+        2_400);
       if (!herbsChanged) return false;
 
       boolean herbsCleaned = script.pollFramesUntil(
         () -> !inventoryHelper.getSnapshot().containsAny(HerbCleanerScript.GRIMY_HERBS),
-        initialCount * 1_200);
+        initialCount * 1_200 + 600);
       if (!herbsCleaned) return false;
     }
 
