@@ -1,18 +1,11 @@
 ### Private
-.idea/artifacts/ArtefactCleanerScript_jar_osmb.xml
-.idea/artifacts/MiningGuildScript_jar_downloads.xml
-.idea/artifacts/MiningGuildScript_jar_osmb.xml
-.idea/artifacts/PestControlScript_jar_osmb.xml
-.idea/artifacts/RunecrafterScript_jar_osmb.xml
-.idea/artifacts/TestScript_jar_osmb.xmlArtefactCleanerScript
-ArtefactCleanerScript
 MiningGuildScript
 OsmbUtils
 PestControlScript
-RunecrafterScript
-TestScript
 
 ### IntelliJ IDEA ###
+.idea
+*.iml
 out/production
 !**/src/main/**/out/
 !**/src/test/**/out/

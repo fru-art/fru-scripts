@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="DumbTemporossScript:jar-out">
-    <output-path>$PROJECT_DIR$/out/artifacts</output-path>
-    <root id="archive" name="DumbTemporossScript.jar">
-      <element id="module-output" name="DumbTemporossScript" />
-      <element id="module-output" name="OsmbUtils" />
-    </root>
-  </artifact>
-</component>
