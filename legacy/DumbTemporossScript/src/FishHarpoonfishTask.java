@@ -208,14 +208,17 @@ public class FishHarpoonfishTask extends Task {
     List<Rectangle> itemSearchBoundss = fishingPositions.stream()
       .map(fishingPosition -> {
         Point centerPoint = script.getSceneProjector().getTilePoint(fishingPosition, null, 40);
+        if (centerPoint == null) return null;
         return new Rectangle(
           centerPoint.x - harpoonfishImage.width / 2,
           centerPoint.y - harpoonfishImage.height / 2 - 20,
           harpoonfishImage.width,
           harpoonfishImage.height
         );
-      }).toList();
+      }).filter(Objects::nonNull).toList();
     drawHelper.drawRectangles("item-search-bounds", itemSearchBoundss, Color.WHITE);
+
+    if (itemSearchBoundss.isEmpty()) return Collections.emptyList();
 
     List<WorldPosition> activeFishingPositions = new ArrayList<>();
     List<Rectangle> activeFishingResultBoundss = new ArrayList<>();

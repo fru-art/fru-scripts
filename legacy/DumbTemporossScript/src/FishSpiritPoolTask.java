@@ -136,7 +136,7 @@ public class FishSpiritPoolTask extends Task {
     if (spiritPool == null) return null;
 
     RSTile tile = script.getSceneManager().getTile(spiritPool);
-    if (!tile.isOnGameScreen()) return null;
+    if (tile == null || !tile.isOnGameScreen()) return null;
 
     return tile.getTilePoly();
   }

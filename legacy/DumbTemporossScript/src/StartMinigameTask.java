@@ -9,7 +9,6 @@ import task.Task;
 public class StartMinigameTask extends Task {
   private static final int BOAT_REGION = 12332;
   private static final int RUINS_REGION = 12588;
-  private static final int MINIGAME_REGION = 12078;
 
   private final DumbTemporossScript script;
 
@@ -31,7 +30,7 @@ public class StartMinigameTask extends Task {
   public boolean canExecute() {
     int region = getRegionId();
 
-    if (region == MINIGAME_REGION && script.isMinigameOver()) {
+    if (region == DumbTemporossScript.TEMPOROSS_COVE_REGION && script.isMinigameOver()) {
       return true;
     }
 
@@ -41,7 +40,7 @@ public class StartMinigameTask extends Task {
   @Override
   public boolean execute() {
     int region = getRegionId();
-    if (region == MINIGAME_REGION && script.isMinigameOver()) {
+    if (region == DumbTemporossScript.TEMPOROSS_COVE_REGION && script.isMinigameOver()) {
       script.log(getClass(), "Waiting for ferry back");
       script.submitHumanTask(
         () -> getRegionId() == RUINS_REGION || !script.isMinigameOver(), 20_000);
@@ -76,7 +75,7 @@ public class StartMinigameTask extends Task {
       if (getRegionId() != BOAT_REGION) return false;
     }
 
-    return script.submitHumanTask(() -> getRegionId() == MINIGAME_REGION, 60_000);
+    return script.submitHumanTask(() -> getRegionId() == DumbTemporossScript.TEMPOROSS_COVE_REGION, 60_000);
   }
 
   private int getRegionId() {

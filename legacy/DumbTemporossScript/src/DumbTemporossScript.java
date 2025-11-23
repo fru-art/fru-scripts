@@ -38,7 +38,7 @@ public class DumbTemporossScript extends FirstMatchTaskScript {
     Island.NORTH, new RectangleArea(3032, 2973, 16, 18, 0),
     Island.SOUTH, new RectangleArea(3046, 2963, 15, 19, 0)
   );
-  public static final int TEMPOROSS_COVE_REGION = 12078;
+  public static final int TEMPOROSS_COVE_REGION = 12076;
 
   private static final PixelCluster.ClusterQuery essenceBarQuery = new PixelCluster.ClusterQuery(1, 1024, Stream.concat(
     Stream.of(
@@ -86,7 +86,7 @@ public class DumbTemporossScript extends FirstMatchTaskScript {
     return List.of(
       12332, 12588, // Sea Spirit Dock
       11566, 11567, 11569, 12587, // Transition region
-      12078 // Tempoross Cove
+      TEMPOROSS_COVE_REGION // Tempoross Cove
     );
   }
 
