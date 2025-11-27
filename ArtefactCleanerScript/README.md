@@ -13,6 +13,7 @@ See below for release notes!
 - Complete [The Dig Site](https://oldschool.runescape.wiki/w/The_Dig_Site) quest
 
 ## Start
+- Download and install the JAR from [here](https://github.com/fru-art/fru-scripts/blob/master/out/artifacts/ArtefactCleanerScript.jar).  See [Community Script Guidelines](https://discord.com/channels/736938454478356570/1364978724105355324)
 - Read the [Community Script Guidelines](https://discord.com/channels/736938454478356570/1364978724105355324)
 - Obtain and equip the [cleaning tools](https://oldschool.runescape.wiki/w/Tools_(Varrock_Museum))
 - Start the script with your character in the specimen cleaning area
