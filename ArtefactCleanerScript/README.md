@@ -32,3 +32,7 @@ You can DM me to ask. I would appreciate a coffee on [Ko-fi](https://ko-fi.com/f
 
 ## Release notes
 - 1.0 (November 27, 2025) - Initial release
+
+## Credits
+
+Thanks to _@Nin ja_ (nin_ja.1) for originally sponsoring the script and extensively helping with testing.
