@@ -16,6 +16,7 @@ See below for release notes!
 - Download and install the JAR from [here](https://github.com/fru-art/fru-scripts/blob/master/out/artifacts/ArtefactCleanerScript.jar).  See [Community Script Guidelines](https://discord.com/channels/736938454478356570/1364978724105355324)
 - Read the [Community Script Guidelines](https://discord.com/channels/736938454478356570/1364978724105355324)
 - Obtain and equip the [cleaning tools](https://oldschool.runescape.wiki/w/Tools_(Varrock_Museum))
+  - Do NOT leave irrelevant items in your inventory. They will be dropped.
 - Start the script with your character in the specimen cleaning area
   - Recommended to have a world hopping profile.  See [Profile Management Guidelines](https://discord.com/channels/736938454478356570/1393939764092207134/1393939764092207134)
   - Optional to use Humanised AFKs
