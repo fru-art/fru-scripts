@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import task.FirstMatchTaskScript;
 import task.Task;
 
-@ScriptDefinition(author="fru", name="Artefact Cleaner", description="for slow XP lamps in the Varrock Museum", skillCategory=SkillCategory.OTHER, version=1.0)
+@ScriptDefinition(author="fru", name="Artefact Cleaner", description="for slow XP lamps in the Varrock Museum", skillCategory=SkillCategory.OTHER, version=1.1)
 public class ArtefactCleanerScript
 extends FirstMatchTaskScript {
     public static final Set<Integer> ARTEFACTS = Set.of(Integer.valueOf(11176), Integer.valueOf(11177), Integer.valueOf(11183), Integer.valueOf(11178));

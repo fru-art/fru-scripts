@@ -27,6 +27,7 @@ extends ScriptOptions {
           "Hitpoints", 203,
           "Hunter", 220,
           "Ranged", 200,
+          "Sailing", 228,
           "Slayer", 216,
           "Strength", 198);
         this.skillDropdown = this.getDropdown("Skill: ", "Slayer", this.skillDropdownOptions.keySet().stream().sorted().toList());
