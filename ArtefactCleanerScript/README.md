@@ -32,6 +32,7 @@ After significant testing, I've decided to remove spam-clicks from most of my sc
 You can DM me to ask. I would appreciate a coffee on [Ko-fi](https://ko-fi.com/fruart) :)
 
 ## Release notes
+- 1.2 (December 12, 2025) - Resolution support fix
 - 1.1 (December 5, 2025) - Better support for different resolutions and Sailing added
 - 1.0 (November 27, 2025) - Initial release
 

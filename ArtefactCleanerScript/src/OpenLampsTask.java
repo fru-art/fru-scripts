@@ -71,16 +71,17 @@ extends Task {
             }, 3000, true);
             Rectangle lineBounds = atomicLineBounds.get();
             PixelCluster textCluster = this.detectionHelper.getLargestCluster((Shape)lineBounds, new PixelCluster.ClusterQuery(3, 32, new SearchablePixel[]{new SearchablePixel(-26593, (ToleranceComparator)ToleranceComparator.ZERO_TOLERANCE, ColorModel.RGB)}));
-            if (textCluster == null) {
+            if (textCluster == null || textCluster.getBounds() == null) {
+                this.script.log(this.getClass(), "Failed to find confirm bounds");
                 return false;
             }
             Rectangle textBounds = textCluster.getBounds();
             this.script.log(this.getClass(), "Found confirm bounds: " + String.valueOf(textBounds));
-            this.script.getFinger().tap((Shape)textBounds);
+            this.script.getFinger().tap(textBounds);
             boolean rubbedLamp = this.script.pollFramesHuman(() -> {
                 atomicSnapshot.set(this.inventoryHelper.getSnapshot());
                 return ((ItemGroupResult)atomicSnapshot.get()).getAmount(new int[]{4447}) < initialLampCount;
-            }, 3000, true);
+            }, 3_600, true);
             if (rubbedLamp) continue;
             this.script.log(this.getClass(), "Failed to reduce lamp count from " + initialLampCount);
             return false;
@@ -105,6 +106,10 @@ extends Task {
 
     private Rectangle getLampUiBounds() {
         Rectangle screenBounds = this.script.getScreen().getBounds();
-        return new Rectangle(screenBounds.x + screenBounds.width / 6, screenBounds.y + screenBounds.height / 6, screenBounds.width * 4 / 6, screenBounds.height * 4 / 6);
+        return new Rectangle(
+          screenBounds.x + 894 / 6,
+          screenBounds.y + 640 / 6,
+          Math.min(screenBounds.width, screenBounds.x + 894 / 6 * 4),
+          Math.min(screenBounds.height, screenBounds.y + 640 / 6 * 4));
     }
 }
