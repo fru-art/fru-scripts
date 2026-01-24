@@ -6,21 +6,18 @@ import com.osmb.api.shape.Rectangle;
 import com.osmb.api.ui.minimap.Minimap;
 import com.osmb.api.visual.PixelCluster;
 import com.osmb.api.walker.WalkConfig;
-import helper.DetectionHelper;
-import helper.DrawHelper;
-import helper.InventoryHelper;
-import task.Task;
-import task.TaskScript;
+import com.osmbtoolkit.job.Job;
+import com.osmbtoolkit.script.ToolkitScript;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
-import java.util.function.Predicate;
 
-public class StealFromStallTask extends Task {
+public class StealFromStallJob extends Job<ToolkitScript> {
   private final Set<Integer> items;
   private final PixelCluster.ClusterQuery itemQuery;
   private final double minItemSize;
@@ -31,24 +28,19 @@ public class StealFromStallTask extends Task {
   private final double stallTapBoundsModifier;
   private final RectangleArea startArea;
 
-  private final DetectionHelper detectionHelper;
-  private final DrawHelper drawHelper;
-  private final InventoryHelper inventoryHelper;
-
   private final Random random = new Random();
 
-  public StealFromStallTask(TaskScript script,
-                            WorldPosition stallPosition,
-                            int stallRespawnTime,
-                            double stallTapBoundsModifier,
-                            WorldPosition safespot,
-                            RectangleArea startArea,
-                            RectangleArea playerCheckArea,
-                            Set<Integer> items,
-                            PixelCluster.ClusterQuery itemQuery,
-                            double minItemSize) {
+  public StealFromStallJob(ToolkitScript script,
+                           WorldPosition stallPosition,
+                           int stallRespawnTime,
+                           double stallTapBoundsModifier,
+                           WorldPosition safespot,
+                           RectangleArea startArea,
+                           RectangleArea playerCheckArea,
+                           Set<Integer> items,
+                           PixelCluster.ClusterQuery itemQuery,
+                           double minItemSize) {
     super(script);
-    this.retryLimit = 3;
 
     this.items = items;
     this.itemQuery = itemQuery;
@@ -59,10 +51,6 @@ public class StealFromStallTask extends Task {
     this.stallPosition = stallPosition;
     this.stallTapBoundsModifier = stallTapBoundsModifier;
     this.startArea = startArea;
-
-    this.detectionHelper = new DetectionHelper(script);
-    this.drawHelper = new DrawHelper(script);
-    this.inventoryHelper = new InventoryHelper(script, items);
   }
 
   @Override
@@ -75,7 +63,7 @@ public class StealFromStallTask extends Task {
       return false;
     }
 
-    if (inventoryHelper.getSnapshot().isFull()) {
+    if (script.pollFramesUntilInventory(items).isFull()) {
       script.log(getClass(), "Skipped because inventory is full");
       return false;
     }
@@ -123,32 +111,29 @@ public class StealFromStallTask extends Task {
       return false;
     }
 
-    AtomicReference<PixelCluster> itemClusterRef = new AtomicReference<>(getItemCluster(stallHull));
-    BooleanSupplier itemClusterChecker = () -> {
+    AtomicReference<Optional<PixelCluster>> itemClusterRef = new AtomicReference<>(getItemCluster(stallHull));
+    BooleanSupplier checkItemCluster = () -> {
       itemClusterRef.set(getItemCluster(stallHull));
-      boolean iFoundItemCluster = itemClusterRef.get() != null;
-
-      drawHelper.drawPolygon(stallPosition.toString(), stallHull, iFoundItemCluster ? Color.GREEN : Color.RED);
-      return iFoundItemCluster;
+      script.queuePolygonDrawable(stallPosition.toString(), stallHull, itemClusterRef.get().isPresent() ? Color.GREEN : Color.RED);
+      return itemClusterRef.get().isPresent();
     };
-    int itemClusterCheckerTimeout = stallRespawnTime + 600;
+    int checkItemClusterTimeout = stallRespawnTime + 600;
 
     boolean foundItemCluster = random.nextInt(100) < 40 ?
-      script.pollFramesHuman(itemClusterChecker, itemClusterCheckerTimeout) :
-      script.pollFramesUntil(itemClusterChecker, itemClusterCheckerTimeout);
+      script.pollFramesHuman(checkItemCluster, checkItemClusterTimeout) :
+      script.pollFramesUntil(checkItemCluster, checkItemClusterTimeout);
     if (!foundItemCluster) {
       script.log(getClass(), "Failed to ultimately find item cluster");
       return false;
     }
 
-    PixelCluster itemCluster = itemClusterRef.get();
-    assert itemCluster != null;
+    assert itemClusterRef.get().isPresent();
 
-    int initialItemsCount = inventoryHelper.getSnapshot().getAmount(items);
+    int initialItemsCount = script.pollFramesUntilInventory(items).getAmount(items);
     script.getFinger().tapGameScreen(stall.getConvexHull().getResized(stallTapBoundsModifier));
 
     boolean receivedItems = script.pollFramesUntil(() -> {
-      int itemsCount = inventoryHelper.getSnapshot().getAmount(items);
+      int itemsCount = script.pollFramesUntilInventory(items).getAmount(items);
       return itemsCount > initialItemsCount;
     }, 1_800);
     if (!receivedItems) {
@@ -159,19 +144,19 @@ public class StealFromStallTask extends Task {
     return true;
   }
 
-  private PixelCluster getItemCluster(Polygon stallHull) {
-    PixelCluster itemCluster = detectionHelper.getLargestCluster(stallHull, itemQuery);
-    if (itemCluster == null) {
+  private Optional<PixelCluster> getItemCluster(Polygon stallHull) {
+    Optional<PixelCluster> itemCluster = script.findLargestCluster(stallHull, itemQuery);
+    if (itemCluster.isEmpty()) {
       script.log(getClass(), "Failed to find a potential item cluster");
-      return null;
+      return Optional.empty();
     }
 
-    double itemClusterBoundsSize = (double) getBoundsSize(itemCluster.getBounds());
-    double stallHullBoundsSize = (double) getBoundsSize(stallHull.getBounds());
+    double itemClusterBoundsSize = getBoundsSize(itemCluster.get().getBounds());
+    double stallHullBoundsSize = getBoundsSize(stallHull.getBounds());
     double sizeRatio = itemClusterBoundsSize / stallHullBoundsSize;
     if (itemClusterBoundsSize / stallHullBoundsSize < minItemSize) {
       script.log(getClass(), "Failed to find large enough item cluster. Size: " + sizeRatio);
-      return null;
+      return Optional.empty();
     }
 
     return itemCluster;

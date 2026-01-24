@@ -1,0 +1,23 @@
+/* Target the main container specifically */
+.options-root {
+    -fx-alignment: center-left;
+    -fx-background-color: #384241;
+    -fx-padding: 20 18 18 18;
+    -fx-spacing: 12;
+    /* This variable often propagates to all child controls */
+    -fx-text-base-color: white;
+}
+
+.options-root .separator {
+    -fx-background-color: #505958;
+}
+
+/* High-specificity text color overrides */
+.options-root CheckBox,
+.options-root RadioButton {
+    -fx-text-fill: white;
+}
+.options-root Text {
+    -fx-fill: #fafafa;
+    -fx-spacing: 2;
+}

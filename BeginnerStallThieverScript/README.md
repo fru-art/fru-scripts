@@ -22,5 +22,6 @@ If you like the script, consider donating to me on [Ko-fi](https://ko-fi.com/fru
 Depends on hops, but baker's stall is upwards of 15k per hour and fruit stall is upwards of 30k per hour.
 
 # Release notes
+- 2.0 (January 24, 2026) - Migrate to OSMB Toolkit and add banking support for fruit stall
 - 1.1 (October 31, 2025) - Add some banking support, better misclick prevention, and tea stall support
 - 1.0 (October 31, 2025) - Initial release

@@ -4,9 +4,9 @@ import com.osmb.api.visual.PixelCluster;
 import com.osmb.api.visual.SearchablePixel;
 import com.osmb.api.visual.color.ColorModel;
 import com.osmb.api.visual.color.tolerance.impl.ChannelThresholdComparator;
-import task.TaskScript;
+import com.osmbtoolkit.script.ToolkitScript;
 
-public class StealFromBakerTask extends StealFromStallTask {
+public class StealFromBakeryStallJob extends StealFromStallJob {
   private static final PixelCluster.ClusterQuery CAKE_QUERY = new PixelCluster.ClusterQuery(
     2,
     5,
@@ -16,7 +16,7 @@ public class StealFromBakerTask extends StealFromStallTask {
   private static final WorldPosition SAFESPOT = new WorldPosition(2669, 3310, 0);
   private static final WorldPosition STALL = new WorldPosition(2667, 3311, 0);
 
-  public StealFromBakerTask(TaskScript script) {
+  public StealFromBakeryStallJob(ToolkitScript script) {
     super(
       script,
       STALL,

@@ -4,12 +4,10 @@ import com.osmb.api.visual.PixelCluster;
 import com.osmb.api.visual.SearchablePixel;
 import com.osmb.api.visual.color.ColorModel;
 import com.osmb.api.visual.color.tolerance.impl.ChannelThresholdComparator;
-import task.TaskScript;
+import com.osmbtoolkit.script.ToolkitScript;
 
-import java.util.Set;
-
-public class StealTeaTask extends StealFromStallTask {
-  public StealTeaTask(TaskScript script) {
+public class StealFromTeaStallJob extends StealFromStallJob {
+  public StealFromTeaStallJob(ToolkitScript script) {
     super(
       script,
       new WorldPosition(3270, 3410, 0),
