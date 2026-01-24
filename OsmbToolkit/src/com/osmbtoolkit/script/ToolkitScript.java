@@ -120,7 +120,7 @@ public abstract class ToolkitScript extends JobLoopScript {
     Optional<Double> remoteVersion = getRemoteVersion();
     // Account for double imprecision and assume that intentional double values only have a maximum of two decimal
     // places.
-    if (remoteVersion.isPresent() && getVersion() - remoteVersion.get() < 0.001) {
+    if (remoteVersion.isPresent() && getVersion() - remoteVersion.get() < -0.001) {
       optionsList.add(0, new UpdateAvailableOptions(this));
     }
 
