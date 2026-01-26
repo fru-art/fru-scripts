@@ -16,7 +16,7 @@ import java.util.Set;
   name = "Beginner Power Miner",
   description = "Mines and drops up to iron",
   skillCategory = SkillCategory.MINING,
-  version = 1.6
+  version = 1.7
 )
 
 public class BeginnerPowerMinerScript extends FirstMatchTaskScript {

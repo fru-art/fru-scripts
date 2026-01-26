@@ -32,6 +32,7 @@ See below for release notes!
 - Banking
 
 ## Release notes
+- 1.7 (January 25, 2026) - API update
 - 1.6 (October 30, 2025) - Promotional message in options
 - 1.5 (October 22, 2025) - API update
 - 1.4 (August 24, 2025) - Added auto-update
