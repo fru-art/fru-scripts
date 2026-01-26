@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @ScriptDefinition(author = "fru", name = "Beginner Stall Thiever", description = "for stealing from basic stalls",
-  skillCategory = SkillCategory.THIEVING, version = 2.0)
+  skillCategory = SkillCategory.THIEVING, version = 2.1)
 public class BeginnerStallThieverScript extends ToolkitScript {
   public static final Set<Integer> BAKED_GOODS =
     Set.of(ItemID.BREAD, ItemID.CAKE, ItemID.CHOCOLATE_SLICE, ItemID.SLICE_OF_CAKE);
@@ -46,11 +46,6 @@ public class BeginnerStallThieverScript extends ToolkitScript {
   }
 
   @Override
-  public String getLogo() {
-    return "https://cdn.discordapp.com/avatars/236104938592272390/a_e796f8b2a87385d3360bef7dc6916bb0.png?size=128";
-  }
-
-  @Override
   protected List<Job> getJobs() {
     if (scriptOptions.bakersStallRadioButton.isSelected()) {
       return List.of(scriptOptions.bankCheckbox.isSelected() ?
@@ -74,6 +69,16 @@ public class BeginnerStallThieverScript extends ToolkitScript {
     }
 
     return Collections.emptyList();
+  }
+
+  @Override
+  public String getAuthorLogo() {
+    return "https://cdn.discordapp.com/avatars/236104938592272390/a_e796f8b2a87385d3360bef7dc6916bb0.png?size=128";
+  }
+
+  @Override
+  public String getLogo() {
+    return "https://oldschool.runescape.wiki/images/thumb/Silk_stall.png/474px-Silk_stall.png?def4e";
   }
 
   @Override

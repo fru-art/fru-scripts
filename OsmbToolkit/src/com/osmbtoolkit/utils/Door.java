@@ -1,6 +1,5 @@
 package com.osmbtoolkit.utils;
 
-import com.osmb.api.input.MenuEntry;
 import com.osmb.api.location.position.Position;
 import com.osmb.api.location.position.types.LocalPosition;
 import com.osmb.api.location.position.types.WorldPosition;
@@ -9,6 +8,8 @@ import com.osmb.api.scene.ObjectManager;
 import com.osmb.api.scene.RSObject;
 import com.osmb.api.scene.SceneManager;
 import com.osmb.api.shape.Polygon;
+import com.osmb.api.ui.GameState;
+import com.osmb.api.ui.WidgetManager;
 import com.osmb.api.utils.TileEdge;
 import com.osmb.api.visual.PixelCluster;
 import com.osmb.api.visual.SearchablePixel;
@@ -20,12 +21,8 @@ import com.osmbtoolkit.script.ToolkitScript;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -33,9 +30,15 @@ import java.util.stream.Stream;
 public class Door {
   public enum DoorState {OPEN, CLOSED}
 
-  private static final Map<Direction.PrimaryDirection, TileEdge> TILE_EDGE_MAP = Map.of(Direction.PrimaryDirection.N,
-    TileEdge.N, Direction.PrimaryDirection.E, TileEdge.E, Direction.PrimaryDirection.S, TileEdge.S,
-    Direction.PrimaryDirection.W, TileEdge.W);
+  private static final Map<Direction.PrimaryDirection, TileEdge> TILE_EDGE_MAP = Map.of(
+    Direction.PrimaryDirection.N,
+    TileEdge.N,
+    Direction.PrimaryDirection.E,
+    TileEdge.E,
+    Direction.PrimaryDirection.S,
+    TileEdge.S,
+    Direction.PrimaryDirection.W,
+    TileEdge.W);
 
   private final TileEdge closedEdge;
   private final int height;
@@ -51,9 +54,14 @@ public class Door {
    * @param thickness Thickness relative to the size of one tile e.g. 0.5 means half the length of a tile. This
    *                  can be visualized with the tile cube scale tool.
    */
-  public Door(ToolkitScript script, WorldPosition position, Direction.PrimaryDirection openEdge,
-              Direction.PrimaryDirection closedEdge, SearchablePixel[] searchablePixels, double thickness, int height
-    , int plane) {
+  public Door(ToolkitScript script,
+              WorldPosition position,
+              Direction.PrimaryDirection openEdge,
+              Direction.PrimaryDirection closedEdge,
+              SearchablePixel[] searchablePixels,
+              double thickness,
+              int height,
+              int plane) {
     this.closedEdge = TILE_EDGE_MAP.get(closedEdge);
     assert this.closedEdge != null;
     this.height = height;
@@ -95,7 +103,8 @@ public class Door {
       openCluster.map(pixelCluster -> pixelCluster.getPoints().size() / openSearchShape.calculateArea()).orElse(0.0);
     Optional<PixelCluster> closedCluster = script.findLargestCluster(closedSearchShape, this.searchablePixels);
     double closedDetectionRatio =
-      closedCluster.map(pixelCluster -> pixelCluster.getPoints().size() / closedSearchShape.calculateArea()).orElse(0.0);
+      closedCluster.map(pixelCluster -> pixelCluster.getPoints().size() / closedSearchShape.calculateArea())
+        .orElse(0.0);
 
     if (Math.abs(openDetectionRatio - closedDetectionRatio) < 0.05) return Optional.empty();
     return Optional.of(openDetectionRatio > closedDetectionRatio ? DoorState.OPEN : DoorState.CLOSED);
@@ -122,9 +131,23 @@ public class Door {
     } else if (edge == TileEdge.W) {
       // West edge is at X = 0.0
       addPrismToPolygon(polygon, localPosition.get(), -halfT, halfT, 0, 1);
+    } else {
+      // Shouldn't ever happen. Debugging https://discord.com/channels/736938454478356570/1415051321425526784/1465170930568396926
+      script.log(getClass(), "Failed to get polygon from edges: " + openEdge + " " + closedEdge);
+      script.stop();
+      return Optional.empty();
     }
 
-    return Optional.of(polygon.convexHull());
+    Polygon hull = polygon.convexHull();
+    // Shouldn't ever happen. Debugging https://discord.com/channels/736938454478356570/1415051321425526784/1465170930568396926
+    if (hull == null) {
+      script.log(
+        getClass(),
+        "Failed to get hull from points: " + Arrays.toString(polygon.getXPoints()) + " " + Arrays.toString(polygon.getYPoints()));
+      script.stop();
+      return Optional.empty();
+    }
+    return Optional.of(hull);
   }
 
   public boolean interact(DoorState desiredState) {
@@ -143,24 +166,26 @@ public class Door {
     Optional<Polygon> poly = getPolygon(desiredState == DoorState.OPEN ? DoorState.CLOSED : DoorState.OPEN);
     if (poly.isEmpty()) return false;
 
-    return script.getFinger().tapGameScreen(poly.get(), (menuEntries) -> {
-      String action = (desiredState == DoorState.OPEN) ? "open" : "close";
-      String altAction = (desiredState == DoorState.OPEN) ? "open" : "shut";
+    return script.getFinger().tapGameScreen(
+      poly.get(), (menuEntries) -> {
+        String action = (desiredState == DoorState.OPEN) ? "open" : "close";
+        String altAction = (desiredState == DoorState.OPEN) ? "open" : "shut";
 
-      return menuEntries.stream()
-        .filter(e -> e.getAction().toLowerCase().contains(action) ||
-          e.getAction().toLowerCase().contains(altAction))
-        .findFirst()
-        .orElse(null);
-    });
+        return menuEntries.stream()
+          .filter(e -> e.getAction().toLowerCase().contains(action) || e.getAction().toLowerCase().contains(altAction))
+          .findFirst()
+          .orElse(null);
+      });
   }
 
   public boolean passTo(Position destination) {
     return passTo(destination, null, 0);
   }
+
   public boolean passTo(Position destination, BooleanSupplier breakCondition) {
     return passTo(destination, breakCondition, 0);
   }
+
   private boolean passTo(Position destination, BooleanSupplier breakCondition, int retryCount) {
     if (retryCount > 3) return false;
 
@@ -185,23 +210,22 @@ public class Door {
     long startTime = System.currentTimeMillis();
     AtomicBoolean crossed = new AtomicBoolean(false);
 
-    WalkConfig config = new WalkConfig.Builder()
-      .breakCondition(() -> {
-        if (breakCondition != null && breakCondition.getAsBoolean()) return true;
+    WalkConfig config = new WalkConfig.Builder().breakCondition(() -> {
+      if (breakCondition != null && breakCondition.getAsBoolean()) return true;
 
-        if (System.currentTimeMillis() - startTime > 2_400 && !crossed.get()) {
-          script.log(getClass(), "Failed to cross door within 4 ticks");
-          return true;
+      if (System.currentTimeMillis() - startTime > 2_400 && !crossed.get()) {
+        script.log(getClass(), "Failed to cross door within 4 ticks");
+        return true;
+      }
+
+      // Logic: If the perpendicular distance sign flips, we are on the other side
+      getPerpendicularDistance().ifPresent(curr -> {
+        if ((curr * startDist < 0) || (Math.abs(curr) > 0 && startDist == 0)) {
+          crossed.set(true);
         }
-
-        // Logic: If the perpendicular distance sign flips, we are on the other side
-        getPerpendicularDistance().ifPresent(curr -> {
-          if ((curr * startDist < 0) || (Math.abs(curr) > 0 && startDist == 0)) {
-            crossed.set(true);
-          }
-        });
-        return crossed.get();
-      }).build();
+      });
+      return crossed.get();
+    }).build();
 
     script.getWalker().walkTo(destination, config);
 
@@ -232,7 +256,11 @@ public class Door {
     return walker.walkTo(worldPosition, walkConfig);
   }
 
-  private void addPrismToPolygon(Polygon poly, LocalPosition localPosition, double minX, double maxX, double minY,
+  private void addPrismToPolygon(Polygon poly,
+                                 LocalPosition localPosition,
+                                 double minX,
+                                 double maxX,
+                                 double minY,
                                  double maxY) {
     int[] heights = {0, this.height};
     double[] xOffsets = {minX, maxX};
@@ -241,8 +269,8 @@ public class Door {
     for (int h : heights) {
       for (double dx : xOffsets) {
         for (double dy : yOffsets) {
-          Point p = script.getSceneProjector().getTilePoint(localPosition.getPreciseX() + dx,
-            localPosition.getPreciseY() + dy, plane, TileEdge.SW, h);
+          Point p = script.getSceneProjector()
+            .getTilePoint(localPosition.getPreciseX() + dx, localPosition.getPreciseY() + dy, plane, TileEdge.SW, h);
           if (p != null) poly.addVertex(p.x, p.y);
         }
       }
@@ -250,10 +278,15 @@ public class Door {
   }
 
   private void draw(Canvas canvas) {
+    WidgetManager widgetManager = script.getWidgetManager();
+    GameState gameState = widgetManager == null ? null : widgetManager.getGameState();
+    if (gameState != GameState.LOGGED_IN) return;
+
     Optional<DoorState> doorState = getState();
     Color color = doorState.isEmpty() ? Color.ORANGE : doorState.get() == DoorState.CLOSED ? Color.RED : Color.GREEN;
     Optional<Polygon> polygon = doorState.isPresent() && doorState.get() == DoorState.OPEN ?
-      getPolygon(DoorState.OPEN) : getPolygon(DoorState.CLOSED);
+      getPolygon(DoorState.OPEN) :
+      getPolygon(DoorState.CLOSED);
     if (polygon.isEmpty()) return;
 
     canvas.drawPolygon(polygon.get(), color.getRGB(), 0.6);
@@ -309,7 +342,8 @@ public class Door {
       // Includes open or close action
       String[] actions = object.getActions();
       if (actions == null || actions.length == 0) return false;
-      return Stream.of(actions).anyMatch(action -> action != null && (action.equalsIgnoreCase("Open") || action.equalsIgnoreCase("Close")));
+      return Stream.of(actions)
+        .anyMatch(action -> action != null && (action.equalsIgnoreCase("Open") || action.equalsIgnoreCase("Close")));
     });
 
     if (doorObjects == null || doorObjects.isEmpty()) return Optional.empty();
