@@ -97,7 +97,7 @@ public abstract class Options<T extends ToolkitScript> {
   }
 
   protected String getTitle() {
-    return script.scriptDefinition.name();
+    return script.scriptDefinition.name() + " v" + script.scriptDefinition.version();
   }
 
   protected int getWidth() {
@@ -122,7 +122,7 @@ public abstract class Options<T extends ToolkitScript> {
       Text authorText = new Text(author);
       authorText.setStyle("-fx-font-size: 14px;");
 
-      String logo = script.getLogo();
+      String logo = script.getAuthorLogo();
       if (logo != null) {
         try {
           Image image = new Image(logo);

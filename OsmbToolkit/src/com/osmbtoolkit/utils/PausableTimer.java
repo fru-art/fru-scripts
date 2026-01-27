@@ -18,7 +18,6 @@ public class PausableTimer {
 
   public PausableTimer(ToolkitScript script) {
     this();
-    attachTo(script);
   }
 
   public void attachTo(ToolkitScript script) {

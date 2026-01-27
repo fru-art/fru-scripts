@@ -15,7 +15,6 @@ public class HosidiusBankDepositJob extends BankDepositJob {
     if (!script.hosidius.passHouse(false)) {
       script.log(getClass(), "Failed to exit Hosidius house");
     }
-
     return super.execute();
   }
 }

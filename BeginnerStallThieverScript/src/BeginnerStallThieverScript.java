@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @ScriptDefinition(author = "fru", name = "Beginner Stall Thiever", description = "for stealing from basic stalls",
-  skillCategory = SkillCategory.THIEVING, version = 2.1)
+  skillCategory = SkillCategory.THIEVING, version = 2.2)
 public class BeginnerStallThieverScript extends ToolkitScript {
   public static final Set<Integer> BAKED_GOODS =
     Set.of(ItemID.BREAD, ItemID.CAKE, ItemID.CHOCOLATE_SLICE, ItemID.SLICE_OF_CAKE);
@@ -83,7 +83,7 @@ public class BeginnerStallThieverScript extends ToolkitScript {
 
   @Override
   protected List<Options> getOptions() {
-    return List.of(new BeginnerStallThieverOptions(this));
+    return List.of(this.scriptOptions);
   }
 
   @Override

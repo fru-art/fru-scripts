@@ -134,7 +134,6 @@ public class Door {
     } else {
       // Shouldn't ever happen. Debugging https://discord.com/channels/736938454478356570/1415051321425526784/1465170930568396926
       script.log(getClass(), "Failed to get polygon from edges: " + openEdge + " " + closedEdge);
-      script.stop();
       return Optional.empty();
     }
 
@@ -144,7 +143,6 @@ public class Door {
       script.log(
         getClass(),
         "Failed to get hull from points: " + Arrays.toString(polygon.getXPoints()) + " " + Arrays.toString(polygon.getYPoints()));
-      script.stop();
       return Optional.empty();
     }
     return Optional.of(hull);
@@ -304,6 +302,8 @@ public class Door {
     double y = worldPosition.getPreciseY();
     double localX = (roundToNearest ? Math.round(x) : x) - sceneManager.getSceneBaseTileX();
     double localY = (roundToNearest ? Math.round(y) : y) - sceneManager.getSceneBaseTileY();
+    // Not within current or neighboring region
+    if (localX >= 128 || localX <= -64 || localY >= 128 || localY <= -64) return Optional.empty();
     return Optional.of(new LocalPosition(localX, localY, worldPosition.getPlane()));
   }
 
