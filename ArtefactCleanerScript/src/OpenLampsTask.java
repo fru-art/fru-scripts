@@ -70,12 +70,17 @@ extends Task {
                 return atomicLineBounds.get() != null;
             }, 3000, true);
             Rectangle lineBounds = atomicLineBounds.get();
-            PixelCluster textCluster = this.detectionHelper.getLargestCluster((Shape)lineBounds, new PixelCluster.ClusterQuery(3, 32, new SearchablePixel[]{new SearchablePixel(-26593, (ToleranceComparator)ToleranceComparator.ZERO_TOLERANCE, ColorModel.RGB)}));
+
+            PixelCluster textCluster = this.detectionHelper.getLargestCluster(
+              lineBounds,
+              new PixelCluster.ClusterQuery(3, 32, new SearchablePixel[]{new SearchablePixel(-26593, ToleranceComparator.ZERO_TOLERANCE, ColorModel.RGB)}));
             if (textCluster == null || textCluster.getBounds() == null) {
                 this.script.log(this.getClass(), "Failed to find confirm bounds");
                 return false;
             }
             Rectangle textBounds = textCluster.getBounds();
+            script.log(this.getClass(), "Lamp UI bounds" + getLampUiBounds());
+            script.log(this.getClass(), "Line bounds" + lineBounds);
             this.script.log(this.getClass(), "Found confirm bounds: " + String.valueOf(textBounds));
             this.script.getFinger().tap(textBounds);
             boolean rubbedLamp = this.script.pollFramesHuman(() -> {

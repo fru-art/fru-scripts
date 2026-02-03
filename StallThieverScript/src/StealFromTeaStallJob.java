@@ -16,7 +16,7 @@ public class StealFromTeaStallJob extends StealFromStallJob {
       new WorldPosition(3268, 3410, 0),
       new RectangleArea(3241, 3408, 31, 21, 0),
       new RectangleArea(3264, 3408, 8, 7, 0),
-      BeginnerStallThieverScript.TEA,
+      StallThieverScript.TEA,
       new PixelCluster.ClusterQuery(
         1,
         5,

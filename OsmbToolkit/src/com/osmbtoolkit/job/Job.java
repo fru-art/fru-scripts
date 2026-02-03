@@ -28,4 +28,14 @@ public abstract class Job<T extends JobLoopScript> {
   public JobConfig getConfig() {
     return config;
   }
+
+  @Override
+  public String toString() {
+    String name = getClass().getSimpleName();
+    if (name.endsWith("Job")) name = name.substring(0, name.length() - "Job".length());
+    if (name.endsWith("Task")) name = name.substring(0, name.length() - "Task".length());
+    name = name.replaceAll("(?<!^)([A-Z])", " $1");
+    name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+    return name.trim();
+  }
 }

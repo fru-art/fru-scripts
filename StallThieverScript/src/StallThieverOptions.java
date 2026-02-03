@@ -3,21 +3,19 @@ import com.osmbtoolkit.script.ToolkitScript;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Separator;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
 import java.util.List;
 
-public class BeginnerStallThieverOptions extends Options {
+public class StallThieverOptions extends Options {
   public final CheckBox bankCheckbox;
 
   public final RadioButton bakersStallRadioButton;
   public final RadioButton fruitStallRadioButton;
   public final RadioButton teaStallRadioButton;
 
-  public BeginnerStallThieverOptions(ToolkitScript script) {
+  public StallThieverOptions(ToolkitScript script) {
     super(script);
 
     bankCheckbox = getCheckBox("Bank", false);

@@ -26,6 +26,7 @@ extends ScriptOptions {
           "Herblore", 205,
           "Hitpoints", 203,
           "Hunter", 220,
+          "Prayer", 201,
           "Ranged", 200,
           "Sailing", 228,
           "Slayer", 216,

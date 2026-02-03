@@ -1,3 +1,4 @@
+import com.osmb.api.item.ItemID;
 import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.script.SkillCategory;
@@ -34,7 +35,7 @@ public class BeginnerWoodcutterScript extends SequenceTaskScript {
   @Override
   protected List<Task> getTaskList() {
     return List.of(
-      new BankDepositTask(this, Set.of(VARROCK_WEST_BANK), scriptOptions.cuttableItems)
+      new BankDepositTask(this, Set.of(VARROCK_WEST_BANK), Set.of(ItemID.LOGS, ItemID.OAK_LOGS))
         .setCanLoop(true),
       new WoodcutInVarrockTask(this, scriptOptions)
     );

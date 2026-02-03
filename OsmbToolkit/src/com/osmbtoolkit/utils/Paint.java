@@ -55,6 +55,15 @@ public class Paint {
       throw new RuntimeException(e);
     }
   }
+  public static final Font RUNESCAPE_SMALL_FONT;
+  static {
+    try {
+      RUNESCAPE_SMALL_FONT = Font.createFont(Font.TRUETYPE_FONT,
+        Objects.requireNonNull(ToolkitScript.class.getResourceAsStream("/fonts/runescape_small.ttf"))).deriveFont(20f);
+    } catch (FontFormatException | IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
 
   public static Image applyCircleMask(Image image) {
     BufferedImage bi = image.toBufferedImage();
@@ -128,19 +137,38 @@ public class Paint {
   public static Optional<Image> loadImage(String source) {
     try {
       BufferedImage bi;
-
-      // Check if the source starts with a protocol (http, https, ftp, etc.)
       if (source.contains("://")) {
-        // Treat as URL
         bi = ImageIO.read(URI.create(source).toURL());
       } else {
-        // Treat as local file path
         bi = ImageIO.read(new File(source));
       }
 
-      return bi == null ? Optional.empty() : Optional.of(new Image(bi));
+      if (bi == null) return Optional.empty();
+
+      // 1. Create a standardized ARGB buffer
+      BufferedImage standardized = new BufferedImage(bi.getWidth(), bi.getHeight(), BufferedImage.TYPE_INT_ARGB);
+      Graphics2D g = standardized.createGraphics();
+      g.drawImage(bi, 0, 0, null);
+      g.dispose();
+
+      // 2. Manually fix the "Junk Data" in transparent pixels
+      int[] pixels = standardized.getRGB(0, 0, standardized.getWidth(), standardized.getHeight(), null, 0, standardized.getWidth());
+      for (int i = 0; i < pixels.length; i++) {
+        int argb = pixels[i];
+        int alpha = (argb >> 24) & 0xFF;
+
+        // If it's even slightly transparent (alpha < 255),
+        // OSMB likely doesn't support blending, so we force it to absolute 0.
+        if (alpha < 255) {
+          pixels[i] = 0;
+        }
+      }
+
+      // 3. Construct the OSMB Image using the cleaned pixel array
+      return Optional.of(new Image(pixels, standardized.getWidth(), standardized.getHeight()));
+
     } catch (IOException | IllegalArgumentException e) {
-      System.err.println("Failed to load image from: " + source + " - " + e.getMessage());
+      System.err.println("Failed to load image: " + source);
       return Optional.empty();
     }
   }

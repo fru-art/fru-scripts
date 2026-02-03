@@ -39,4 +39,9 @@ public class BankDepositJob extends Job<ToolkitScript> {
     Optional<Bank> bank = Bank.getClosestBank(script);
     return bank.map(value -> items.isEmpty() ? value.depositAll() : value.deposit(items)).orElse(false);
   }
+
+  @Override
+  public String toString() {
+    return "Deposit at bank";
+  }
 }

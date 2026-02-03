@@ -4,12 +4,11 @@ import com.osmb.api.visual.PixelCluster;
 import com.osmb.api.visual.SearchablePixel;
 import com.osmb.api.visual.color.ColorModel;
 import com.osmb.api.visual.color.tolerance.impl.ChannelThresholdComparator;
-import com.osmbtoolkit.script.ToolkitScript;
 
 public class StealFromFruitStallJob extends StealFromStallJob {
-  private final BeginnerStallThieverScript script;
+  private final StallThieverScript script;
 
-  public StealFromFruitStallJob(BeginnerStallThieverScript script) {
+  public StealFromFruitStallJob(StallThieverScript script) {
     super(
       script,
       new WorldPosition(1795, 3608, 0),
@@ -18,7 +17,7 @@ public class StealFromFruitStallJob extends StealFromStallJob {
       new WorldPosition(1796, 3608, 0),
       new RectangleArea(1737, 3559, 83, 63, 0),
       new RectangleArea(1791, 3604, 14, 12, 0),
-      BeginnerStallThieverScript.FRUITS,
+      StallThieverScript.FRUITS,
       new PixelCluster.ClusterQuery(
         10,
         5,

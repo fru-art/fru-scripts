@@ -35,4 +35,9 @@ public class DropJob extends Job<ToolkitScript> {
 
     return inventory.dropItems(items);
   }
+
+  @Override
+  public String toString() {
+    return "Drop items";
+  }
 }

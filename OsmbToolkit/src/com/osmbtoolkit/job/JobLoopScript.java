@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class JobLoopScript extends Script {
+  private static final int JOB_DEBOUNCE = 1_200;
+
+  private Optional<Job> currentJobDebounced = Optional.empty();
+  private long currentJobUpdated = System.currentTimeMillis();
   private JobSequence jobSequence;
 
   public JobLoopScript(Object scriptCore) {
@@ -23,9 +27,31 @@ public abstract class JobLoopScript extends Script {
     return 0;
   }
 
-  abstract protected List<Job> getJobs();
-
-  protected Optional<Job> getCurrentJob() {
+  public Optional<Job> getCurrentJob() {
+    if (jobSequence == null) return Optional.empty();
     return jobSequence.getCurrentJob();
   }
+
+  /**
+   * @return the last known job until a certain interval has passed.
+   */
+  public Optional<Job> getCurrentJobDebounced() {
+    Optional<Job> currentJob = getCurrentJob();
+    long now = System.currentTimeMillis();
+
+    if (currentJob.isEmpty()) {
+      if (currentJobDebounced.isPresent() && now - currentJobUpdated < JOB_DEBOUNCE) {
+        return currentJobDebounced;
+      }
+      currentJobDebounced = Optional.empty();
+      currentJobUpdated = now;
+      return Optional.empty();
+    }
+
+    currentJobDebounced = currentJob;
+    currentJobUpdated = now;
+    return currentJob;
+  }
+
+  abstract protected List<Job> getJobs();
 }
