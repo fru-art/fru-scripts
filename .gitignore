@@ -2,6 +2,7 @@
 MiningGuildScript/src
 OsmbUtils
 PestControlScript/src
+sync_private.ps1
 
 ### IntelliJ IDEA ###
 .idea
