@@ -17,6 +17,8 @@ public class JobSequence {
 
   public boolean execute() {
     for (Job job : jobs) {
+      if (script.stopped()) return false;
+
       JobConfig jobConfig = job.getConfig();
       boolean canExecute = job.canExecute();
 

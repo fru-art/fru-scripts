@@ -18,6 +18,16 @@ import java.util.List;
 import java.util.prefs.Preferences;
 
 public abstract class Options<T extends ToolkitScript> {
+  public static class Dropdown {
+    public final ComboBox<String> comboBox;
+    public final Node node;
+
+    public Dropdown(Node node, ComboBox<String> comboBox) {
+      this.comboBox = comboBox;
+      this.node = node;
+    }
+  }
+
   protected final T script;
 
   protected final Preferences preferences;
@@ -43,13 +53,13 @@ public abstract class Options<T extends ToolkitScript> {
   public abstract List<Node> getChildren();
 
   // INPUTS
-  protected ComboBox getDropdown(String label, List<String> options, String defaultValue) {
+  protected Dropdown getDropdown(String label, List<String> options, String defaultValue) {
     ComboBox<String> comboBox = new ComboBox<>(FXCollections.observableList(options));
     comboBox.setValue(this.preferences.get(label, defaultValue));
     comboBox.setOnAction(event -> this.preferences.put(label, comboBox.getValue()));
     HBox hBox = new HBox(12.0, new Label(label), comboBox);
     hBox.setAlignment(Pos.CENTER_LEFT);
-    return comboBox;
+    return new Dropdown(hBox, comboBox);
   }
 
   protected CheckBox getCheckBox(String label, boolean defaultValue) {

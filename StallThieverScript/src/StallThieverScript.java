@@ -10,8 +10,6 @@ import com.osmbtoolkit.script.ToolkitScript;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @ScriptDefinition(author = "fru", name = "Stall Thiever", description = "for stealing from basic stalls",
   skillCategory = SkillCategory.THIEVING, version = 1.0)

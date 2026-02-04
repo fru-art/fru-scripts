@@ -27,9 +27,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -200,6 +203,14 @@ public abstract class ToolkitScript extends JobLoopScript {
     return logoImage;
   }
 
+  public <T> boolean pollFramesUntilChange(Supplier<T> supplier, int timeout) {
+    AtomicReference<T> value = new AtomicReference<>(supplier.get());
+    return pollFramesUntil(() -> {
+      Object nextValue = supplier.get();
+      return !nextValue.equals(value.get());
+    }, timeout);
+  }
+
   public ItemGroupResult pollFramesUntilInventory(Set<Integer> itemsToRecognize) {
     AtomicReference<ItemGroupResult> atomicSnapshot = new AtomicReference<>();
 
@@ -242,32 +253,49 @@ public abstract class ToolkitScript extends JobLoopScript {
       }, Integer.MAX_VALUE);
   }
 
+  public <T> boolean pollFramesUntilNoChange(Supplier<T> supplier, int changeTimeout) {
+    return pollFramesUntilNoChange(supplier, changeTimeout, Integer.MAX_VALUE, () -> false);
+  }
+  public <T> boolean pollFramesUntilNoChange(Supplier<T> supplier, int changeTimeout, int noChangeTimeout, BooleanSupplier breakCondition) {
+    long startTime = System.currentTimeMillis();
+
+    while (true) {
+      AtomicReference<T> value = new AtomicReference<>(supplier.get());
+      AtomicBoolean broke = new AtomicBoolean(false);
+      AtomicBoolean changed =  new AtomicBoolean(false);
+      AtomicBoolean timedOut =  new AtomicBoolean(false);
+
+      pollFramesUntil(() -> {
+        if (breakCondition.getAsBoolean()) {
+          broke.set(true);
+          return true;
+        }
+
+        T nextValue = supplier.get();
+        if (nextValue != null && !nextValue.equals(value.get())) {
+          value.set(nextValue);
+          changed.set(true);
+          return true;
+        }
+        if (System.currentTimeMillis() - startTime > noChangeTimeout) {
+          timedOut.set(true);
+          return true;
+        }
+
+        return changed.get() || timedOut.get();
+      }, changeTimeout);
+
+      if (broke.get() || !changed.get()) return true;
+      if (timedOut.get()) return false;
+    }
+  }
+
   public void pollFramesUntilStill() {
-    pollFramesUntilStill(null);
+    pollFramesUntilStill(() -> false);
   }
 
   public void pollFramesUntilStill(BooleanSupplier breakCondition) {
-    AtomicReference<WorldPosition> lastPosition = new AtomicReference<>(getWorldPosition());
-    AtomicReference<Long> lastPositionUpdated = new AtomicReference<>(System.currentTimeMillis());
-
-    pollFramesUntil(
-      () -> {
-        if (breakCondition != null && breakCondition.getAsBoolean()) return true;
-
-        // Debounce interval is 2 ticks
-        if (System.currentTimeMillis() - lastPositionUpdated.get() < 1_200) return false;
-
-        WorldPosition position = getWorldPosition();
-        if (position == null) return false;
-
-        if (lastPosition.get() == null || position.distanceTo(lastPosition.get()) != 0) {
-          lastPosition.set(position);
-          lastPositionUpdated.set(System.currentTimeMillis());
-          return false;
-        }
-
-        return true;
-      }, Integer.MAX_VALUE);
+    pollFramesUntilNoChange(() -> getWorldPosition(), 1_200, 0, breakCondition);
   }
 
 
