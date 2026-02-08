@@ -36,7 +36,7 @@ public class StealFromFruitStallJob extends StealFromStallJob {
 
   @Override
   public boolean execute() {
-    if (!script.hosidius.passHouse(true)) {
+    if (!script.hosidiusHouse.passThrough(true)) {
       script.log("Failed to enter house");
       return false;
     }

@@ -1,16 +1,16 @@
-import com.osmbtoolkit.job.impl.BankDepositJob;
+import com.osmbtoolkit.job.impl.DepositAtBankJob;
 
-public class HosidiusBankDepositJob extends BankDepositJob {
+public class DepositAtHosidiusBankJob extends DepositAtBankJob {
   private final StallThieverScript script;
 
-  public HosidiusBankDepositJob(StallThieverScript script) {
+  public DepositAtHosidiusBankJob(StallThieverScript script) {
     super(script);
     this.script = script;
   }
 
   @Override
   public boolean execute() {
-    if (!script.hosidius.passHouse(false)) {
+    if (!script.hosidiusHouse.passThrough(false)) {
       script.log(getClass(), "Failed to exit Hosidius house");
     }
     return super.execute();

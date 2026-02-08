@@ -8,7 +8,7 @@ import com.osmbtoolkit.script.ToolkitScript;
 import com.osmbtoolkit.utils.Direction;
 import com.osmbtoolkit.utils.Door;
 
-public class Hosidius {
+public class HosidiusHouse {
   private static final SearchablePixel[] DOOR_PIXELS = new SearchablePixel[] {
     new SearchablePixel(-11909820, new SingleThresholdComparator(10), ColorModel.HSL),
     new SearchablePixel(-7043981, new SingleThresholdComparator(10), ColorModel.HSL),
@@ -21,7 +21,7 @@ public class Hosidius {
   private final Door houseDoor;
   private final Script script;
 
-  public Hosidius(ToolkitScript script) {
+  public HosidiusHouse(ToolkitScript script) {
     this.houseDoor = new Door(
       script,
       new WorldPosition(1797.9, 3606, 0),
@@ -32,15 +32,15 @@ public class Hosidius {
       180,
       0
     );
-    this.houseDoor.debug();
+    this.houseDoor.debug(true);
     this.script = script;
   }
 
-  public boolean passHouse(boolean shouldEnter) {
-    if (shouldEnter == inHouse()) return true;
+  public boolean passThrough(boolean shouldEnter) {
+    if (shouldEnter == isInside()) return true;
 
     WorldPosition destination = shouldEnter ? INSIDE_HOUSE : OUTSIDE_HOUSE;
-    if (!houseDoor.passTo(destination, () -> shouldEnter == inHouse())) {
+    if (!houseDoor.passTo(destination, () -> shouldEnter == isInside())) {
       script.log(getClass(), "Failed to pass house, shouldEnter: " + shouldEnter);
       return false;
     }
@@ -48,7 +48,7 @@ public class Hosidius {
     return true;
   }
 
-  private boolean inHouse() {
+  private boolean isInside() {
     WorldPosition position = script.getWorldPosition();
     if (position == null) return false;
     return HOUSE.contains(position);

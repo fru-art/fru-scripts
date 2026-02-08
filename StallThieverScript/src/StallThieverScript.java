@@ -2,7 +2,7 @@ import com.osmb.api.item.ItemID;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.script.SkillCategory;
 import com.osmbtoolkit.job.Job;
-import com.osmbtoolkit.job.impl.BankDepositJob;
+import com.osmbtoolkit.job.impl.DepositAtBankJob;
 import com.osmbtoolkit.job.impl.DropJob;
 import com.osmbtoolkit.options.Options;
 import com.osmbtoolkit.script.ToolkitScript;
@@ -11,8 +11,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-@ScriptDefinition(author = "fru", name = "Stall Thiever", description = "for stealing from basic stalls",
-  skillCategory = SkillCategory.THIEVING, version = 1.0)
+@ScriptDefinition(author = "fru",
+  name = "Stall Thiever",
+  skillCategory = SkillCategory.THIEVING,
+  version = 1.01,
+  threadUrl = "https://wiki.osmb.co.uk/article/stall-thiever")
 public class StallThieverScript extends ToolkitScript {
   public static final Set<Integer> BAKED_GOODS =
     Set.of(ItemID.BREAD, ItemID.CAKE, ItemID.CHOCOLATE_SLICE, ItemID.SLICE_OF_CAKE);
@@ -30,12 +33,12 @@ public class StallThieverScript extends ToolkitScript {
     ItemID.PAPAYA_FRUIT);
   public static final Set<Integer> TEA = Set.of(ItemID.CUP_OF_TEA, ItemID.EMPTY_CUP);
 
-  public final Hosidius hosidius;
+  public final HosidiusHouse hosidiusHouse;
   public final StallThieverOptions scriptOptions;
 
   public StallThieverScript(Object scriptCore) {
     super(scriptCore);
-    this.hosidius = new Hosidius(this);
+    this.hosidiusHouse = new HosidiusHouse(this);
     this.scriptOptions = new StallThieverOptions(this);
   }
 
@@ -43,19 +46,19 @@ public class StallThieverScript extends ToolkitScript {
   protected List<Job> getJobs() {
     if (scriptOptions.bakersStallRadioButton.isSelected()) {
       return List.of(
-        scriptOptions.bankCheckbox.isSelected() ? new BankDepositJob(this) : new DropJob(this, BAKED_GOODS),
+        scriptOptions.bankCheckbox.isSelected() ? new DepositAtBankJob(this) : new DropJob(this, BAKED_GOODS),
         new StealFromBakeryStallJob(this));
     }
 
     if (scriptOptions.fruitStallRadioButton.isSelected()) {
       return List.of(
-        scriptOptions.bankCheckbox.isSelected() ? new HosidiusBankDepositJob(this) : new DropJob(this, FRUITS),
+        scriptOptions.bankCheckbox.isSelected() ? new DepositAtHosidiusBankJob(this) : new DropJob(this, FRUITS),
         new StealFromFruitStallJob(this));
     }
 
     if (scriptOptions.teaStallRadioButton.isSelected()) {
       return List.of(
-        scriptOptions.bankCheckbox.isSelected() ? new BankDepositJob(this) : new DropJob(this, TEA),
+        scriptOptions.bankCheckbox.isSelected() ? new DepositAtBankJob(this) : new DropJob(this, TEA),
         new StealFromTeaStallJob(this));
     }
 

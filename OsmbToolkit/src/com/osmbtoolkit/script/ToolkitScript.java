@@ -1,7 +1,9 @@
 package com.osmbtoolkit.script;
 
 import com.osmb.api.item.ItemGroupResult;
+import com.osmb.api.location.position.types.LocalPosition;
 import com.osmb.api.location.position.types.WorldPosition;
+import com.osmb.api.scene.SceneManager;
 import com.osmb.api.screen.Screen;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.shape.Polygon;
@@ -11,6 +13,7 @@ import com.osmb.api.ui.tabs.Inventory;
 import com.osmb.api.visual.PixelCluster;
 import com.osmb.api.visual.SearchablePixel;
 import com.osmb.api.visual.drawing.Canvas;
+import com.osmb.api.visual.drawing.SceneProjector;
 import com.osmb.api.visual.image.Image;
 import com.osmbtoolkit.job.JobLoopScript;
 import com.osmbtoolkit.options.Options;
@@ -28,7 +31,6 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
@@ -41,7 +43,7 @@ public abstract class ToolkitScript extends JobLoopScript {
   public final ScriptDefinition scriptDefinition;
 
   private final List<WeakReference<Runnable>> frameListeners = new ArrayList<>();
-  private final Overlay overlay;
+  private final ToolkitScriptOverlay overlay;
   private final List<WeakReference<Consumer<Canvas>>> paintListeners = new ArrayList<>();
   private final List<WeakReference<Consumer<Boolean>>> pauseListeners = new ArrayList<>();
 
@@ -56,7 +58,7 @@ public abstract class ToolkitScript extends JobLoopScript {
     this.scriptDefinition = this.getClass().getAnnotation(ScriptDefinition.class);
     assert this.scriptDefinition != null;
 
-    this.overlay = new Overlay(this);
+    this.overlay = new ToolkitScriptOverlay(this);
 
     try {
       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -178,7 +180,7 @@ public abstract class ToolkitScript extends JobLoopScript {
   }
 
   public Optional<Image> getAuthorLogoImage() {
-    // Return cached image even if empty
+    // Return cached image even if optional is empty, as long as it's not null
     if (authorLogoImage != null) return authorLogoImage;
 
     String authorLogo =  getAuthorLogo();
@@ -188,12 +190,41 @@ public abstract class ToolkitScript extends JobLoopScript {
     return authorLogoImage;
   }
 
+  public Optional<Polygon> getPlayerCube(WorldPosition worldPosition) {
+    Optional<LocalPosition> localPosition = getPreciseLocalPosition(worldPosition);
+    if (localPosition.isEmpty()) return Optional.empty();
+    SceneProjector sceneProjector = getSceneProjector();
+    if (sceneProjector == null) return Optional.empty();
+
+    Polygon npcCube = sceneProjector.getTileCube(
+      localPosition.get().getPreciseX(),
+      localPosition.get().getPreciseY(),
+      worldPosition.getPlane(),
+      -20,
+      240,
+      true);
+    if (npcCube == null) return Optional.empty();
+    return Optional.of(npcCube.getResized(0.8));
+  }
+
+  public Optional<LocalPosition> getPreciseLocalPosition(WorldPosition worldPosition) {
+    SceneManager sceneManager = getSceneManager();
+    if (sceneManager == null) return Optional.empty();
+    double x = worldPosition.getPreciseX();
+    double y = worldPosition.getPreciseY();
+    double localX = x - sceneManager.getSceneBaseTileX();
+    double localY = y - sceneManager.getSceneBaseTileY();
+    // Not within current or neighboring region
+    if (localX >= 128 || localX <= -64 || localY >= 128 || localY <= -64) return Optional.empty();
+    return Optional.of(new LocalPosition(localX, localY, worldPosition.getPlane()));
+  }
+
   public String getLogo() {
     return null;
   }
 
   public Optional<Image> getLogoImage() {
-    // Return cached image even if empty
+    // Return cached image even if optional is empty, as long as it's not null
     if (logoImage != null) return logoImage;
 
     String logo = getLogo();
@@ -211,20 +242,29 @@ public abstract class ToolkitScript extends JobLoopScript {
     }, timeout);
   }
 
+  public ItemGroupResult pollFramesUntilInventory() {
+    return pollFramesUntilInventory(Collections.emptySet());
+  }
   public ItemGroupResult pollFramesUntilInventory(Set<Integer> itemsToRecognize) {
-    AtomicReference<ItemGroupResult> atomicSnapshot = new AtomicReference<>();
+    Supplier<ItemGroupResult> getSnapshot = () -> {
+      WidgetManager widgetManager = getWidgetManager();
+      if (widgetManager == null) return null;
+      Inventory inventory = widgetManager.getInventory();
+      if (inventory == null) return null;
+      if (!inventory.isOpen()) {
+        inventory.open();
+        pollFramesUntil(inventory::isOpen, 1_800);
+      }
+      return inventory.search(itemsToRecognize);
+    };
+
+    AtomicReference<ItemGroupResult> atomicSnapshot = new AtomicReference<>(getSnapshot.get());
+    // Avoid calling poll if unnecessary since it will clear draw, etc
+    if (atomicSnapshot.get() != null) return atomicSnapshot.get();
 
     pollFramesUntil(
       () -> {
-        WidgetManager widgetManager = getWidgetManager();
-        if (widgetManager == null) return false;
-        Inventory inventory = widgetManager.getInventory();
-        if (inventory == null) return false;
-        if (!inventory.isOpen()) {
-          inventory.open();
-          pollFramesUntil(inventory::isOpen, 1_800);
-        }
-        atomicSnapshot.set(inventory.search(itemsToRecognize));
+        atomicSnapshot.set(getSnapshot.get());
         return atomicSnapshot.get() != null;
       }, Integer.MAX_VALUE);
 
@@ -295,9 +335,12 @@ public abstract class ToolkitScript extends JobLoopScript {
   }
 
   public void pollFramesUntilStill(BooleanSupplier breakCondition) {
-    pollFramesUntilNoChange(() -> getWorldPosition(), 1_200, 0, breakCondition);
+    pollFramesUntilNoChange(this::getWorldPosition, 1_200, 0, breakCondition);
   }
 
+  public void removeFrameListener(Runnable listener) {
+    frameListeners.remove(listener);
+  }
 
   public void removePaintListener(Consumer<Canvas> listener) {
     paintListeners.remove(listener);

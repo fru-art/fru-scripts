@@ -6,7 +6,6 @@ import com.osmb.api.ui.tabs.Inventory;
 import com.osmbtoolkit.job.Job;
 import com.osmbtoolkit.script.ToolkitScript;
 
-import java.util.List;
 import java.util.Set;
 
 public class DropJob extends Job<ToolkitScript> {

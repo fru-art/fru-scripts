@@ -14,11 +14,13 @@ import java.util.stream.Stream;
  * NOTE: This class was deconstructed and recovered from a JAR and also migrated from a legacy framework. Be wary if
  * using it as a reference.
  */
-@ScriptDefinition(author = "fru", name = "Artefact Cleaner", description = "for slow XP lamps in the Varrock Museum",
-  skillCategory = SkillCategory.OTHER, version = 2.0)
+@ScriptDefinition(author = "fru",
+  name = "Artefact Cleaner",
+  threadUrl = "https://wiki.osmb.co.uk/article/artefact-cleaner",
+  skillCategory = SkillCategory.OTHER,
+  version = 2.01)
 public class ArtefactCleanerScript extends ToolkitScript {
-  public static final Set<Integer> ARTEFACTS =
-    Set.of(11176, 11177, 11183, 11178);
+  public static final Set<Integer> ARTEFACTS = Set.of(11176, 11177, 11183, 11178);
   public static final Set<Integer> DROPS = new HashSet<Integer>(Set.of(
     11180,
     11181,
@@ -51,10 +53,9 @@ public class ArtefactCleanerScript extends ToolkitScript {
     9440));
   public static final Set<Integer> INTERACTABLES = new HashSet<Integer>(Set.of());
   public static final Set<Integer> TOOLS = Set.of(675, 670, 676);
-  public static final Set<Integer> allItems =
-    Stream.of(Set.of(4447, 11175), ARTEFACTS, DROPS, INTERACTABLES, TOOLS)
-      .flatMap(Collection::stream)
-      .collect(Collectors.toSet());
+  public static final Set<Integer> allItems = Stream.of(Set.of(4447, 11175), ARTEFACTS, DROPS, INTERACTABLES, TOOLS)
+    .flatMap(Collection::stream)
+    .collect(Collectors.toSet());
   public final ArtefactCleanerOptions scriptOptions = new ArtefactCleanerOptions(this);
 
   public ArtefactCleanerScript(Object scriptCore) {
@@ -112,7 +113,8 @@ public class ArtefactCleanerScript extends ToolkitScript {
 
   @Override
   public String getLogo() {
-    return "https://oldschool.runescape.wiki/images/thumb/Uncleaned_find_detail.png/514px-Uncleaned_find_detail.png?1e5bc";
+    return "https://oldschool.runescape.wiki/images/thumb/Uncleaned_find_detail.png/514px-Uncleaned_find_detail" +
+      ".png?1e5bc";
   }
 
   @Override

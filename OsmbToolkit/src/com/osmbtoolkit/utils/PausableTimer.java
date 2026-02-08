@@ -1,6 +1,7 @@
 package com.osmbtoolkit.utils;
 
 import com.osmbtoolkit.script.ToolkitScript;
+
 import java.util.function.Consumer;
 
 public class PausableTimer {

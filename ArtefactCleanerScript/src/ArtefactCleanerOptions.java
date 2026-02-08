@@ -2,7 +2,6 @@ import com.osmbtoolkit.options.Options;
 import com.osmbtoolkit.script.ToolkitScript;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Separator;
 
 import java.util.List;
 import java.util.Map;

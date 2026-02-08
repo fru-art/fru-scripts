@@ -1,6 +1,7 @@
 package com.osmbtoolkit.utils;
 
 import com.osmb.api.shape.Polygon;
+import com.osmb.api.shape.Rectangle;
 import com.osmb.api.visual.drawing.Canvas;
 import com.osmb.api.visual.image.Image;
 import com.osmbtoolkit.script.ToolkitScript;
@@ -14,9 +15,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.IntConsumer;
 
 public class Paint {
   static public class Origin {
@@ -117,6 +115,30 @@ public class Paint {
   public static void drawPolygon(Canvas canvas, Polygon polygon, Color color) {
     canvas.fillPolygon(polygon, color.getRGB(), 0.3);
     canvas.drawPolygon(polygon, color.getRGB(), 0.6);
+  }
+
+  public static Rectangle drawSmallText(Canvas canvas, String text, int x, int y, Color color) {
+    return drawSmallText(canvas, text, x, y, color, false);
+  }
+  public static Rectangle drawSmallText(Canvas canvas, String text, int x, int y, Color color, boolean centered) {
+    Font font = Paint.RUNESCAPE_SMALL_FONT.deriveFont((float) 16);
+    int textWidth = canvas.getFontMetrics(font).stringWidth(text);
+    if (centered) x -= textWidth / 2;
+    canvas.drawText(text, x + 1, y + 13, Color.BLACK.getRGB(), font);
+    canvas.drawText(text, x, y + 12, color.getRGB(), font);
+    return new Rectangle(x, y, textWidth, font.getSize());
+  }
+
+  public static Rectangle drawText(Canvas canvas, String text, int x, int y, Color color) {
+    return drawText(canvas, text, x, y, color, false, false);
+  }
+  public static Rectangle drawText(Canvas canvas, String text, int x, int y, Color color, boolean bold, boolean centered) {
+    Font font = (bold ? Paint.RUNESCAPE_BOLD_FONT : Paint.RUNESCAPE_FONT).deriveFont((float) 16);
+    int textWidth = canvas.getFontMetrics(font).stringWidth(text);
+    if (centered) x -= textWidth / 2;
+    canvas.drawText(text, x + 1, y + 17, Color.BLACK.getRGB(), font);
+    canvas.drawText(text, x, y + 16, color.getRGB(), font);
+    return new Rectangle(x, y, textWidth, font.getSize());
   }
 
   public static Origin getOrigin(int x, int y) {

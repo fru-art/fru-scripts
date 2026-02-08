@@ -1,12 +1,6 @@
-import com.osmb.api.script.Script;
-import com.osmb.api.shape.Rectangle;
 import com.osmb.api.ui.bank.Bank;
-import com.osmb.api.ui.tabs.Inventory;
 import helper.InventoryHelper;
 import task.Task;
-
-import java.awt.*;
-import java.util.Random;
 
 public class CleanHerbsTask extends Task {
   private final HerbCleanerScript script;

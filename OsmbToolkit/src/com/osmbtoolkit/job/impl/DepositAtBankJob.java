@@ -10,15 +10,15 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-public class BankDepositJob extends Job<ToolkitScript> {
+public class DepositAtBankJob extends Job<ToolkitScript> {
   private final Set<Integer> items;
 
-  public BankDepositJob(ToolkitScript script) {
+  public DepositAtBankJob(ToolkitScript script) {
     super(script);
     this.items = Collections.emptySet();
   }
 
-  public BankDepositJob(ToolkitScript script, Set<Integer> items) {
+  public DepositAtBankJob(ToolkitScript script, Set<Integer> items) {
     super(script);
     this.items = items;
   }
@@ -38,10 +38,5 @@ public class BankDepositJob extends Job<ToolkitScript> {
   public boolean execute() {
     Optional<Bank> bank = Bank.getClosestBank(script);
     return bank.map(value -> items.isEmpty() ? value.depositAll() : value.deposit(items)).orElse(false);
-  }
-
-  @Override
-  public String toString() {
-    return "Deposit at bank";
   }
 }

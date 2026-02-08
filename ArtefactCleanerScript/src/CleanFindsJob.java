@@ -34,7 +34,7 @@ public class CleanFindsJob extends Job<ArtefactCleanerScript> {
       return false;
     }
     int initialDistance = table.getTileDistance(this.script.getWorldPosition());
-    if (!table.interact(new String[]{"Clean"})) {
+    if (!table.interact("Clean")) {
       this.script.log(this.getClass(), "Failed to interact with table");
       return false;
     }

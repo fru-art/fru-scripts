@@ -10,10 +10,10 @@ import java.util.Set;
 
 @ScriptDefinition(
   author = "fru",
-  name = "Dark Wizard",
-  description = "for mid-level combat XP and gathering runes incl. Nature and Chaos runes.",
+  name = "Dark Wizards",
+  threadUrl = "https://wiki.osmb.co.uk/article/dark-wizard-killer-legacy",
   skillCategory = SkillCategory.COMBAT,
-  version = 1.4
+  version = 1.5
 )
 public class DarkWizardScript extends SequenceTaskScript {
   private static final Set<Integer> PARTIAL_VARROCK = Set.of(12597, 12853, 12852);

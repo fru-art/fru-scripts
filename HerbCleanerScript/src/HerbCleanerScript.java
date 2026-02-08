@@ -1,8 +1,6 @@
 import com.osmb.api.item.ItemID;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.script.SkillCategory;
-import com.osmb.api.ui.component.tabs.skill.SkillType;
-import com.osmb.api.ui.tabs.Skill;
 import task.BankDepositTask;
 import task.BankWithdrawTask;
 import task.SequenceTaskScript;
@@ -11,13 +9,11 @@ import task.Task;
 import java.util.List;
 import java.util.Set;
 
-@ScriptDefinition(
-  author = "fru",
+@ScriptDefinition(author = "fru",
   name = "Herb Cleaner",
-  description = "for cleaning herbs for XP and profit",
+  threadUrl = "",
   skillCategory = SkillCategory.HERBLORE,
-  version = 1.5
-)
+  version = 1.6)
 public class HerbCleanerScript extends SequenceTaskScript {
   public static final Set<Integer> CLEAN_HERBS = Set.of(
     ItemID.GUAM_LEAF,
@@ -34,8 +30,7 @@ public class HerbCleanerScript extends SequenceTaskScript {
     ItemID.CADANTINE,
     ItemID.LANTADYME,
     ItemID.DWARF_WEED,
-    ItemID.TORSTOL
-  );
+    ItemID.TORSTOL);
   public static final Set<Integer> GRIMY_HERBS = Set.of(
     ItemID.GRIMY_GUAM_LEAF,
     ItemID.GRIMY_MARRENTILL,
@@ -51,8 +46,7 @@ public class HerbCleanerScript extends SequenceTaskScript {
     ItemID.GRIMY_CADANTINE,
     ItemID.GRIMY_LANTADYME,
     ItemID.GRIMY_DWARF_WEED,
-    ItemID.GRIMY_TORSTOL
-  );
+    ItemID.GRIMY_TORSTOL);
 
 
   public HerbCleanerScript(Object scriptCore) {
@@ -63,11 +57,9 @@ public class HerbCleanerScript extends SequenceTaskScript {
   protected List<Task> getTaskList() {
     return List.of(
       new BankDepositTask(this, null, Set.of()),
-      new BankWithdrawTask(this, null, GRIMY_HERBS, 0, 28)
-        .setIsCritical(true)
-        .setRetryLimit(1), // Withdraw occasionally fails for some reason
-      new CleanHerbsTask(this)
-    );
+      new BankWithdrawTask(this, null, GRIMY_HERBS, 0, 28).setIsCritical(true).setRetryLimit(1),
+      // Withdraw occasionally fails for some reason
+      new CleanHerbsTask(this));
   }
 
   @Override

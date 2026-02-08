@@ -5,8 +5,8 @@ import com.osmb.api.location.area.impl.RectangleArea;
 import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.scene.ObjectManager;
 import com.osmb.api.scene.RSObject;
-import com.osmbtoolkit.script.ToolkitScript;
 import com.osmb.api.ui.WidgetManager;
+import com.osmbtoolkit.script.ToolkitScript;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;

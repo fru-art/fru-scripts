@@ -4,7 +4,7 @@ import com.osmb.api.ui.component.ComponentSearchResult;
 import com.osmb.api.ui.component.minimap.xpcounter.XPDropsComponent;
 import com.osmb.api.visual.ocr.fonts.Font;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 

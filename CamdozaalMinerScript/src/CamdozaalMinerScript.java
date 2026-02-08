@@ -13,9 +13,9 @@ import java.util.Set;
 @ScriptDefinition(
   author = "fru",
   name = "Camdozaal Miner",
-  description = "Mines barronite deposits and opens them and banks loots",
+  threadUrl = "",
   skillCategory = SkillCategory.MINING,
-  version = 1.5
+  version = 1.6
 )
 
 public class CamdozaalMinerScript extends FirstMatchTaskScript {

@@ -75,10 +75,6 @@ public class Door {
     this.worldPosition = position;
   }
 
-  public void debug() {
-    debug(true);
-  }
-
   public void debug(boolean on) {
     if (on) {
       script.addPaintListener(paintListener);
@@ -296,15 +292,9 @@ public class Door {
   }
 
   private Optional<LocalPosition> getLocalPosition(boolean roundToNearest) {
-    SceneManager sceneManager = script.getSceneManager();
-    if (sceneManager == null) return Optional.empty();
-    double x = worldPosition.getPreciseX();
-    double y = worldPosition.getPreciseY();
-    double localX = (roundToNearest ? Math.round(x) : x) - sceneManager.getSceneBaseTileX();
-    double localY = (roundToNearest ? Math.round(y) : y) - sceneManager.getSceneBaseTileY();
-    // Not within current or neighboring region
-    if (localX >= 128 || localX <= -64 || localY >= 128 || localY <= -64) return Optional.empty();
-    return Optional.of(new LocalPosition(localX, localY, worldPosition.getPlane()));
+    double x = roundToNearest ? Math.round(worldPosition.getPreciseX()) : worldPosition.getPreciseX();
+    double y = roundToNearest ? Math.round(worldPosition.getPreciseY()) : worldPosition.getPreciseY();
+    return script.getPreciseLocalPosition(new WorldPosition(x, y, worldPosition.getPlane()));
   }
 
   private Optional<Double> getPerpendicularDistance() {

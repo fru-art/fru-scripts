@@ -10,9 +10,9 @@ import java.util.Set;
 @ScriptDefinition(
   author = "fru",
   name = "Camdozaal Fisher",
-  description = "for non-combat prayer XP and barronite handles",
+  threadUrl = "",
   skillCategory = SkillCategory.PRAYER,
-  version = 1.8
+  version = 1.9
 )
 
 public class CamdozaalFisherScript extends FirstMatchTaskScript {

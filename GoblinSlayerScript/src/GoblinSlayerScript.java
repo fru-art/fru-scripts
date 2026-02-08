@@ -9,10 +9,10 @@ import java.util.List;
 
 @ScriptDefinition(
   author = "fru",
-  name = "Goblin Slayer",
-  description = "Kills goblins and picks up some things",
+  name = "Goblin Killer",
+  threadUrl = "https://wiki.osmb.co.uk/article/goblin-killer-legacy",
   skillCategory = SkillCategory.COMBAT,
-  version = 1.7
+  version = 1.8
 )
 
 public class GoblinSlayerScript extends SequenceTaskScript {
