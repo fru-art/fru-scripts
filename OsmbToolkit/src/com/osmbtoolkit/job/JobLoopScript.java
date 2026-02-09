@@ -22,6 +22,7 @@ public abstract class JobLoopScript extends Script {
       // Initialize on first poll because it's common for jobs to require the script to already be initialized or
       // options to be set before the jobs are created
       this.jobSequence = new JobSequence(this, getJobs());
+      this.jobSequence.addJobChangeListener(this::onJobChange);
     }
     jobSequence.execute();
     return 0;
@@ -52,6 +53,8 @@ public abstract class JobLoopScript extends Script {
     currentJobUpdated = now;
     return currentJob;
   }
+
+  protected void onJobChange(Optional<Job> job) {}
 
   abstract protected List<Job> getJobs();
 }

@@ -18,7 +18,7 @@ import java.util.stream.Stream;
   name = "Artefact Cleaner",
   threadUrl = "https://wiki.osmb.co.uk/article/artefact-cleaner",
   skillCategory = SkillCategory.OTHER,
-  version = 2.01)
+  version = 2.02)
 public class ArtefactCleanerScript extends ToolkitScript {
   public static final Set<Integer> ARTEFACTS = Set.of(11176, 11177, 11183, 11178);
   public static final Set<Integer> DROPS = new HashSet<Integer>(Set.of(

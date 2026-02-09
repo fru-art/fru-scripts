@@ -82,8 +82,11 @@ public class Bank {
       if (atomicUi.get() != null) return true;
       WidgetManager scopedWidgetManager = script.getWidgetManager();
       if (scopedWidgetManager == null) return false;
-      atomicUi.set(scopedWidgetManager.getBank());
-      return atomicUi.get() != null;
+      com.osmb.api.ui.bank.Bank scopedUi = scopedWidgetManager.getBank();
+      if (scopedUi == null || !scopedUi.isVisible()) return false;
+      script.log(getClass(), "Found visible bank UI, breaking");
+      atomicUi.set(scopedUi);
+      return true;
     };
 
     script.pollFramesUntilStill(setUi);

@@ -26,12 +26,20 @@ public class DepositAtBankJob extends Job<ToolkitScript> {
   @Override
   public boolean canExecute() {
     Optional<Bank> bank = Bank.getClosestBank(script);
-    if (bank.isEmpty()) return false;
+    if (bank.isEmpty()) {
+      script.log(this.getClass(), "No closest bank found");
+      return false;
+    }
     ItemGroupResult inventory = script.pollFramesUntilInventory(items);
-    boolean hasItems = (items.isEmpty() && !inventory.isEmpty()) || (!items.isEmpty() && inventory.containsAny(items));
+    boolean hasItems =
+      (items.isEmpty() && !inventory.isEmpty()) || (!items.isEmpty() && inventory.containsAny(items));
+    if (!hasItems) {
+      script.log(this.getClass(), "No items found");
+      return false;
+    }
     WorldPosition position = script.getWorldPosition();
     boolean isNearBank = position != null && bank.get().object.distance(position) < 5;
-    return hasItems && (isNearBank || inventory.isFull());
+    return isNearBank || inventory.isFull();
   }
 
   @Override

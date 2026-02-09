@@ -301,7 +301,8 @@ public abstract class ToolkitScript extends JobLoopScript {
 
     while (true) {
       AtomicReference<T> value = new AtomicReference<>(supplier.get());
-      AtomicBoolean broke = new AtomicBoolean(false);
+      AtomicBoolean broke = new AtomicBoolean(breakCondition.getAsBoolean());
+      if (broke.get()) return true;
       AtomicBoolean changed =  new AtomicBoolean(false);
       AtomicBoolean timedOut =  new AtomicBoolean(false);
 

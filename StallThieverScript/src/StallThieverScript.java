@@ -14,7 +14,7 @@ import java.util.Set;
 @ScriptDefinition(author = "fru",
   name = "Stall Thiever",
   skillCategory = SkillCategory.THIEVING,
-  version = 1.01,
+  version = 1.02,
   threadUrl = "https://wiki.osmb.co.uk/article/stall-thiever")
 public class StallThieverScript extends ToolkitScript {
   public static final Set<Integer> BAKED_GOODS =

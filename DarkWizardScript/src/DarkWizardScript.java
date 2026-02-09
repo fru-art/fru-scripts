@@ -11,9 +11,9 @@ import java.util.Set;
 @ScriptDefinition(
   author = "fru",
   name = "Dark Wizards",
-  threadUrl = "https://wiki.osmb.co.uk/article/dark-wizard-killer-legacy",
+  threadUrl = "https://wiki.osmb.co.uk/article/dark-wizard-killer",
   skillCategory = SkillCategory.COMBAT,
-  version = 1.5
+  version = 1.6
 )
 public class DarkWizardScript extends SequenceTaskScript {
   private static final Set<Integer> PARTIAL_VARROCK = Set.of(12597, 12853, 12852);

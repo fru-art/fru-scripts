@@ -1,7 +1,7 @@
 /* Target the main container specifically */
 .options-root {
     -fx-alignment: center-left;
-    -fx-background-color: #384241;
+    -fx-background-color: #23272a;
     -fx-padding: 20 18 18 18;
     -fx-spacing: 12;
     /* This variable often propagates to all child controls */
