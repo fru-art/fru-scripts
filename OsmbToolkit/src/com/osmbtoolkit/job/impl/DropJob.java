@@ -21,7 +21,7 @@ public class DropJob extends Job<ToolkitScript> {
 
   @Override
   public boolean canExecute() {
-    ItemGroupResult snapshot = script.pollFramesUntilInventory(items);
+    ItemGroupResult snapshot = script.pollFramesUntilInventoryVisible(items);
     return snapshot.containsAny(items) && snapshot.isFull();
   }
 

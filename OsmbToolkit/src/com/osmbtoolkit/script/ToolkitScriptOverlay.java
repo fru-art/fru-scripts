@@ -16,10 +16,6 @@ import java.awt.Point;
 import java.util.Optional;
 
 class ToolkitScriptOverlay {
-  private final Runnable frameListener = this::setGameState;
-
-  private boolean isBankVisible;
-  private boolean isLoggedIn;
   private final ToolkitScript script;
 
   // These store dimensions from the previous frame to draw the background
@@ -28,7 +24,6 @@ class ToolkitScriptOverlay {
 
   public ToolkitScriptOverlay(ToolkitScript script) {
     this.script = script;
-    this.script.addFrameListener(frameListener);
   }
 
   public void draw(Canvas canvas) {
@@ -54,7 +49,7 @@ class ToolkitScriptOverlay {
 
     // 1. Draw Background first (sequential drawing)
     // Uses totalWidth/Height from the end of the last draw call
-    double opacity = isBankVisible ? 0.75 : isLoggedIn ? 0.2 : 0.9;
+    double opacity = script.isGameScreenVisible() ? 0.25 : 0.9;
     canvas.fillRect(
       new Rectangle(origin.originX, origin.originY, totalWidth + smallGap, totalHeight),
       Color.BLACK.getRGB(),
@@ -137,14 +132,5 @@ class ToolkitScriptOverlay {
     // Update dimensions for the NEXT frame
     this.totalWidth = currentFrameMaxWidth;
     this.totalHeight = y + 18; // Final y position + padding
-  }
-
-  private void setGameState() {
-    WidgetManager widgetManager = script.getWidgetManager();
-    Bank bank = widgetManager == null ? null : widgetManager.getBank();
-    GameState gameState = widgetManager == null ? null : widgetManager.getGameState();
-
-    this.isBankVisible = gameState == GameState.LOGGED_IN && bank != null && bank.isVisible();
-    this.isLoggedIn = gameState == GameState.LOGGED_IN;
   }
 }

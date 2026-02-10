@@ -24,6 +24,7 @@ public class CharacterTracker {
   private long lastRequestTime = 0;
   private long frameCount = 0; // Incremented every frame to track "freshness"
   private boolean isListening = false;
+  private boolean isEagerTracking = false;
 
   private static final double MAX_TILES_PER_TICK = 5.0;
   private static final long STALENESS_MS = 5000;
@@ -35,7 +36,7 @@ public class CharacterTracker {
   }
 
   /**
-   * ONLY returns players that were physically found in the current frame.
+   * ONLY returns players that were physically found in the current frame
    */
   public Map<String, WorldPosition> getPlayerPositions() {
     markActivity();
@@ -70,6 +71,9 @@ public class CharacterTracker {
 
   // ... (debug, markActivity, destroy methods)
 
+  /**
+   * Implicitly enables eager tracking if debugging
+   */
   public void debug(boolean shouldDebug) {
     script.removePaintListener(paintListener);
     if (shouldDebug) script.addPaintListener(paintListener);
@@ -82,6 +86,15 @@ public class CharacterTracker {
     }
     script.removePaintListener(paintListener);
     trackedPlayers.clear();
+  }
+
+  public void disableEagerTracking() {
+    isEagerTracking = false;
+  }
+
+  public void enableEagerTracking() {
+    isEagerTracking = true;
+    markActivity();
   }
 
   private void markActivity() {
@@ -152,9 +165,13 @@ public class CharacterTracker {
       String newUuid = UUID.randomUUID().toString();
       trackedPlayers.put(newUuid, new TrackedPlayer(newUuid, newPos, now, frameCount));
     }
+
+    if (isEagerTracking) markActivity();
   }
 
   private void onPaint(Canvas canvas) {
+    if (!script.isGameScreenVisible()) return;
+
     // ... (Drawing logic remains the same, it uses getPlayerPositions() which is now filtered)
     Map<String, WorldPosition> playerPositions = getPlayerPositions();
     Map<String, WorldPosition> stillPlayerPositions = getStillPlayerPositions();

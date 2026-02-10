@@ -28,7 +28,7 @@ public class OpenLampsJob extends Job<ArtefactCleanerScript> {
 
   @Override
   public boolean canExecute() {
-    ItemGroupResult snapshot = script.pollFramesUntilInventory(items);
+    ItemGroupResult snapshot = script.pollFramesUntilInventoryVisible(items);
     return snapshot.containsAny(4447);
   }
 
@@ -36,7 +36,7 @@ public class OpenLampsJob extends Job<ArtefactCleanerScript> {
   public boolean execute() {
     int skillSprite = script.scriptOptions.getSelectedSkillSprite();
     AtomicReference<ItemGroupResult> atomicSnapshot =
-      new AtomicReference<ItemGroupResult>(script.pollFramesUntilInventory(items));
+      new AtomicReference<ItemGroupResult>(script.pollFramesUntilInventoryVisible(items));
 
     while (atomicSnapshot.get().containsAny(4447)) {
       int initialLampCount = atomicSnapshot.get().getAmount(4447);
@@ -84,14 +84,14 @@ public class OpenLampsJob extends Job<ArtefactCleanerScript> {
       script.getFinger().tap(textBounds);
       boolean rubbedLamp = script.pollFramesHuman(
         () -> {
-          atomicSnapshot.set(script.pollFramesUntilInventory(items));
+          atomicSnapshot.set(script.pollFramesUntilInventoryVisible(items));
           return atomicSnapshot.get().getAmount(4447) < initialLampCount;
         }, 3_600, true);
       if (rubbedLamp) continue;
       script.log(this.getClass(), "Failed to reduce lamp count from " + initialLampCount);
       return false;
     }
-    return script.pollFramesHuman(() -> !script.pollFramesUntilInventory(items).contains(4447), 1200, true);
+    return script.pollFramesHuman(() -> !script.pollFramesUntilInventoryVisible(items).contains(4447), 1200, true);
   }
 
   private Rectangle findConfirmBounds() {

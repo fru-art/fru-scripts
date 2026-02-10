@@ -14,7 +14,7 @@ import java.util.Set;
 @ScriptDefinition(author = "fru",
   name = "Stall Thiever",
   skillCategory = SkillCategory.THIEVING,
-  version = 1.02,
+  version = 1.03,
   threadUrl = "https://wiki.osmb.co.uk/article/stall-thiever")
 public class StallThieverScript extends ToolkitScript {
   public static final Set<Integer> BAKED_GOODS =
@@ -91,7 +91,7 @@ public class StallThieverScript extends ToolkitScript {
   }
 
   @Override
-  protected String getSourceUrl() {
+  protected String getVersionSourceUrl() {
     return "https://github.com/fru-art/fru-scripts/blob/master/StallThieverScript/src/StallThieverScript.java";
   }
 }

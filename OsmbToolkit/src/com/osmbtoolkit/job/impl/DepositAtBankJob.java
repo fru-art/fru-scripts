@@ -30,7 +30,7 @@ public class DepositAtBankJob extends Job<ToolkitScript> {
       script.log(this.getClass(), "No closest bank found");
       return false;
     }
-    ItemGroupResult inventory = script.pollFramesUntilInventory(items);
+    ItemGroupResult inventory = script.pollFramesUntilInventoryVisible(items);
     boolean hasItems =
       (items.isEmpty() && !inventory.isEmpty()) || (!items.isEmpty() && inventory.containsAny(items));
     if (!hasItems) {

@@ -8,7 +8,9 @@ import com.osmb.api.screen.Screen;
 import com.osmb.api.script.ScriptDefinition;
 import com.osmb.api.shape.Polygon;
 import com.osmb.api.shape.Shape;
+import com.osmb.api.ui.GameState;
 import com.osmb.api.ui.WidgetManager;
+import com.osmb.api.ui.bank.Bank;
 import com.osmb.api.ui.tabs.Inventory;
 import com.osmb.api.visual.PixelCluster;
 import com.osmb.api.visual.SearchablePixel;
@@ -48,6 +50,8 @@ public abstract class ToolkitScript extends JobLoopScript {
   private final List<WeakReference<Consumer<Boolean>>> pauseListeners = new ArrayList<>();
 
   private Optional<Image> authorLogoImage;
+  private boolean isBankVisible;
+  private boolean isLoggedIn;
   private Optional<Image> logoImage;
 
   public ToolkitScript(Object scriptCore) {
@@ -133,6 +137,14 @@ public abstract class ToolkitScript extends JobLoopScript {
         listener.run();
       }
     }
+
+    // Set game state
+    WidgetManager widgetManager = getWidgetManager();
+    Bank bank = widgetManager == null ? null : widgetManager.getBank();
+    GameState gameState = widgetManager == null ? null : widgetManager.getGameState();
+
+    this.isBankVisible = gameState == GameState.LOGGED_IN && bank != null && bank.isVisible();
+    this.isLoggedIn = gameState == GameState.LOGGED_IN;
   }
 
   @Override
@@ -234,6 +246,14 @@ public abstract class ToolkitScript extends JobLoopScript {
     return logoImage;
   }
 
+  /**
+   * In addition to ease-of-access, this method also decouples UI visibility checks from hidden usages of 'onPaint',
+   * which could cause stack overflow if checked within 'onPaint'.
+   */
+  public boolean isGameScreenVisible() {
+    return isLoggedIn && !isBankVisible;
+  }
+
   public <T> boolean pollFramesUntilChange(Supplier<T> supplier, int timeout) {
     AtomicReference<T> value = new AtomicReference<>(supplier.get());
     return pollFramesUntil(() -> {
@@ -242,10 +262,22 @@ public abstract class ToolkitScript extends JobLoopScript {
     }, timeout);
   }
 
-  public ItemGroupResult pollFramesUntilInventory() {
-    return pollFramesUntilInventory(Collections.emptySet());
+  public boolean pollFramesUntiLPositionReached(WorldPosition destination, BooleanSupplier breakCondition) {
+    BooleanSupplier reachedCondition = () -> {
+      if (breakCondition.getAsBoolean()) return true;
+      WorldPosition position = getWorldPosition();
+      return position != null && position.distanceTo(destination) <= 1.1;
+    };
+
+    if (!pollFramesUntilMovement(1_800, reachedCondition)) return false;
+    pollFramesUntilNoMovement(reachedCondition);
+    return true;
   }
-  public ItemGroupResult pollFramesUntilInventory(Set<Integer> itemsToRecognize) {
+
+  public ItemGroupResult pollFramesUntilInventoryVisible() {
+    return pollFramesUntilInventoryVisible(Collections.emptySet());
+  }
+  public ItemGroupResult pollFramesUntilInventoryVisible(Set<Integer> itemsToRecognize) {
     Supplier<ItemGroupResult> getSnapshot = () -> {
       WidgetManager widgetManager = getWidgetManager();
       if (widgetManager == null) return null;
@@ -272,13 +304,15 @@ public abstract class ToolkitScript extends JobLoopScript {
     return atomicSnapshot.get();
   }
 
-  public void pollFramesUntilMoving() {
-    pollFramesUntilMoving(null);
+  public boolean pollFramesUntilMovement() {
+    return pollFramesUntilMovement(Integer.MAX_VALUE, null);
   }
-
-  public void pollFramesUntilMoving(BooleanSupplier breakCondition) {
+  public boolean pollFramesUntilMovement(int timeout) {
+    return pollFramesUntilMovement(timeout, null);
+  }
+  public boolean pollFramesUntilMovement(int timeout, BooleanSupplier breakCondition) {
     AtomicReference<WorldPosition> lastPosition = new AtomicReference<>(getWorldPosition());
-    pollFramesUntil(
+    return pollFramesUntil(
       () -> {
         if (breakCondition != null && breakCondition.getAsBoolean()) return true;
         WorldPosition position = getWorldPosition();
@@ -290,7 +324,7 @@ public abstract class ToolkitScript extends JobLoopScript {
         }
 
         return true;
-      }, Integer.MAX_VALUE);
+      }, timeout);
   }
 
   public <T> boolean pollFramesUntilNoChange(Supplier<T> supplier, int changeTimeout) {
@@ -331,12 +365,17 @@ public abstract class ToolkitScript extends JobLoopScript {
     }
   }
 
-  public void pollFramesUntilStill() {
-    pollFramesUntilStill(() -> false);
+  public void pollFramesUntilNoMovement() {
+    pollFramesUntilNoMovement(() -> false);
   }
 
-  public void pollFramesUntilStill(BooleanSupplier breakCondition) {
-    pollFramesUntilNoChange(this::getWorldPosition, 1_200, 0, breakCondition);
+  public void pollFramesUntilNoMovement(BooleanSupplier breakCondition) {
+    pollFramesUntilNoChange(() -> {
+      // Don't return world position directly; I'm not sure how object equality works for world positions
+      WorldPosition position = getWorldPosition();
+      if (position == null) return "";
+      return String.format("%.1f|%.1f", position.getPreciseX(), position.getPreciseY());
+    }, 1_200, 0, breakCondition);
   }
 
   public void removeFrameListener(Runnable listener) {
@@ -402,7 +441,7 @@ public abstract class ToolkitScript extends JobLoopScript {
     return Collections.emptyList();
   }
 
-  protected String getSourceUrl() {
+  protected String getVersionSourceUrl() {
     return null;
   }
 
@@ -418,7 +457,7 @@ public abstract class ToolkitScript extends JobLoopScript {
   }
 
   private Optional<Double> getRemoteVersion() {
-    String jarUrl = getSourceUrl();
+    String jarUrl = getVersionSourceUrl();
     if (jarUrl == null) return Optional.empty();
     String fileContent;
 

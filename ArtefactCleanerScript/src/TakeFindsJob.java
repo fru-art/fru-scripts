@@ -26,7 +26,7 @@ public class TakeFindsJob extends Job<ToolkitScript> {
 
   @Override
   public boolean canExecute() {
-    ItemGroupResult snapshot = script.pollFramesUntilInventory(items);
+    ItemGroupResult snapshot = script.pollFramesUntilInventoryVisible(items);
     return snapshot.containsAll(ArtefactCleanerScript.TOOLS) && !snapshot.isFull();
   }
 
@@ -42,13 +42,13 @@ public class TakeFindsJob extends Job<ToolkitScript> {
       this.script.log(this.getClass(), "Failed to interact with rocks");
       return false;
     }
-    script.pollFramesUntilStill();
+    script.pollFramesUntilNoMovement();
     script.pollFramesUntilNoChange(
-      () -> script.pollFramesUntilInventory(items).getAmount(11175),
+      () -> script.pollFramesUntilInventoryVisible(items).getAmount(11175),
       3_000,
       Integer.MAX_VALUE,
-      () -> script.pollFramesUntilInventory(items).isFull());
+      () -> script.pollFramesUntilInventoryVisible(items).isFull());
 
-    return script.pollFramesUntilInventory(items).isFull();
+    return script.pollFramesUntilInventoryVisible(items).isFull();
   }
 }

@@ -21,7 +21,7 @@ public class CleanFindsJob extends Job<ArtefactCleanerScript> {
 
   @Override
   public boolean canExecute() {
-    ItemGroupResult snapshot = script.pollFramesUntilInventory(items);
+    ItemGroupResult snapshot = script.pollFramesUntilInventoryVisible(items);
     return snapshot.containsAll(ArtefactCleanerScript.TOOLS) && snapshot.contains(ItemID.UNCLEANED_FIND) && snapshot.isFull();
   }
 
@@ -38,12 +38,12 @@ public class CleanFindsJob extends Job<ArtefactCleanerScript> {
       this.script.log(this.getClass(), "Failed to interact with table");
       return false;
     }
-    script.pollFramesUntilStill();
+    script.pollFramesUntilNoMovement();
     script.pollFramesUntilNoChange(
-      () -> script.pollFramesUntilInventory(items).getAmount(ItemID.UNCLEANED_FIND),
+      () -> script.pollFramesUntilInventoryVisible(items).getAmount(ItemID.UNCLEANED_FIND),
       6_000,
       Integer.MAX_VALUE,
-      () -> !script.pollFramesUntilInventory(items).contains(ItemID.UNCLEANED_FIND));
-    return !script.pollFramesUntilInventory(items).contains(ItemID.UNCLEANED_FIND);
+      () -> !script.pollFramesUntilInventoryVisible(items).contains(ItemID.UNCLEANED_FIND));
+    return !script.pollFramesUntilInventoryVisible(items).contains(ItemID.UNCLEANED_FIND);
   }
 }

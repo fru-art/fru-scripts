@@ -21,7 +21,7 @@ public class TurnInArtefactsJob extends Job<ToolkitScript> {
 
   @Override
   public boolean canExecute() {
-    ItemGroupResult snapshot = script.pollFramesUntilInventory(items);
+    ItemGroupResult snapshot = script.pollFramesUntilInventoryVisible(items);
     return snapshot.containsAny(ArtefactCleanerScript.ARTEFACTS) && !snapshot.contains(11175) && !snapshot.containsAny(
       4447);
   }
@@ -38,8 +38,8 @@ public class TurnInArtefactsJob extends Job<ToolkitScript> {
       this.script.log(this.getClass(), "Failed to interact with crate");
       return false;
     }
-    script.pollFramesUntilStill();
-    script.pollFramesUntilNoChange(() -> script.pollFramesUntilInventory(items).getAmount(ArtefactCleanerScript.ARTEFACTS), 3_600);
-    return !script.pollFramesUntilInventory(items).containsAny(ArtefactCleanerScript.ARTEFACTS);
+    script.pollFramesUntilNoMovement();
+    script.pollFramesUntilNoChange(() -> script.pollFramesUntilInventoryVisible(items).getAmount(ArtefactCleanerScript.ARTEFACTS), 3_600);
+    return !script.pollFramesUntilInventoryVisible(items).containsAny(ArtefactCleanerScript.ARTEFACTS);
   }
 }

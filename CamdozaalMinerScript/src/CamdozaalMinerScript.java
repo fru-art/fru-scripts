@@ -13,9 +13,9 @@ import java.util.Set;
 @ScriptDefinition(
   author = "fru",
   name = "Camdozaal Miner",
-  threadUrl = "",
+  threadUrl = "https://wiki.osmb.co.uk/article/camdozaal-miner",
   skillCategory = SkillCategory.MINING,
-  version = 1.6
+  version = 1.7
 )
 
 public class CamdozaalMinerScript extends FirstMatchTaskScript {

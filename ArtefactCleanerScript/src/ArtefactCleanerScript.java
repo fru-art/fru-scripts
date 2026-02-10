@@ -118,7 +118,7 @@ public class ArtefactCleanerScript extends ToolkitScript {
   }
 
   @Override
-  protected String getSourceUrl() {
+  protected String getVersionSourceUrl() {
     return "https://github.com/fru-art/fru-scripts/blob/master/ArtefactCleanerScript/src/ArtefactCleanerScript.java";
   }
 }

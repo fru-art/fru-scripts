@@ -26,7 +26,7 @@ public class CleanInventoryJob extends Job<ArtefactCleanerScript> {
 
   @Override
   public boolean canExecute() {
-    ItemGroupResult snapshot = script.pollFramesUntilInventory(cleanables);
+    ItemGroupResult snapshot = script.pollFramesUntilInventoryVisible(cleanables);
     return snapshot.containsAny(cleanables);
   }
 
@@ -43,7 +43,7 @@ public class CleanInventoryJob extends Job<ArtefactCleanerScript> {
       this.script.log(this.getClass(), "Failed to clean drops");
     }
     if ((hotkeys = this.script.getWidgetManager().getHotkeys()) != null) {
-      snapshot = script.pollFramesUntilInventory(ArtefactCleanerScript.allItems);
+      snapshot = script.pollFramesUntilInventoryVisible(ArtefactCleanerScript.allItems);
       Set<Integer> occupiedSlots = snapshot.getOccupiedSlots();
       Set<Integer> recognizedSlots =
         snapshot.getRecognisedItems().stream().map(ItemSearchResult::getSlot).collect(Collectors.toSet());
@@ -62,7 +62,7 @@ public class CleanInventoryJob extends Job<ArtefactCleanerScript> {
         hotkeys.setTapToDropEnabled(false);
         this.script.log(this.getClass(), "Disabled tap to drop");
       }
-      snapshot = script.pollFramesUntilInventory(ArtefactCleanerScript.allItems);
+      snapshot = script.pollFramesUntilInventoryVisible(ArtefactCleanerScript.allItems);
       snapshot.getAllOfItems(ArtefactCleanerScript.INTERACTABLES).forEach(interactables -> {
         if (!interactables.interact()) {
           this.script.log(this.getClass(), "Failed to clean interactables");
@@ -71,7 +71,7 @@ public class CleanInventoryJob extends Job<ArtefactCleanerScript> {
     }
 
     return this.script.pollFramesHuman(
-      () -> !script.pollFramesUntilInventory(cleanables).containsAny(cleanables),
+      () -> !script.pollFramesUntilInventoryVisible(cleanables).containsAny(cleanables),
       1200,
       true);
   }

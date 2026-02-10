@@ -38,7 +38,7 @@ public class Bank {
       return false;
     }
 
-    ItemGroupResult snapshot = script.pollFramesUntilInventory(items);
+    ItemGroupResult snapshot = script.pollFramesUntilInventoryVisible(items);
     for (Integer item : items) {
       int count = snapshot.getAmount(item);
       if (count <= 0) continue;
@@ -76,6 +76,7 @@ public class Bank {
 
     String action = BANK_TO_ACTION_MAP.get(object.getName());
     object.interact(action);
+    script.log(getClass(), "Interacted " + object.getName());
 
     AtomicReference<com.osmb.api.ui.bank.Bank> atomicUi = new AtomicReference<>();
     BooleanSupplier setUi = () -> {
@@ -89,9 +90,7 @@ public class Bank {
       return true;
     };
 
-    script.pollFramesUntilStill(setUi);
-    script.pollFramesUntil(setUi, 1_800);
-
+    script.pollFramesUntiLPositionReached(object.getWorldPosition(), setUi);
     return (atomicUi.get() == null || !atomicUi.get().isVisible()) ? Optional.empty() : Optional.of(atomicUi.get());
   }
 

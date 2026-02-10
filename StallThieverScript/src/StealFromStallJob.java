@@ -63,7 +63,7 @@ public class StealFromStallJob extends Job<ToolkitScript> {
       return false;
     }
 
-    if (script.pollFramesUntilInventory(items).isFull()) {
+    if (script.pollFramesUntilInventoryVisible(items).isFull()) {
       script.log(getClass(), "Skipped because inventory is full");
       return false;
     }
@@ -129,11 +129,11 @@ public class StealFromStallJob extends Job<ToolkitScript> {
 
     assert itemClusterRef.get().isPresent();
 
-    int initialItemsCount = script.pollFramesUntilInventory(items).getAmount(items);
+    int initialItemsCount = script.pollFramesUntilInventoryVisible(items).getAmount(items);
     script.getFinger().tapGameScreen(stall.getConvexHull().getResized(stallTapBoundsModifier));
 
     boolean receivedItems = script.pollFramesUntil(() -> {
-      int itemsCount = script.pollFramesUntilInventory(items).getAmount(items);
+      int itemsCount = script.pollFramesUntilInventoryVisible(items).getAmount(items);
       return itemsCount > initialItemsCount;
     }, 1_800);
     if (!receivedItems) {

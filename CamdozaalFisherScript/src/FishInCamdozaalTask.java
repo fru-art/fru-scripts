@@ -1,10 +1,13 @@
 import com.osmb.api.item.ItemID;
+import com.osmb.api.item.ItemSearchResult;
 import com.osmb.api.location.area.impl.RectangleArea;
 import com.osmb.api.location.position.types.WorldPosition;
 import com.osmb.api.script.Script;
 import com.osmb.api.shape.Polygon;
 import com.osmb.api.shape.Rectangle;
+import com.osmb.api.visual.ImageAnalyzer;
 import com.osmb.api.visual.color.ColorUtils;
+import com.osmb.api.visual.image.ImageSearchResult;
 import com.osmb.api.visual.image.SearchableImage;
 import com.osmb.api.walker.pathing.CollisionManager;
 import helper.EntityHelper;
@@ -22,12 +25,13 @@ public class FishInCamdozaalTask extends Task {
   private static final List<WorldPosition> FISHING_POSITIONS =
     List.copyOf(new RectangleArea(2926, 5776, 2, 8, 0).getAllWorldPositions());
   private static final int TILE_HEIGHT = 15;
+
+
   /**
-   * We have two detection images for the tetra tile, one for the top half and one for the bottom half. This is because
+   * We have two detection images for the item tiles, one for the top half and one for the bottom half. This is because
    * when zoomed out adjacent tile images can overlap.
    */
-  private final SearchableImage tetraTileImageTop;
-  private final SearchableImage tetraTileImageBottom;
+  private final List<SearchableImage> tileImages = new ArrayList<>();
 
   private final EntityHelper entityHelper;
   private final InventoryHelper inventoryHelper;
@@ -39,12 +43,10 @@ public class FishInCamdozaalTask extends Task {
     inventoryHelper = new InventoryHelper(script, Collections.emptySet());
     waitHelper = new WaitHelper(script);
 
-    // Initialize tetra tile detection images
-    SearchableImage[] itemImages = script.getItemManager().getItem(ItemID.RAW_TETRA, true);
-    tetraTileImageTop = itemImages[itemImages.length - 1];
-    tetraTileImageBottom = new SearchableImage(tetraTileImageTop.copy(), tetraTileImageTop.getToleranceComparator(), tetraTileImageTop.getColorModel());
-    makeHalfTransparent(tetraTileImageTop, true);
-    makeHalfTransparent(tetraTileImageBottom, false);
+    addTileImages(ItemID.RAW_TETRA);
+    addTileImages(ItemID.RAW_CATFISH);
+    addTileImages(ItemID.RAW_GUPPY);
+    addTileImages(ItemID.RAW_CAVEFISH);
   }
 
   public boolean canExecute() {
@@ -71,8 +73,8 @@ public class FishInCamdozaalTask extends Task {
       (int) (distanceToFishingSpot * 1_000),
       false,
       true)) {
-        script.log(getClass(), "Failed to reach fishing spot");
-        return false;
+      script.log(getClass(), "Failed to reach fishing spot");
+      return false;
     }
 
     // Wait for fishing to stop
@@ -82,8 +84,10 @@ public class FishInCamdozaalTask extends Task {
     return waitHelper.waitForNoChange(
       "Fishing",
       entityHelper::isPlayerIdling,
-      5_000, // Each iteration of fishing animation should not take more than 5s
-      5 * 60_000, // Fishing a full inventory should not take more than 5m
+      5_000,
+      // Each iteration of fishing animation should not take more than 5s
+      5 * 60_000,
+      // Fishing a full inventory should not take more than 5m
       () -> {
         // Inventory full
         if (inventoryHelper.getSnapshot().isFull()) {
@@ -96,24 +100,36 @@ public class FishInCamdozaalTask extends Task {
           return true;
         }
         return false;
-      }
-    );
+      });
+  }
+
+  private void addTileImages(int itemId) {
+    SearchableImage[] itemImages = script.getItemManager().getItem(itemId, true);
+    SearchableImage imageTop = itemImages[itemImages.length - 1];
+    SearchableImage imageBottom =
+      new SearchableImage(imageTop.copy(), imageTop.getToleranceComparator(), imageTop.getColorModel());
+    makeHalfTransparent(imageTop, true);
+    makeHalfTransparent(imageBottom, false);
+    tileImages.add(imageTop);
+    tileImages.add(imageBottom);
   }
 
   private List<WorldPosition> getFishingSpots() {
     List<WorldPosition> fishingSpots = new ArrayList<>();
 
     for (WorldPosition fishingSpot : FISHING_POSITIONS) {
-      if (checkForTileItem(fishingSpot, tetraTileImageBottom) ||
-        checkForTileItem(fishingSpot, tetraTileImageTop)) {
-        fishingSpots.add(fishingSpot);
+      for (SearchableImage tileImage : tileImages) {
+        if (!checkForTileItem(fishingSpot, tileImage)) continue;
 
+        fishingSpots.add(fishingSpot);
         // Draw fishing spot
-        script.getScreen().queueCanvasDrawable("foundFishingSpot=" + fishingSpot, canvas -> {
-          Polygon tilePoly = script.getSceneProjector().getTilePoly(fishingSpot);
-          canvas.fillPolygon(tilePoly, Color.GREEN.getRGB(), 0.3);
-          canvas.drawPolygon(tilePoly, Color.GREEN.getRGB(), 1);
-        });
+        script.getScreen().queueCanvasDrawable(
+          "foundFishingSpot=" + fishingSpot, canvas -> {
+            Polygon tilePoly = script.getSceneProjector().getTilePoly(fishingSpot);
+            canvas.fillPolygon(tilePoly, Color.GREEN.getRGB(), 0.3);
+            canvas.drawPolygon(tilePoly, Color.GREEN.getRGB(), 1);
+          });
+        break;
       }
     }
 
@@ -140,22 +156,29 @@ public class FishInCamdozaalTask extends Task {
     Point tileItemPoint = new Point(point.x - (itemImage.width / 2), point.y - (itemImage.height / 2) - 20);
     int radius = 6;
 
-    for (int x = tileItemPoint.x - radius; x <= tileItemPoint.x + radius; x++) {
-      for (int y = tileItemPoint.y - radius; y <= tileItemPoint.y + radius; y++) {
-        if (script.getImageAnalyzer().isSubImageAt(x, y, itemImage) != null) {
-          script.getScreen().queueCanvasDrawable("tilePosition=" + tilePosition, canvas -> {
-            com.osmb.api.shape.Rectangle tileItemArea = new Rectangle(
-              tileItemPoint.x - radius,
-              tileItemPoint.y - radius,
-              itemImage.height + (radius * 2),
-              itemImage.height + (radius * 2));
-            canvas.fillRect(tileItemArea, Color.BLUE.getRGB(), 0.3);
-            canvas.drawRect(tileItemArea, Color.BLUE.getRGB(), 1);
-          });
+    com.osmb.api.shape.Rectangle tileItemArea = new Rectangle(
+      tileItemPoint.x - radius,
+      tileItemPoint.y - radius,
+      itemImage.height + (radius * 2),
+      itemImage.height + (radius * 2));
+    ImageAnalyzer imageAnalyzer = script.getImageAnalyzer();
+    if (imageAnalyzer == null) return false;
 
-          return true;
-        }
-      }
+    ImageSearchResult result = imageAnalyzer.findLocation(tileItemArea, itemImage);
+    boolean found = result != null;
+
+    script.getScreen().queueCanvasDrawable(
+      "tilePosition=" + tilePosition, canvas -> {
+        if (found) canvas.fillRect(tileItemArea, Color.GREEN.getRGB(), 0.3);
+        canvas.drawRect(
+          tileItemArea,
+          found ? Color.GREEN.getRGB() : Color.WHITE.getRGB(),
+          1);
+      });
+
+    if (found) {
+      script.log(getClass(), "Found " + result.getScore());
+      return true;
     }
 
     return false;
