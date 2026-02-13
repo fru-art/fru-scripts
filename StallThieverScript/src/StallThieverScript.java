@@ -14,7 +14,7 @@ import java.util.Set;
 @ScriptDefinition(author = "fru",
   name = "Stall Thiever",
   skillCategory = SkillCategory.THIEVING,
-  version = 1.03,
+  version = 1.04,
   threadUrl = "https://wiki.osmb.co.uk/article/stall-thiever")
 public class StallThieverScript extends ToolkitScript {
   public static final Set<Integer> BAKED_GOODS =
@@ -43,7 +43,7 @@ public class StallThieverScript extends ToolkitScript {
   }
 
   @Override
-  protected List<Job> getJobs() {
+  public List<Job> getJobs() {
     if (scriptOptions.bakersStallRadioButton.isSelected()) {
       return List.of(
         scriptOptions.bankCheckbox.isSelected() ? new DepositAtBankJob(this) : new DropJob(this, BAKED_GOODS),
@@ -76,12 +76,12 @@ public class StallThieverScript extends ToolkitScript {
   }
 
   @Override
-  protected List<Options> getOptions() {
+  public List<Options> getOptions() {
     return List.of(this.scriptOptions);
   }
 
   @Override
-  protected List<Integer> getRequiredRegions() {
+  public List<Integer> getRequiredRegions() {
     return List.of(
       10547, // Baker's stall
       12853, // Varrock bank
@@ -91,7 +91,7 @@ public class StallThieverScript extends ToolkitScript {
   }
 
   @Override
-  protected String getVersionSourceUrl() {
-    return "https://github.com/fru-art/fru-scripts/blob/master/StallThieverScript/src/StallThieverScript.java";
+  public String getVersionSource() {
+    return "https://raw.githubusercontent.com/fru-art/fru-scripts/refs/heads/master/StallThieverScript/src/StallThieverScript.java";
   }
 }

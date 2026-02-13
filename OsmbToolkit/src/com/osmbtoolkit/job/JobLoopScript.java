@@ -54,7 +54,7 @@ public abstract class JobLoopScript extends Script {
     return currentJob;
   }
 
-  protected void onJobChange(Optional<Job> job) {}
+  public void onJobChange(Optional<Job> job) {}
 
-  abstract protected List<Job> getJobs();
+  public abstract List<Job> getJobs();
 }

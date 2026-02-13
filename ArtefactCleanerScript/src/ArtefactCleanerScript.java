@@ -18,7 +18,7 @@ import java.util.stream.Stream;
   name = "Artefact Cleaner",
   threadUrl = "https://wiki.osmb.co.uk/article/artefact-cleaner",
   skillCategory = SkillCategory.OTHER,
-  version = 2.02)
+  version = 2.03)
 public class ArtefactCleanerScript extends ToolkitScript {
   public static final Set<Integer> ARTEFACTS = Set.of(11176, 11177, 11183, 11178);
   public static final Set<Integer> DROPS = new HashSet<Integer>(Set.of(
@@ -92,7 +92,7 @@ public class ArtefactCleanerScript extends ToolkitScript {
   }
 
   @Override
-  protected List<Job> getJobs() {
+  public List<Job> getJobs() {
     return List.of(
       new OpenLampsJob(this),
       new CleanFindsJob(this),
@@ -102,7 +102,7 @@ public class ArtefactCleanerScript extends ToolkitScript {
   }
 
   @Override
-  protected List<Integer> getRequiredRegions() {
+  public List<Integer> getRequiredRegions() {
     return List.of(12853, 13109);
   }
 
@@ -118,7 +118,7 @@ public class ArtefactCleanerScript extends ToolkitScript {
   }
 
   @Override
-  protected String getVersionSourceUrl() {
-    return "https://github.com/fru-art/fru-scripts/blob/master/ArtefactCleanerScript/src/ArtefactCleanerScript.java";
+  public String getVersionSource() {
+    return "https://raw.githubusercontent.com/fru-art/fru-scripts/refs/heads/master/ArtefactCleanerScript/src/ArtefactCleanerScript.java";
   }
 }

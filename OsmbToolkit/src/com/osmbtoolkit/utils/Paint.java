@@ -2,6 +2,7 @@ package com.osmbtoolkit.utils;
 
 import com.osmb.api.shape.Polygon;
 import com.osmb.api.shape.Rectangle;
+import com.osmb.api.visual.PixelCluster;
 import com.osmb.api.visual.drawing.Canvas;
 import com.osmb.api.visual.image.Image;
 import com.osmbtoolkit.script.ToolkitScript;
@@ -13,6 +14,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -82,6 +85,30 @@ public class Paint {
 
     g2.dispose();
     return new Image(output);
+  }
+
+  public static void drawCluster(Canvas canvas, PixelCluster cluster, Color color) {
+    List<Point> points = cluster.getPoints();
+    if (points.isEmpty()) return;
+
+    int minX = points.stream().mapToInt(p -> p.x).min().orElse(0);
+    int minY = points.stream().mapToInt(p -> p.y).min().orElse(0);
+    int maxX = points.stream().mapToInt(p -> p.x).max().orElse(0);
+    int maxY = points.stream().mapToInt(p -> p.y).max().orElse(0);
+    int width = maxX - minX + 1;
+    int height = maxY - minY + 1;
+    int[] pixels = new int[width * height];
+    Arrays.fill(pixels, 0);
+
+    int rgb = color.getRGB();
+    for (Point p2 : points) {
+      int relX = p2.x - minX;
+      int relY = p2.y - minY;
+      int index = relY * width + relX;
+      pixels[index] = rgb;
+    }
+
+    canvas.drawPixels(pixels, minX, minY, width, height);
   }
 
   public static void drawImage(Canvas canvas, Image image, int x, int y) {

@@ -11,15 +11,20 @@ import java.util.Optional;
 import java.util.Set;
 
 public class DepositAtBankJob extends Job<ToolkitScript> {
+  private final boolean ignoreMode;
   private final Set<Integer> items;
 
   public DepositAtBankJob(ToolkitScript script) {
-    super(script);
-    this.items = Collections.emptySet();
+    this(script, Collections.emptySet());
   }
 
   public DepositAtBankJob(ToolkitScript script, Set<Integer> items) {
+    this(script, items, false);
+  }
+
+  public DepositAtBankJob(ToolkitScript script, Set<Integer> items, boolean ignoreMode) {
     super(script);
+    this.ignoreMode = ignoreMode;
     this.items = items;
   }
 
@@ -45,6 +50,14 @@ public class DepositAtBankJob extends Job<ToolkitScript> {
   @Override
   public boolean execute() {
     Optional<Bank> bank = Bank.getClosestBank(script);
-    return bank.map(value -> items.isEmpty() ? value.depositAll() : value.deposit(items)).orElse(false);
+    if (bank.isEmpty()) return false;
+
+    if (items == null || items.isEmpty()) {
+      return bank.get().depositAll();
+    } else if (ignoreMode) {
+      return bank.get().depositAll(items);
+    } else {
+      return bank.get().deposit(items);
+    }
   }
 }

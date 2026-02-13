@@ -150,7 +150,6 @@ public abstract class ToolkitScript extends JobLoopScript {
   @Override
   public void onPaint(Canvas canvas) {
     super.onPaint(canvas);
-    if (canvas == null) return;
 
     // Notify and clean up dead references in one pass
     Iterator<WeakReference<Consumer<Canvas>>> iterator = paintListeners.iterator();
@@ -195,7 +194,7 @@ public abstract class ToolkitScript extends JobLoopScript {
     // Return cached image even if optional is empty, as long as it's not null
     if (authorLogoImage != null) return authorLogoImage;
 
-    String authorLogo =  getAuthorLogo();
+    String authorLogo = getAuthorLogo();
     if (authorLogo == null) return Optional.empty();
 
     authorLogoImage = Paint.loadImage(authorLogo);
@@ -256,26 +255,34 @@ public abstract class ToolkitScript extends JobLoopScript {
 
   public <T> boolean pollFramesUntilChange(Supplier<T> supplier, int timeout) {
     AtomicReference<T> value = new AtomicReference<>(supplier.get());
-    return pollFramesUntil(() -> {
-      Object nextValue = supplier.get();
-      return !nextValue.equals(value.get());
-    }, timeout);
+    return pollFramesUntil(
+      () -> {
+        Object nextValue = supplier.get();
+        return !nextValue.equals(value.get());
+      }, timeout);
   }
 
-  public boolean pollFramesUntiLPositionReached(WorldPosition destination, BooleanSupplier breakCondition) {
+  public boolean pollFramesUntilPositionReached(WorldPosition destination, BooleanSupplier breakCondition) {
     BooleanSupplier reachedCondition = () -> {
       if (breakCondition.getAsBoolean()) return true;
       WorldPosition position = getWorldPosition();
       return position != null && position.distanceTo(destination) <= 1.1;
     };
 
-    if (!pollFramesUntilMovement(1_800, reachedCondition)) return false;
+    if (!pollFramesUntilMovement(1_800, reachedCondition)) {
+      log(getClass(), "pollFramesUntilPositionReached: Failed to start moving");
+      return false;
+    }
     pollFramesUntilNoMovement(reachedCondition);
+    log(getClass(), "pollFramesUntilPositionReached: Stopped moving");
     return true;
   }
 
   public ItemGroupResult pollFramesUntilInventoryVisible() {
     return pollFramesUntilInventoryVisible(Collections.emptySet());
+  }
+  public ItemGroupResult pollFramesUntilInventoryVisible(Integer item) {
+    return this.pollFramesUntilInventoryVisible(Set.of(item));
   }
   public ItemGroupResult pollFramesUntilInventoryVisible(Set<Integer> itemsToRecognize) {
     Supplier<ItemGroupResult> getSnapshot = () -> {
@@ -291,9 +298,6 @@ public abstract class ToolkitScript extends JobLoopScript {
     };
 
     AtomicReference<ItemGroupResult> atomicSnapshot = new AtomicReference<>(getSnapshot.get());
-    // Avoid calling poll if unnecessary since it will clear draw, etc
-    if (atomicSnapshot.get() != null) return atomicSnapshot.get();
-
     pollFramesUntil(
       () -> {
         atomicSnapshot.set(getSnapshot.get());
@@ -307,9 +311,11 @@ public abstract class ToolkitScript extends JobLoopScript {
   public boolean pollFramesUntilMovement() {
     return pollFramesUntilMovement(Integer.MAX_VALUE, null);
   }
+
   public boolean pollFramesUntilMovement(int timeout) {
     return pollFramesUntilMovement(timeout, null);
   }
+
   public boolean pollFramesUntilMovement(int timeout, BooleanSupplier breakCondition) {
     AtomicReference<WorldPosition> lastPosition = new AtomicReference<>(getWorldPosition());
     return pollFramesUntil(
@@ -330,35 +336,44 @@ public abstract class ToolkitScript extends JobLoopScript {
   public <T> boolean pollFramesUntilNoChange(Supplier<T> supplier, int changeTimeout) {
     return pollFramesUntilNoChange(supplier, changeTimeout, Integer.MAX_VALUE, () -> false);
   }
-  public <T> boolean pollFramesUntilNoChange(Supplier<T> supplier, int changeTimeout, int noChangeTimeout, BooleanSupplier breakCondition) {
+
+  public <T> boolean pollFramesUntilNoChange(Supplier<T> supplier,
+                                             int changeTimeout,
+                                             int noChangeTimeout,
+                                             BooleanSupplier breakCondition) {
     long startTime = System.currentTimeMillis();
 
     while (true) {
       AtomicReference<T> value = new AtomicReference<>(supplier.get());
       AtomicBoolean broke = new AtomicBoolean(breakCondition.getAsBoolean());
       if (broke.get()) return true;
-      AtomicBoolean changed =  new AtomicBoolean(false);
-      AtomicBoolean timedOut =  new AtomicBoolean(false);
+      AtomicBoolean changed = new AtomicBoolean(false);
+      AtomicBoolean timedOut = new AtomicBoolean(false);
 
-      pollFramesUntil(() -> {
-        if (breakCondition.getAsBoolean()) {
-          broke.set(true);
-          return true;
-        }
+      pollFramesUntil(
+        () -> {
+          if (breakCondition.getAsBoolean()) {
+            broke.set(true);
+            return true;
+          }
 
-        T nextValue = supplier.get();
-        if (nextValue != null && !nextValue.equals(value.get())) {
-          value.set(nextValue);
-          changed.set(true);
-          return true;
-        }
-        if (System.currentTimeMillis() - startTime > noChangeTimeout) {
-          timedOut.set(true);
-          return true;
-        }
+          T nextValue = supplier.get();
+          if (nextValue != null && !nextValue.equals(value.get())) {
+            value.set(nextValue);
+            changed.set(true);
+            return true;
+          }
+          if (System.currentTimeMillis() - startTime > noChangeTimeout) {
+            timedOut.set(true);
+            return true;
+          }
 
-        return changed.get() || timedOut.get();
-      }, changeTimeout);
+          return changed.get() || timedOut.get();
+        }, changeTimeout);
+
+      log(
+        getClass(),
+        "pollFramesUntilNoChange: Change interval complete: " + broke.get() + " " + changed.get() + " " + timedOut.get() + " " + (System.currentTimeMillis() - startTime));
 
       if (broke.get() || !changed.get()) return true;
       if (timedOut.get()) return false;
@@ -370,12 +385,15 @@ public abstract class ToolkitScript extends JobLoopScript {
   }
 
   public void pollFramesUntilNoMovement(BooleanSupplier breakCondition) {
-    pollFramesUntilNoChange(() -> {
-      // Don't return world position directly; I'm not sure how object equality works for world positions
-      WorldPosition position = getWorldPosition();
-      if (position == null) return "";
-      return String.format("%.1f|%.1f", position.getPreciseX(), position.getPreciseY());
-    }, 1_200, 0, breakCondition);
+    pollFramesUntilNoChange(
+      () -> {
+        // Don't return world position directly; I'm not sure how object equality works for world positions
+        WorldPosition position = getWorldPosition();
+        if (position == null) return "";
+        String state = String.format("%.1f|%.1f", position.getPreciseX(), position.getPreciseY());
+        log(getClass(), "pollFramesUntilNoMovement: " + state);
+        return state;
+      }, 1_200, Integer.MAX_VALUE, breakCondition);
   }
 
   public void removeFrameListener(Runnable listener) {
@@ -430,18 +448,18 @@ public abstract class ToolkitScript extends JobLoopScript {
       });
   }
 
-  protected List<Options> getOptions() {
+  public List<Options> getOptions() {
     return null;
   }
 
   /**
    * The script will exit if the player is not within one of the provided regions at any point.
    */
-  protected List<Integer> getRequiredRegions() {
+  public List<Integer> getRequiredRegions() {
     return Collections.emptyList();
   }
 
-  protected String getVersionSourceUrl() {
+  public String getVersionSource() {
     return null;
   }
 
@@ -457,7 +475,7 @@ public abstract class ToolkitScript extends JobLoopScript {
   }
 
   private Optional<Double> getRemoteVersion() {
-    String jarUrl = getVersionSourceUrl();
+    String jarUrl = getVersionSource();
     if (jarUrl == null) return Optional.empty();
     String fileContent;
 

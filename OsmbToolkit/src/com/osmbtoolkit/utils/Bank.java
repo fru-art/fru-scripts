@@ -30,7 +30,7 @@ public class Bank {
   }
 
   public boolean deposit(Set<Integer> items) {
-    if (items.isEmpty()) return true;
+    if (items == null || items.isEmpty()) return true;
 
     Optional<com.osmb.api.ui.bank.Bank> ui = walkToAndOpen();
     if (ui.isEmpty()) {
@@ -90,8 +90,12 @@ public class Bank {
       return true;
     };
 
-    script.pollFramesUntiLPositionReached(object.getWorldPosition(), setUi);
-    return (atomicUi.get() == null || !atomicUi.get().isVisible()) ? Optional.empty() : Optional.of(atomicUi.get());
+    script.log(getClass(), "Waiting to reach " + object.getName());
+    script.pollFramesUntilPositionReached(object.getWorldPosition(), setUi);
+
+    boolean openedBank = atomicUi.get() != null && atomicUi.get().isVisible();
+    if (openedBank) script.pollFramesHuman(() -> false, 1);
+    return openedBank ? Optional.of(atomicUi.get()) : Optional.empty();
   }
 
   public static Optional<Bank> getClosestBank(ToolkitScript script) {
@@ -105,8 +109,27 @@ public class Bank {
       String name = object.getName();
       if (name == null) return false;
       return BANK_TO_ACTION_MAP.containsKey(name) && object.isInteractable();
-    }).stream().sorted(Comparator.comparingDouble(bank -> bank.distance(position))).toList();
+    }).stream()
+      .sorted(Comparator.comparingDouble(bank -> bank.distance(position)))
+      .toList();
 
-    return banks.isEmpty() ? Optional.empty() : Optional.of(new Bank(script, banks.get(0)));
+    if (banks.isEmpty()) return Optional.empty();
+    if (banks.size() == 1) return Optional.of(new Bank(script, banks.get(0)));
+
+    // If there are nearby banks, get the closest bank by tile distance
+    RSObject closestBankByDirectDistance = banks.get(0);
+    List<RSObject> nearbyBanks = banks.stream()
+      // Heuristic to only gauge banks near the closest bank by direct distance
+      .filter(bank -> closestBankByDirectDistance.distance(position) - bank.distance(position) < 5)
+      .toList();
+
+    // Skip tile distance computation if no nearby banks
+    if (nearbyBanks.size() == 1) return Optional.of(new Bank(script, banks.get(0)));
+
+    Optional<RSObject> closestBankByTileDistance = nearbyBanks.stream()
+      .min(Comparator.comparingInt(bank -> bank.getTileDistance(position)));
+    assert closestBankByTileDistance.isPresent();
+
+    return Optional.of(new Bank(script, closestBankByTileDistance.get()));
   }
 }
