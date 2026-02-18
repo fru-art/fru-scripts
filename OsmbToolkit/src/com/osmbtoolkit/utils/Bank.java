@@ -1,5 +1,6 @@
 package com.osmbtoolkit.utils;
 
+import com.osmb.api.input.MenuEntry;
 import com.osmb.api.item.ItemGroupResult;
 import com.osmb.api.location.area.impl.RectangleArea;
 import com.osmb.api.location.position.types.WorldPosition;
@@ -13,12 +14,16 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 
 public class Bank {
-  private static final Map<String, String> BANK_TO_ACTION_MAP = Map.of(
-    "Bank Chest", "Use",
-    "Bank booth", "Bank",
-    "Bank chest", "Use",
-    "Grand Exchange booth", "Bank"
-  );
+  private static final Set<String> BANK_ACTIONS = Set.of(
+    "bank",
+    "use",
+    "Bank",
+    "Use");
+  private static final Set<String> BANK_NAMES = Set.of(
+    "Bank booth",
+    "Bank chest",
+    "Bank Chest",
+    "Grand Exchange booth");
   private static final RectangleArea GE = new RectangleArea(3162, 3489, 5, 1, 0);
 
   public final RSObject object;
@@ -74,8 +79,12 @@ public class Bank {
     com.osmb.api.ui.bank.Bank ui = script.getWidgetManager().getBank();
     if (ui != null && ui.isVisible()) return Optional.of(ui);
 
-    String action = BANK_TO_ACTION_MAP.get(object.getName());
-    object.interact(action);
+    object.interact(entries -> {
+      for (MenuEntry entry : entries) {
+        if (BANK_ACTIONS.contains(entry.getAction())) return entry;
+      }
+      return null;
+    });
     script.log(getClass(), "Interacted " + object.getName());
 
     AtomicReference<com.osmb.api.ui.bank.Bank> atomicUi = new AtomicReference<>();
@@ -108,7 +117,7 @@ public class Bank {
       if (object == null) return false;
       String name = object.getName();
       if (name == null) return false;
-      return BANK_TO_ACTION_MAP.containsKey(name) && object.isInteractable();
+      return BANK_NAMES.contains(name) && object.isInteractable();
     }).stream()
       .sorted(Comparator.comparingDouble(bank -> bank.distance(position)))
       .toList();

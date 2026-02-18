@@ -3,6 +3,7 @@
     -fx-alignment: center-left;
     -fx-background-color: #23272a;
     -fx-padding: 20 18 18 18;
+    -fx-font-smoothing-type: gray;
     -fx-spacing: 12;
     /* This variable often propagates to all child controls */
     -fx-text-base-color: white;

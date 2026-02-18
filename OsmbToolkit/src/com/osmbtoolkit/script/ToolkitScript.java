@@ -263,10 +263,17 @@ public abstract class ToolkitScript extends JobLoopScript {
   }
 
   public boolean pollFramesUntilPositionReached(WorldPosition destination, BooleanSupplier breakCondition) {
+    return pollFramesUntilPositionReached(destination, breakCondition, false);
+  }
+
+  public boolean pollFramesUntilPositionReached(WorldPosition destination,
+                                                BooleanSupplier breakCondition,
+                                                boolean requireAdjacent) {
     BooleanSupplier reachedCondition = () -> {
       if (breakCondition.getAsBoolean()) return true;
       WorldPosition position = getWorldPosition();
-      return position != null && position.distanceTo(destination) <= 1.1;
+      if (position == null) return false;
+      return position.distanceTo(destination) <= 1.1 && (!requireAdjacent || position.getX() == destination.getX() || position.getY() == destination.getY());
     };
 
     if (!pollFramesUntilMovement(1_800, reachedCondition)) {
@@ -281,9 +288,11 @@ public abstract class ToolkitScript extends JobLoopScript {
   public ItemGroupResult pollFramesUntilInventoryVisible() {
     return pollFramesUntilInventoryVisible(Collections.emptySet());
   }
+
   public ItemGroupResult pollFramesUntilInventoryVisible(Integer item) {
     return this.pollFramesUntilInventoryVisible(Set.of(item));
   }
+
   public ItemGroupResult pollFramesUntilInventoryVisible(Set<Integer> itemsToRecognize) {
     Supplier<ItemGroupResult> getSnapshot = () -> {
       WidgetManager widgetManager = getWidgetManager();
